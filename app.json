@@ -1,0 +1,17 @@
+{
+    "name": "TrueLayer payments backend example",
+    "description": "Setup Android & IOS test backend server for TrueLayer Payments v2 API",
+    "repository": "https://github.com/stripe/example-mobile-backend",
+    "keywords": [ "android", "ios", "truelayer"],
+    "env": {
+        "TRUELAYER_CLIENT_ID": {
+            "description": "Your sandbox `client_id` i.e. `sandbox-****` found 👉 https://console.truelayer.com/settings/",
+            "required": true
+        },
+        "TRUELAYER_CLIENT_SECRET": {
+            "description": "Your sandbox `client_secret` found 👉 https://console.truelayer.com/settings/",
+            "required": true
+        }
+    },
+    "stack": "heroku-18"
+}
