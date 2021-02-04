@@ -1,7 +1,7 @@
 export interface AuthResponse {
   access_token: string;
-  expires_in:   number;
-  token_type:   string;
+  expires_in: number;
+  token_type: string;
 }
 
 export interface AuthRequest {
