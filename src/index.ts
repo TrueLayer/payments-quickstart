@@ -28,4 +28,4 @@ app.post('/payment', async (req: Request, res: Response) => {
 
 app.get('/ping', (req: Request, res: Response) => res.status(200))
 
-app.listen(config.PORT, () => console.log(`Server listening on port ${config.PORT}...`))
+app.listen(config.PORT, () => console.log(`⚡[server]: listening on port ${config.PORT}...`))
