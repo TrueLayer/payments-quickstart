@@ -1,30 +1,21 @@
 import express, { Request, Response } from 'express';
-import config from 'config';
-import { authenticate } from 'middleware/client';
-import logger from 'middleware/logger';
-import { initiatePayment } from 'middleware/api';
+import config from './config';
+import logger from './middleware/logger';
+import payments from './routes/payments';
 
 const app = express()
 app.use(express.json())
 
 const router = express.Router();
 
+// Attach middleware 
 [router, logger.info, logger.error]
-    .forEach(middleware => app.use(middleware))
+    .forEach(middleware => app.use(middleware));
 
-router.post('/payment', async (req: Request, res: Response) => {
-    try {
-        const accessToken = await authenticate();
-        const response = await initiatePayment(req.body, accessToken)
-        res.status(200).send(response)
-    } catch (e) {
-        console.error('[server]: ', e);
+// Attach routes
+[payments]
+    .forEach(route => app.use(route));
 
-        res.status(500).json({
-            error: "Failed to initiate payments."
-        })
-    }
-})
 
 router.get('/error', function (req, res, next) {
     // here we cause an error in the pipeline so we see express-winston in action.
