@@ -1,27 +1,16 @@
-import express, { Request, Response } from 'express';
-import config from './config';
-import logger from './middleware/logger';
-import payments from './routes/payments';
+import express, { Request, Response, ErrorRequestHandler } from 'express';
+import config from 'config';
+import error from 'middleware/errors'
+import logger from 'middleware/logger';
+import payments from 'routes/payments';
+import health from 'routes/health';
 
 const app = express()
-app.use(express.json())
 
-const router = express.Router();
+const routes = [payments, health];
+const middleware = [express.json(), logger.info, logger.error];
 
-// Attach middleware 
-[router, logger.info, logger.error]
-    .forEach(middleware => app.use(middleware));
-
-// Attach routes
-[payments]
-    .forEach(route => app.use(route));
-
-
-router.get('/error', function (req, res, next) {
-    // here we cause an error in the pipeline so we see express-winston in action.
-    return next(new Error("This is an error and it should be logged to the console"));
-});
-
-router.get('/ping', (req: Request, res: Response) => res.status(200).send())
+[...middleware, ...routes, error]
+    .forEach(register => app.use(register));
 
 app.listen(config.PORT, () => console.log(`[server]: listening on port ${config.PORT}.`))
