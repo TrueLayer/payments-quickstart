@@ -5,4 +5,4 @@ const router = Router();
 
 router.post('/payment/create', createPayment);
 
-export default router; 
+export default router;
