@@ -6,8 +6,10 @@
   "scripts": {
     "lint": "eslint 'src/**'",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "NODE_PATH=./src nodemon --exec ts-node src/index.ts",
-    "build": "tsc --project ."
+    "start": "nodemon src/index.ts",
+    "build": "tsc",
+    "postinstall": "yarn build",
+    "start": "NODE_PATH=./src nodemon --exec ts-node src/index.ts"
   },
   "keywords": [],
   "author": "",
