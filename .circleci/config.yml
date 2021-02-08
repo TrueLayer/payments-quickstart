@@ -1,0 +1,52 @@
+version: 2
+
+references:
+  run_unit_tests: &RUN_UNIT_TESTS
+    run:
+      name: Run unit tests
+      command: 'yarn build && yarn run ci:test'
+  copy_npmrc: &COPY_NPMRC
+    run:
+      name: Copy .npmrc
+      command: >-
+        sudo rm -rf /var/lib/apt/lists/* && 
+        sudo apt-get update &&
+        sudo apt-get install -y gettext-base &&
+        envsubst < .circleci/templates/npmrc > .npmrc
+jobs:
+  build_and_test:
+    docker:
+      - image: circleci/node:12
+    resource_class: xlarge
+    steps:
+      - checkout
+      - *COPY_NPMRC
+      - restore_cache:
+          name: Restore Yarn Package Cache & Dependencies
+          keys:
+            - yarn-cache-deps-{{ checksum "yarn.lock" }}
+      - run:
+          name: Install Dependencies
+          command: yarn install --immutable
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-cache-deps-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+            - node_modules
+      - *RUN_UNIT_TESTS
+  
+defaults: &defaults
+  context:
+    - org-global
+    - example-mobile-backend 
+  filters:
+    tags:
+      only: /.*/
+
+workflows:
+  version: 2
+  build-test-deploy:
+    jobs:
+      - build_and_test:
+          <<: *defaults
