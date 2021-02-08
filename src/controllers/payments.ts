@@ -23,7 +23,8 @@ export default class PaymentsController {
     getPayment = async (req: Request, res: Response, next: NextFunction) => {
       try {
         const { id } = req.params;
-        console.log(id);
+        const response = await this.paymentClient.getPayment(id);
+        res.status(200).send(response);
       } catch (e) {
         next(new HttpException(500, 'Failed to retrieve payment.'));
       }
