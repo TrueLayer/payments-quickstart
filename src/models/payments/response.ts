@@ -1,45 +1,7 @@
 /* eslint-disable camelcase */
 
-interface SortCode {
-    type: string,
-    sort_code: string,
-    account_number: string,
-}
-
-interface Iban {
-    type: string,
-    iban: string
-}
-
-interface Bban {
-    type: string,
-    bban: string
-}
-
-interface Nrb {
-    type: string,
-    nrb: string
-}
-
-type AccountDetails = SortCode | Iban | Bban | Nrb;
-
-interface Participant {
-    name: string,
-    account: AccountDetails
-}
-
-interface SeparateReference {
-    type: string,
-    beneficiary: string,
-    remitter: string
-}
-
-interface SingleReference {
-    type: string,
-    reference: string
-}
-
-type References = SingleReference | SeparateReference;
+import Participant from './participant';
+import References from './references';
 
 type PaymentStatus = (
     'initiated' |
