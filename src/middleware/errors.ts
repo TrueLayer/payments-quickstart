@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 
 export class HttpException extends Error {
     public status: number;
@@ -11,7 +11,7 @@ export class HttpException extends Error {
     }
 }
 
-export default function error (error: HttpException, req: Request, res: Response, next: NextFunction) {
+export default function error (error: HttpException, _: Request, res: Response) {
   res.status(error.status);
   res.json({ error: error.message }).send();
 }

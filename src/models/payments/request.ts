@@ -1,21 +1,7 @@
 /* eslint-disable camelcase */
 
-interface Account {
-  type: string;
-  sort_code: string;
-  account_number: string;
-}
-
-interface Participant {
-  account: Account;
-  name: string;
-}
-
-interface References {
-  type: string;
-  beneficiary: string;
-  remitter: string;
-}
+import Participant from './participant';
+import References from './references';
 
 interface SingleImmediatePayment {
   provider_id: string;
