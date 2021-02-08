@@ -15,9 +15,12 @@ export default class PaymentsController {
       }
     }
 
-    getPayment = async (req: Request, _: Response, next: NextFunction) => {
+    getPayment = async (req: Request, res: Response, next: NextFunction) => {
       try {
         const { id } = req.params;
+        if (!id) {
+          return next(new HttpException(400, 'Expected `id` parameter.'));
+        }
         const response = await this.paymentClient.getPayment(id);
         res.status(200).send(response);
       } catch (e) {
