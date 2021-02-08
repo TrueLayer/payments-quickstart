@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "ci:test": "NODE_ENV=test yarn jest --watchAll=false --ci=true --collect-coverage",
     "lint": "eslint 'src/**'",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon src/index.ts",

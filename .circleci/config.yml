@@ -8,7 +8,7 @@ references:
   run_unit_tests: &RUN_UNIT_TESTS
     run:
       name: Run unit tests
-      command: '.circleci/scripts/circle_run_unit_tests.sh'
+      command: 'yarn run ci:test'
   copy_npmrc: &COPY_NPMRC
     run:
       name: Copy .npmrc
