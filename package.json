@@ -6,7 +6,6 @@
   "scripts": {
     "ci:test": "NODE_ENV=test yarn test --watchAll=false --ci=true --collect-coverage",
     "lint": "eslint 'src/**'",
-    "start": "nodemon src/index.ts",
     "fmt": "eslint 'src/**' --fix",
     "test": "jest",
     "start": "NODE_PATH=./src nodemon --exec ts-node src/index.ts",
