@@ -3,7 +3,7 @@
 import Participant from './participant';
 import References from './references';
 
-type PaymentStatus = (
+export type PaymentStatus = (
     'initiated' |
     'cancelled' |
     'authorisation_failed' |
@@ -13,7 +13,7 @@ type PaymentStatus = (
     'expired'
 );
 
-type SupportedCurrency = 'GBP' | 'EUR';
+export type SupportedCurrency = 'GBP' | 'EUR';
 
 export interface PaymentResponse {
     single_immediate_payment_id: string,

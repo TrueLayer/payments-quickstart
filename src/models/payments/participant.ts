@@ -1,22 +1,22 @@
 /* eslint-disable camelcase */
 
-interface SortCode {
+export interface SortCode {
     type: string,
     sort_code: string,
     account_number: string,
 }
 
-interface Iban {
+export interface Iban {
     type: string,
     iban: string
 }
 
-interface Bban {
+export interface Bban {
     type: string,
     bban: string
 }
 
-interface Nrb {
+export interface Nrb {
     type: string,
     nrb: string
 }
