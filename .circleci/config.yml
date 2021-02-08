@@ -1,14 +1,10 @@
 version: 2
 
 references:
-  build_docker_image: &BUILD_DOCKER_IMAGE
-    run:
-      name: Build docker image
-      command: '.circleci/scripts/circle_build.sh'
   run_unit_tests: &RUN_UNIT_TESTS
     run:
       name: Run unit tests
-      command: 'yarn run ci:test'
+      command: 'yarn build && yarn run ci:test'
   copy_npmrc: &COPY_NPMRC
     run:
       name: Copy .npmrc
@@ -18,20 +14,7 @@ references:
         sudo apt-get install -y gettext-base &&
         envsubst < .circleci/templates/npmrc > .npmrc
 jobs:
-  build:
-    machine:
-      docker_layer_caching: true
-    environment:
-      IMAGE_NAME: example-mobile-backend
-      DEPLOYMENT_NAME: example-mobile-backend
-      VERSION: ${CIRCLE_BUILD_NUM}
-      TAG_POLICE_VERSION: v2.1.0
-      DOCKERFILE_NAME: Dockerfile
-
-    steps:
-      - checkout
-      - *BUILD_DOCKER_IMAGE
-  test:
+  build_and_test:
     docker:
       - image: circleci/node:12
     resource_class: xlarge
