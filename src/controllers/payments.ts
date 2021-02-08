@@ -20,7 +20,7 @@ export default class PaymentsController {
       }
     }
 
-    getPayment = async (req: Request, res: Response, next: NextFunction) => {
+    getPayment = async (req: Request, _: Response, next: NextFunction) => {
       try {
         const { id } = req.params;
         console.log(id);
