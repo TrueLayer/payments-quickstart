@@ -1,13 +1,31 @@
 import { NextFunction, Request, Response } from 'express';
-import { authenticate, initiatePayment } from 'middleware/client';
+import PaymentClient from 'middleware/payment-client';
 import { HttpException } from 'middleware/errors';
 
-export const createPayment = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const accessToken = await authenticate();
-    const response = await initiatePayment(req.body, accessToken);
-    res.status(200).send(response);
-  } catch (e) {
-    next(new HttpException(500, 'Failed to initiate payments.'));
-  }
-};
+export default class PaymentsController {
+    private paymentClient: PaymentClient;
+
+    constructor (
+      paymentClient: PaymentClient
+    ) {
+      this.paymentClient = paymentClient;
+    }
+
+    createPayment = async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        const response = await this.paymentClient.initiatePayment(req.body);
+        res.status(200).send(response);
+      } catch (e) {
+        next(new HttpException(500, 'Failed to initiate payments.'));
+      }
+    }
+
+    getPayment = async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        const { id } = req.params;
+        console.log(id);
+      } catch (e) {
+        next(new HttpException(500, 'Failed to retrieve payment.'));
+      }
+    }
+}

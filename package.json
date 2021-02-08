@@ -30,6 +30,7 @@
     "axios": "^0.21.1",
     "express": "^4.17.1",
     "express-winston": "^4.0.5",
+    "node-cache": "^5.1.2",
     "winston": "^3.3.3"
   }
 }
