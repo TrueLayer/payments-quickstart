@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
-import PaymentRequest from 'models/payment-request';
-import PaymentResponse from 'models/payment-response';
+import PaymentRequest from 'models/payments/request';
+import PaymentResponse from 'models/payments/response';
 import AuthenticationClient from './authentication-client';
 import logger from 'middleware/logger';
 

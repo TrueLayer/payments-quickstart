@@ -60,7 +60,6 @@ export default class RetryClient {
         },
         async (error: AxiosError) => {
           // Any status code outside of the range of 2xx.
-
           if (this.shouldErrorRetry(attempts, error)) {
             attempts++;
             return client.request(await this.retry(error.request));

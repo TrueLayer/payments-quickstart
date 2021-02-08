@@ -14,5 +14,4 @@ const middleware = [express.json(), logger.server.info, logger.server.error];
 [...middleware, ...routes, error]
   .forEach(register => app.use(register));
 
-
-app.listen(config.PORT, () => console.log(`⚡[server]: listening on port ${config.PORT}...`))
+app.listen(config.PORT, () => console.log(`⚡[server]: listening on port ${config.PORT}...`));
