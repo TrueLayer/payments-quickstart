@@ -1,15 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
-import PaymentClient from 'middleware/payment-client';
 import { HttpException } from 'middleware/errors';
+import AuthenticationClient from 'middleware/authentication-client';
+import PaymentsClient from 'middleware/payment-client';
 
 export default class PaymentsController {
-    private paymentClient: PaymentClient;
-
-    constructor (
-      paymentClient: PaymentClient
-    ) {
-      this.paymentClient = paymentClient;
-    }
+    private paymentClient = new PaymentsClient(new AuthenticationClient());
 
     createPayment = async (req: Request, res: Response, next: NextFunction) => {
       try {
