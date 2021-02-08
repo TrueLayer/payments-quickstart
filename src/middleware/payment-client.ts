@@ -32,9 +32,9 @@ export default class PaymentClient {
     }
 
     initiatePayment = async (request: PaymentRequest) => {
-      try {
-        const headers = await this.getAuthorizationHeder();
+      const headers = await this.getAuthorizationHeder();
 
+      try {
         const { data } = await this.client.post<PaymentResponse>(
           'single-immediate-payment-initiation-requests',
           request,
@@ -42,12 +42,21 @@ export default class PaymentClient {
         );
 
         return data;
-      } catch (err) {
-        return err.response.data;
+      } catch (error) {
+        return error.response.data;
       }
     }
 
-    getPayment = async (payment_id: string) => {
-      // TODO
+    getPayment = async (paymentId: string) => {
+      const headers = await this.getAuthorizationHeder();
+      try {
+        const { data } = await this.client.get<PaymentResponse>(
+          `single-immediate-payments/${paymentId}`,
+          { headers }
+        );
+        return data;
+      } catch (error) {
+        return error.response.data;
+      }
     }
 }

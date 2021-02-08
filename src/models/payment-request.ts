@@ -27,6 +27,7 @@ interface SingleImmediatePayment {
   remitter: Participant;
   references: References;
 }
+
 interface AdditionalInputs { }
 
 interface AuthFlow {
