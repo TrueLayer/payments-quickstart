@@ -1,31 +1,17 @@
-import express, { Request, Response } from 'express'
-import axios from 'axios'
-import config from './config'
-import { AuthenticationResponse } from './models/authentication'
+import express from 'express';
+import config from 'config';
+import error from 'middleware/errors';
+import logger from 'middleware/logger';
+import payments from 'routes/payments';
+import health from 'routes/health';
 
-const app = express()
+const app = express();
 
-app.use(express.json())
+const routes = [payments, health];
 
-const client = axios.create({
-    timeout: 3000,
-    headers: { "content-type": "application/json" },
-})
+const middleware = [express.json(), logger.server.info, logger.server.error];
 
-app.post('/payment', async (req: Request, res: Response) => {
-    const access_token = await client.post<AuthenticationResponse>(`https://auth.truelayer.com/connect/token/`, {
-        data : {
-            "grant_type": "client_credentials",
-            "client_id": config.CLIENT_ID,
-            "client_secret": config.CLIENT_SECRET,
-            "scope": "payments" 
-        }
-    })
-    .then(res => res.data["access_token"])
-    .catch(e => console.error(`Failed requesting access_token. ${e}`))
-    
-})
+[...middleware, ...routes, error]
+  .forEach(register => app.use(register));
 
-app.get('/ping', (req: Request, res: Response) => res.status(200))
-
-app.listen(config.PORT, () => console.log(`Server listening on port ${config.PORT}...`))
+app.listen(config.PORT, () => console.log(`[server]: listening on port ${config.PORT}.`));
