@@ -28,7 +28,6 @@ export default class PaymentClient {
 
     initiatePayment = async (request: PaymentRequest) => {
       const headers = await this.getAuthorizationHeder();
-
       try {
         const { data } = await this.client.post<PaymentResponse>(
           'single-immediate-payment-initiation-requests',

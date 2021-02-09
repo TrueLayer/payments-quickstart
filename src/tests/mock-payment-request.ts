@@ -25,3 +25,5 @@ export const fakePaymentRequest = () => ({
     additional_inputs: {}
   }
 } as PaymentRequest);
+
+export default fakePaymentRequest;
