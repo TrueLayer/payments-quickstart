@@ -1,40 +1,46 @@
 /* eslint-disable camelcase */
 
-import nock from 'nock';
+import nock, { Interceptor } from 'nock';
 import PaymentsClient from '../middleware/payment-client';
 import AuthenticationClient from '../middleware/authentication-client';
 import { mockPaymentResponse } from './mock-payment-response';
 import { fakePaymentRequest } from './mock-payment-request';
 
 let paymentsClient: PaymentsClient;
+let authServer: Interceptor;
 
 beforeEach(() => {
   const authenticationClient = new AuthenticationClient();
   paymentsClient = new PaymentsClient(authenticationClient);
+  authServer = nock('https://auth.t7r.dev', {
+    reqheaders: { 'content-type': 'application/json' }
+  })
+    .post('/connect/token');
 });
+
+function mockServerEndpoints (authTimes: number) {
+  const access_token = 'access_token';
+
+  const auth = authServer
+    .times(authTimes)
+    .reply(200, { access_token, expires_in: 3600, token_type: 'bearer' });
+
+  const payments = nock('https://pay-api.t7r.dev/v2', {
+    reqheaders: {
+      'authorization': `Bearer ${access_token}`,
+      'content-type': 'application/json'
+    }
+  });
+
+  return { auth, payments };
+}
 
 describe('`payments-client`', () => {
   describe('`getPayment`', () => {
     it('`access_token` is attached to payments api request.', async () => {
-      const access_token = 'access_token';
+      const { auth, payments } = mockServerEndpoints(1);
 
-      const auth = nock('https://auth.t7r.dev', {
-        reqheaders: { 'content-type': 'application/json' }
-      })
-        .post('/connect/token')
-        .times(1)
-        .reply(200, { access_token, expires_in: 3600, token_type: 'bearer' });
-
-      const payments = nock('https://pay-api.t7r.dev/v2', {
-        reqheaders: {
-          'authorization': `Bearer ${access_token}`,
-          'content-type': 'application/json'
-        }
-      })
-        .get('/single-immediate-payments/1')
-        .times(1)
-        .reply(200, mockPaymentResponse());
-
+      payments.get('/single-immediate-payments/1');
       await paymentsClient.getPayment('1');
 
       auth.done();
@@ -42,22 +48,11 @@ describe('`payments-client`', () => {
     });
 
     it('401 from payments-api clears cached `access_token`.', async () => {
-      const access_token = 'access_token';
+      // An additional auth request should be made as Cache is cleared.
+      const { auth, payments } = mockServerEndpoints(2);
       const mockResponse = mockPaymentResponse();
 
-      const auth = nock('https://auth.t7r.dev', {
-        reqheaders: { 'content-type': 'application/json' }
-      })
-        .post('/connect/token')
-        .times(2) // An additional request should be made as Cache is cleared.
-        .reply(200, { access_token, expires_in: 3600, token_type: 'bearer' });
-
-      const payments = nock('https://pay-api.t7r.dev/v2', {
-        reqheaders: {
-          'authorization': `Bearer ${access_token}`,
-          'content-type': 'application/json'
-        }
-      })
+      payments
         .get('/single-immediate-payments/1')
         .times(1)
         .reply(401) // Trigger a retry.
@@ -73,21 +68,9 @@ describe('`payments-client`', () => {
     });
 
     it('3 x 401 from payments-api results in an error.', async () => {
-      const access_token = 'access_token';
+      const { auth, payments } = mockServerEndpoints(3);
 
-      const auth = nock('https://auth.t7r.dev', {
-        reqheaders: { 'content-type': 'application/json' }
-      })
-        .post('/connect/token')
-        .times(3)
-        .reply(200, { access_token, expires_in: 3600, token_type: 'bearer' });
-
-      const payments = nock('https://pay-api.t7r.dev/v2', {
-        reqheaders: {
-          'authorization': `Bearer ${access_token}`,
-          'content-type': 'application/json'
-        }
-      })
+      payments
         .get('/single-immediate-payments/1')
         .times(3)
         .reply(401);
@@ -104,21 +87,9 @@ describe('`payments-client`', () => {
 
   describe('`initiatePayment`', () => {
     it('`access_token` is attached to payments api request.', async () => {
-      const access_token = 'access_token';
+      const { auth, payments } = mockServerEndpoints(1);
 
-      const auth = nock('https://auth.t7r.dev', {
-        reqheaders: { 'content-type': 'application/json' }
-      })
-        .post('/connect/token')
-        .times(1)
-        .reply(200, { access_token, expires_in: 3600, token_type: 'bearer' });
-
-      const payments = nock('https://pay-api.t7r.dev/v2', {
-        reqheaders: {
-          'authorization': `Bearer ${access_token}`,
-          'content-type': 'application/json'
-        }
-      })
+      payments
         .post('/single-immediate-payment-initiation-requests')
         .times(1)
         .reply(200, mockPaymentResponse());
@@ -130,22 +101,9 @@ describe('`payments-client`', () => {
     });
 
     it('401 from payments-api clears cached `access_token`.', async () => {
-      const access_token = 'access_token';
+      const { auth, payments } = mockServerEndpoints(2);
       const mockResponse = mockPaymentResponse();
-
-      const auth = nock('https://auth.t7r.dev', {
-        reqheaders: { 'content-type': 'application/json' }
-      })
-        .post('/connect/token')
-        .times(2) // An additional request should be made as Cache is cleared.
-        .reply(200, { access_token, expires_in: 3600, token_type: 'bearer' });
-
-      const payments = nock('https://pay-api.t7r.dev/v2', {
-        reqheaders: {
-          'authorization': `Bearer ${access_token}`,
-          'content-type': 'application/json'
-        }
-      })
+      payments
         .post('/single-immediate-payment-initiation-requests')
         .times(1)
         .reply(401) // Trigger a retry.
@@ -161,21 +119,9 @@ describe('`payments-client`', () => {
     });
 
     it('3 x 401 from payments-api results in an error.', async () => {
-      const access_token = 'access_token';
+      const { auth, payments } = mockServerEndpoints(3);
 
-      const auth = nock('https://auth.t7r.dev', {
-        reqheaders: { 'content-type': 'application/json' }
-      })
-        .post('/connect/token')
-        .times(3)
-        .reply(200, { access_token, expires_in: 3600, token_type: 'bearer' });
-
-      const payments = nock('https://pay-api.t7r.dev/v2', {
-        reqheaders: {
-          'authorization': `Bearer ${access_token}`,
-          'content-type': 'application/json'
-        }
-      })
+      payments
         .post('/single-immediate-payment-initiation-requests')
         .times(3)
         .reply(401);
