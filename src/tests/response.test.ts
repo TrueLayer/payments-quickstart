@@ -1,5 +1,5 @@
-import PaymentResponse from './response';
-import { SortCode } from './participant';
+import PaymentResponse from '../models/payments/response';
+import { SortCode } from '../models/payments/participant';
 
 test('payment response serializes & de-serializes.', () => {
   // Arrange
