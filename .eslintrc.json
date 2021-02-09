@@ -16,6 +16,7 @@
         "@typescript-eslint"
     ],
     "rules": {
-        "semi": ["error", "always"]
+        "semi": ["error", "always"],
+        "quote-props": ["error", "consistent"]
     }
 }

@@ -31,7 +31,7 @@ const client = (tag: string, client: AxiosInstance) => {
   });
 
   client.interceptors.response.use((response: AxiosResponse) => {
-    console.info(`[${tag}-client]: ⬅️`, response.statusText);
+    console.info(`[${tag}-client]: ⬅️`, response.status, response.statusText || '');
     return response;
   });
 

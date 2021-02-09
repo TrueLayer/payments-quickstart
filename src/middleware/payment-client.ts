@@ -21,15 +21,10 @@ export default class PaymentClient {
       this.authenticationClient = authenticationClient;
     }
 
-    private getAuthorizationHeder = async () => {
-      const token = await this.authenticationClient.authenticate();
-      return {
-        headers: {
-          Authorization: token,
-          'content-type': 'application/json'
-        }
-      };
-    }
+    private getAuthorizationHeder = async () => ({
+      'authorization': await this.authenticationClient.authenticate(),
+      'content-type': 'application/json'
+    })
 
     initiatePayment = async (request: PaymentRequest) => {
       const headers = await this.getAuthorizationHeder();
@@ -38,12 +33,12 @@ export default class PaymentClient {
         const { data } = await this.client.post<PaymentResponse>(
           'single-immediate-payment-initiation-requests',
           request,
-          headers
+          { headers }
         );
 
         return data;
       } catch (error) {
-        return error.response.data;
+        return error.response?.data || { error: error.message };
       }
     }
 
@@ -56,7 +51,7 @@ export default class PaymentClient {
         );
         return data;
       } catch (error) {
-        return error.response.data;
+        return error.response?.data || { error: error.message };
       }
     }
 }

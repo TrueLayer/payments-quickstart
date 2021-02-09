@@ -45,7 +45,7 @@ export default class AuthenticationClient {
         retries: 3,
         retry: async request => {
           this.cache.flushAll();
-          request.headers.Authorization = await this.authenticate();
+          request.headers.authorization = await this.authenticate();
           return request;
         },
         errorCondition: error => error.response?.status === 401
