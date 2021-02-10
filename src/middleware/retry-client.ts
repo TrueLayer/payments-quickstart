@@ -45,7 +45,7 @@ export default class RetryClient {
 
     attach = (client: AxiosInstance) => {
       // Using a closure allowing multiple clients to have the same base config.
-      let attempts = 0;
+      let attempts = 1;
 
       client.interceptors.response.use(
         async (response: AxiosResponse) => {
@@ -54,7 +54,7 @@ export default class RetryClient {
             attempts++;
             return client.request(await this.retry(response.request));
           }
-          attempts = 0;
+          attempts = 1;
 
           return response;
         },
@@ -62,9 +62,9 @@ export default class RetryClient {
           // Any status code outside of the range of 2xx.
           if (this.shouldErrorRetry(attempts, error)) {
             attempts++;
-            return client.request(await this.retry(error.request));
+            return client.request(await this.retry(error.config));
           }
-          attempts = 0;
+          attempts = 1;
 
           return Promise.reject(error);
         }

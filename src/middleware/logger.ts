@@ -21,13 +21,17 @@ const server = {
 };
 
 const client = (tag: string, client: AxiosInstance) => {
+  if (process.env.NODE_ENV === 'test') {
+    return client;
+  }
+
   client.interceptors.request.use((request: AxiosRequestConfig) => {
-    console.info(`[${tag}-client]: ➡`, request.method, request.url, request.baseURL);
+    console.info(`[${tag}-client]: ➡`, request.method, `${request.baseURL}${request.url}`);
     return request;
   });
 
   client.interceptors.response.use((response: AxiosResponse) => {
-    console.info(`[${tag}-client]: ⬅️`, response.statusText);
+    console.info(`[${tag}-client]: ⬅️`, response.status, response.statusText || '');
     return response;
   });
 

@@ -14,9 +14,11 @@ export default class AuthenticationClient {
 
     private cache = new Cache();
 
+    private toBearerToken = (token: string) => `Bearer ${token}`;
+
     authenticate = async () => {
-      const token = this.cache.get(config.CLIENT_ID);
-      if (token) return token;
+      const token = this.cache.get<string>(config.CLIENT_ID);
+      if (token) return this.toBearerToken(token);
 
       try {
         const { data } = await this.client.post<AuthenticationResponse>('connect/token', {
@@ -27,14 +29,13 @@ export default class AuthenticationClient {
         });
 
         const accessToken = data.access_token;
-        // TODO: parse token and grab expiry rather than assuming expiry is 3600. could change.
-        this.cache.set(config.CLIENT_ID, accessToken, 3600);
+        this.cache.set(config.CLIENT_ID, accessToken, data.expires_in);
 
         if (!accessToken) throw new Error('Missing `access_token`.');
 
-        return `Bearer ${accessToken}`;
+        return this.toBearerToken(accessToken);
       } catch (e) {
-        console.error(`Failed requesting access_token. ${e}`);
+        throw new Error(`Failed requesting access_token. ${e}`);
       }
     }
 
@@ -44,7 +45,7 @@ export default class AuthenticationClient {
         retries: 3,
         retry: async request => {
           this.cache.flushAll();
-          request.headers.Authorization = await this.authenticate();
+          request.headers.authorization = await this.authenticate();
           return request;
         },
         errorCondition: error => error.response?.status === 401

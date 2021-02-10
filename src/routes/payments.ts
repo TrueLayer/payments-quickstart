@@ -2,9 +2,9 @@ import { Router } from 'express';
 import PaymentsController from 'controllers/payments';
 
 const router = Router();
-const { 
-    createPayment, 
-    getPayment,
+const {
+  createPayment,
+  getPayment
 } = new PaymentsController();
 
 router.post('/payment', createPayment);
