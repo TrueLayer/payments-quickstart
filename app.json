@@ -4,13 +4,29 @@
     "repository": "https://github.com/stripe/example-mobile-backend",
     "keywords": [ "android", "ios", "truelayer"],
     "env": {
-        "TRUELAYER_CLIENT_ID": {
+        "CLIENT_ID": {
             "description": "Your sandbox `client_id` i.e. `sandbox-****` found 👉 https://console.truelayer.com/settings/",
             "required": true
         },
-        "TRUELAYER_CLIENT_SECRET": {
+        "CLIENT_SECRET": {
             "description": "Your sandbox `client_secret` found 👉 https://console.truelayer.com/settings/",
             "required": true
+        },
+        "SORT_CODE": {
+            "description": "Your sandbox bank `sort_code` or a default will be used.",
+            "required": false
+        },
+        "ACCOUNT_NUMBER": {
+            "description": "Your sandbox bank `account_number` or a default will be used.",
+            "required": false
+        },
+        "WEBHOOK_URI": {
+            "description": "Register a webhook to listen to payment events. Uri must be registered to `Allowed redirect URIs` found 👉 https://console.truelayer.com/settings/.",
+            "required": false
+        },
+        "REDIRECT_URI": {
+            "description": "URI that is used to return the user to after authorising the payment. Uri must be registered to `Allowed redirect URIs` found 👉 https://console.truelayer.com/settings/.",
+            "required": false
         }
     },
     "stack": "heroku-18"
