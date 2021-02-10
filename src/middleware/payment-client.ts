@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
-import PaymentRequest from 'models/payments/request';
+import { buildPaymentApiRequest, PaymentRequest } from 'models/payments/request';
 import PaymentResponse from 'models/payments/response';
 import AuthenticationClient from './authentication-client';
 import logger from 'middleware/logger';
@@ -28,10 +28,12 @@ export default class PaymentClient {
 
     initiatePayment = async (request: PaymentRequest) => {
       const headers = await this.getHeaders();
+      const apiRequest = buildPaymentApiRequest(request);
+
       try {
         const { data } = await this.client.post<PaymentResponse>(
           'single-immediate-payment-initiation-requests',
-          request,
+          apiRequest,
           { headers }
         );
 

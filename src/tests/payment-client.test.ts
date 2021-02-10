@@ -4,7 +4,7 @@ import nock, { Interceptor } from 'nock';
 import PaymentsClient from '../middleware/payment-client';
 import AuthenticationClient from '../middleware/authentication-client';
 import { mockPaymentResponse } from './mock-payment-response';
-import { fakePaymentApiRequest } from './mock-payment-request';
+import { fakePaymentRequest } from './mock-payment-request';
 
 let paymentsClient: PaymentsClient;
 let authServer: Interceptor;
@@ -94,7 +94,7 @@ describe('`payments-client`', () => {
         .times(1)
         .reply(200, mockPaymentResponse());
 
-      await paymentsClient.initiatePayment(fakePaymentApiRequest());
+      await paymentsClient.initiatePayment(fakePaymentRequest());
 
       auth.done();
       payments.done();
@@ -111,7 +111,7 @@ describe('`payments-client`', () => {
         .times(1)
         .reply(200, mockResponse);
 
-      const response = await paymentsClient.initiatePayment(fakePaymentApiRequest());
+      const response = await paymentsClient.initiatePayment(fakePaymentRequest());
       expect(response).toEqual(mockResponse);
 
       auth.done();
@@ -126,7 +126,7 @@ describe('`payments-client`', () => {
         .times(3)
         .reply(401);
 
-      const response = await paymentsClient.initiatePayment(fakePaymentApiRequest());
+      const response = await paymentsClient.initiatePayment(fakePaymentRequest());
       expect(response).toEqual({
         error: 'Request failed with status code 401'
       });
