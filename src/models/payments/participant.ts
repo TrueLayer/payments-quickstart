@@ -1,23 +1,23 @@
 /* eslint-disable camelcase */
 
 export interface SortCode {
-    type: string,
+    type: 'sort_code_account_number',
     sort_code: string,
     account_number: string,
 }
 
 export interface Iban {
-    type: string,
+    type: 'iban',
     iban: string
 }
 
 export interface Bban {
-    type: string,
+    type: 'bban',
     bban: string
 }
 
 export interface Nrb {
-    type: string,
+    type: 'nrb',
     nrb: string
 }
 
