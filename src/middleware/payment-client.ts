@@ -21,13 +21,13 @@ export default class PaymentClient {
       this.authenticationClient = authenticationClient;
     }
 
-    private getAuthorizationHeder = async () => ({
+    private getHeaders = async () => ({
       'authorization': await this.authenticationClient.authenticate(),
       'content-type': 'application/json'
     })
 
     initiatePayment = async (request: PaymentRequest) => {
-      const headers = await this.getAuthorizationHeder();
+      const headers = await this.getHeaders();
       try {
         const { data } = await this.client.post<PaymentResponse>(
           'single-immediate-payment-initiation-requests',
@@ -42,7 +42,7 @@ export default class PaymentClient {
     }
 
     getPayment = async (paymentId: string) => {
-      const headers = await this.getAuthorizationHeder();
+      const headers = await this.getHeaders();
       try {
         const { data } = await this.client.get<PaymentResponse>(
           `single-immediate-payments/${paymentId}`,
