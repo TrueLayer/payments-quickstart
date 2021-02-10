@@ -1,29 +1,14 @@
-import PaymentRequest from 'models/payments/request';
+import PaymentApiRequest, { buildPaymentApiRequest, PaymentRequest } from 'models/payments/request';
 
-export const fakePaymentRequest = () => ({
-  single_immediate_payment: {
-    provider_id: 'provider',
-    scheme_id: 'faseter_payments_scheme',
-    currency: 'GBP',
-    amount_in_minor: 100,
-    remitter: {
-      name: 'Rem',
-      account: { type: 'iban', iban: 'iban' }
-    },
-    beneficiary: {
-      name: 'Ben',
-      account: { type: 'iban', iban: 'iban' }
-    },
-    references: {
-      type: 'single',
-      reference: 'reference'
-    }
-  },
-  auth_flow: {
-    type: 'redirect',
-    return_uri: 'https://server.com/hook',
-    additional_inputs: {}
-  }
-} as PaymentRequest);
+export const fakePaymentRequest = () : PaymentRequest => ({
+  scheme_id: 'faster_payments_scheme',
+  provider_id: 'provider_id',
+  currency: 'GBP',
+  amount_in_minor: 100,
+  reference: 'reference'
+});
 
-export default fakePaymentRequest;
+export const fakePaymentApiRequest = () : PaymentApiRequest =>
+  buildPaymentApiRequest(fakePaymentRequest());
+
+export default fakePaymentApiRequest;

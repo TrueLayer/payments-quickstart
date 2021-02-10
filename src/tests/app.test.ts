@@ -2,7 +2,7 @@ import app from 'app';
 import nock from 'nock';
 import supertest, { SuperTest } from 'supertest';
 import { mockPaymentResponse } from './mock-payment-response';
-import mockPaymentRequest from './mock-payment-request';
+import fakePaymentApiRequest, { fakePaymentRequest } from './mock-payment-request';
 
 let request: SuperTest<any>;
 
@@ -42,13 +42,13 @@ describe('api', () => {
           'content-type': 'application/json'
         }
       })
-        .post('/single-immediate-payment-initiation-requests', JSON.stringify(mockPaymentRequest()))
+        .post('/single-immediate-payment-initiation-requests', JSON.stringify(fakePaymentApiRequest()))
         .reply(200, mockPaymentResponse());
     });
 
-    it('', done => {
+    it('works', done => {
       request.post('/payment')
-        .send(mockPaymentRequest())
+        .send(fakePaymentRequest())
         .expect(200, mockPaymentResponse(), done);
     });
   });
