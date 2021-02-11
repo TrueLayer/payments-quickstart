@@ -5,7 +5,8 @@ export const fakePaymentRequest = () : PaymentRequest => ({
   provider_id: 'provider_id',
   currency: 'GBP',
   amount_in_minor: 100,
-  reference: 'reference'
+  reference: 'reference',
+  paymentId: '12345'
 });
 
 export const fakePaymentApiRequest = () : PaymentApiRequest =>

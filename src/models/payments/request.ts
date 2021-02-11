@@ -39,6 +39,7 @@ export interface PaymentRequest {
   currency?: SupportedCurrency,
   amount_in_minor: number,
   reference: string
+  paymentId?: string
 }
 
 export const buildPaymentApiRequest = ({
@@ -46,10 +47,11 @@ export const buildPaymentApiRequest = ({
   provider_id,
   currency = 'GBP',
   amount_in_minor,
-  reference
-} : PaymentRequest) : PaymentApiRequest => ({
+  reference,
+  paymentId = uuid()
+}: PaymentRequest) : PaymentApiRequest => ({
   single_immediate_payment: {
-    single_immediate_payment_id: uuid(),
+    single_immediate_payment_id: paymentId,
     provider_id,
     scheme_id,
     currency,
