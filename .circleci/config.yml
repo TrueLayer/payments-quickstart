@@ -24,6 +24,20 @@ jobs:
     resource_class: medium
     steps:
       - checkout
+      - *COPY_NPMRC
+      - restore_cache:
+          name: Restore Yarn Package Cache & Dependencies
+          keys:
+            - yarn-cache-deps-{{ checksum "yarn.lock" }}
+      - run:
+          name: Install Dependencies
+          command: yarn install --immutable
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-cache-deps-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+            - node_modules
       - *RUN_LINTING
   build_and_test:
     docker:
