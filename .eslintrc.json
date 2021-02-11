@@ -5,7 +5,8 @@
         "jest": true
     },
     "extends": [
-        "standard"
+        "standard",
+        "prettier"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -13,10 +14,11 @@
         "sourceType": "module"
     },
     "plugins": [
-        "@typescript-eslint"
+        "@typescript-eslint",
+        "prettier"
     ],
     "rules": {
-        "semi": ["error", "always"],
-        "quote-props": ["error", "consistent"]
+        "quote-props": ["error", "consistent"],
+        "prettier/prettier": "error"
     }
 }
