@@ -1,4 +1,4 @@
-import express from "express";
+import express from 'express';
 import error from 'middleware/errors';
 import logger from 'middleware/logger';
 import payments from 'routes/payments';
