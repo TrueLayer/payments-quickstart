@@ -10,7 +10,7 @@ export default class PaymentClient {
 
     constructor (authenticationClient: AuthenticationClient) {
       const client = logger.client('payment', axios.create({
-        timeout: 3000,
+        timeout: 10000,
         baseURL: 'https://pay-api.t7r.dev/v2/',
         headers: { 'content-type': 'application/json' }
       }));

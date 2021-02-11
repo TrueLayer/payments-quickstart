@@ -7,7 +7,7 @@ import RetryClient from './retry-client';
 
 export default class AuthenticationClient {
     private client = logger.client('authentication', axios.create({
-      timeout: 3000,
+      timeout: 10000,
       baseURL: 'https://auth.t7r.dev/',
       headers: { 'content-type': 'application/json' }
     }));
