@@ -16,7 +16,7 @@ interface SingleImmediatePayment {
   references: References;
 }
 
-interface AdditionalInputs { }
+interface AdditionalInputs {}
 interface AuthFlow {
   type: string;
   return_uri: string;
@@ -28,15 +28,15 @@ interface AuthFlow {
 interface PaymentApiRequest {
   auth_flow: AuthFlow;
   single_immediate_payment: SingleImmediatePayment;
-  webhook_uri?: string
+  webhook_uri?: string;
 }
 
 export interface PaymentRequest {
-  scheme_id: string,
-  provider_id: string,
-  currency?: SupportedCurrency,
-  amount_in_minor: number,
-  reference: string
+  scheme_id: string;
+  provider_id: string;
+  currency?: SupportedCurrency;
+  amount_in_minor: number;
+  reference: string;
 }
 
 export const buildPaymentApiRequest = ({
@@ -45,7 +45,7 @@ export const buildPaymentApiRequest = ({
   currency = 'GBP',
   amount_in_minor,
   reference
-} : PaymentRequest) : PaymentApiRequest => ({
+}: PaymentRequest): PaymentApiRequest => ({
   single_immediate_payment: {
     provider_id,
     scheme_id,

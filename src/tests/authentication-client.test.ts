@@ -18,9 +18,7 @@ describe('`authentication-client`', () => {
     // Arrange
     const access_token = 'access_token';
 
-    const scope = authServerMock
-      .times(1)
-      .reply(200, { access_token, expires_in: 3600, token_type: 'bearer' });
+    const scope = authServerMock.times(1).reply(200, { access_token, expires_in: 3600, token_type: 'bearer' });
 
     // Act
     const bearerToken = await authenticationClient.authenticate();
@@ -35,9 +33,7 @@ describe('`authentication-client`', () => {
     // Arrange
     const access_token = 'access_token';
 
-    const scope = authServerMock
-      .times(1)
-      .reply(200, { access_token, expires_in: 3600, token_type: 'bearer' });
+    const scope = authServerMock.times(1).reply(200, { access_token, expires_in: 3600, token_type: 'bearer' });
 
     // Act
     const firstResponse = await authenticationClient.authenticate();
@@ -52,9 +48,7 @@ describe('`authentication-client`', () => {
 
   it('response with invalid  `access_token` throws an error.', async () => {
     // Arrange
-    const scope = authServerMock
-      .times(1)
-      .reply(200, { access_token: '', expires_in: 3600, token_type: 'bearer' });
+    const scope = authServerMock.times(1).reply(200, { access_token: '', expires_in: 3600, token_type: 'bearer' });
 
     // Act & Assert
     await expect(authenticationClient.authenticate()).rejects.toThrow('Missing `access_token`.');
@@ -63,8 +57,7 @@ describe('`authentication-client`', () => {
 
   it('auth server request fails throws an error.', async () => {
     // Arrange
-    const scope = authServerMock
-      .reply(500);
+    const scope = authServerMock.reply(500);
 
     // Act & Assert
     await expect(authenticationClient.authenticate()).rejects.toThrow('Failed requesting access_token.');

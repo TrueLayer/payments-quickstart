@@ -14,16 +14,13 @@ beforeEach(() => {
   paymentsClient = new PaymentsClient(authenticationClient);
   authServer = nock('https://auth.t7r.dev', {
     reqheaders: { 'content-type': 'application/json' }
-  })
-    .post('/connect/token');
+  }).post('/connect/token');
 });
 
-function mockServerEndpoints (authTimes: number) {
+function mockServerEndpoints(authTimes: number) {
   const access_token = 'access_token';
 
-  const auth = authServer
-    .times(authTimes)
-    .reply(200, { access_token, expires_in: 3600, token_type: 'bearer' });
+  const auth = authServer.times(authTimes).reply(200, { access_token, expires_in: 3600, token_type: 'bearer' });
 
   const payments = nock('https://pay-api.t7r.dev/v2', {
     reqheaders: {
@@ -70,10 +67,7 @@ describe('`payments-client`', () => {
     it('3 x 401 from payments-api results in an error.', async () => {
       const { auth, payments } = mockServerEndpoints(3);
 
-      payments
-        .get('/single-immediate-payments/1')
-        .times(3)
-        .reply(401);
+      payments.get('/single-immediate-payments/1').times(3).reply(401);
 
       const response = await paymentsClient.getPayment('1');
       expect(response).toEqual({
@@ -89,10 +83,7 @@ describe('`payments-client`', () => {
     it('`access_token` is attached to payments api request.', async () => {
       const { auth, payments } = mockServerEndpoints(1);
 
-      payments
-        .post('/single-immediate-payment-initiation-requests')
-        .times(1)
-        .reply(200, mockPaymentResponse());
+      payments.post('/single-immediate-payment-initiation-requests').times(1).reply(200, mockPaymentResponse());
 
       await paymentsClient.initiatePayment(fakePaymentRequest());
 
@@ -121,10 +112,7 @@ describe('`payments-client`', () => {
     it('3 x 401 from payments-api results in an error.', async () => {
       const { auth, payments } = mockServerEndpoints(3);
 
-      payments
-        .post('/single-immediate-payment-initiation-requests')
-        .times(3)
-        .reply(401);
+      payments.post('/single-immediate-payment-initiation-requests').times(3).reply(401);
 
       const response = await paymentsClient.initiatePayment(fakePaymentRequest());
       expect(response).toEqual({
