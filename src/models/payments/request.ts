@@ -57,7 +57,7 @@ export const buildPaymentApiRequest = ({
     currency,
     amount_in_minor,
     beneficiary: {
-      name: 'test',
+      name: config.BENEFICIARY_NAME,
       account: {
         type: 'sort_code_account_number',
         sort_code: config.SORT_CODE,
