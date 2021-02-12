@@ -12,6 +12,10 @@
             "description": "Your sandbox `client_secret` found 👉 https://console.truelayer.com/settings/",
             "required": true
         },
+        "BENEFICIARY_NAME": {
+            "description": "Your sandbox bank `beneficiary_name` or a default will be used.",
+            "required": false
+        },
         "SORT_CODE": {
             "description": "Your sandbox bank `sort_code` or a default will be used.",
             "required": false
