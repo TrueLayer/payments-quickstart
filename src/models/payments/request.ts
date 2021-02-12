@@ -18,7 +18,7 @@ interface SingleImmediatePayment {
   references: References;
 }
 
-interface AdditionalInputs { }
+interface AdditionalInputs {}
 interface AuthFlow {
   type: string;
   return_uri: string;
@@ -34,12 +34,12 @@ interface PaymentApiRequest {
 }
 
 export interface PaymentRequest {
-  scheme_id: string,
-  provider_id: string,
-  currency?: SupportedCurrency,
-  amount_in_minor: number,
-  reference: string
-  paymentId?: string
+  scheme_id: string;
+  provider_id: string;
+  currency?: SupportedCurrency;
+  amount_in_minor: number;
+  reference: string;
+  paymentId?: string;
 }
 
 export const buildPaymentApiRequest = ({
@@ -49,7 +49,7 @@ export const buildPaymentApiRequest = ({
   amount_in_minor,
   reference,
   paymentId = uuid()
-}: PaymentRequest) : PaymentApiRequest => ({
+}: PaymentRequest): PaymentApiRequest => ({
   single_immediate_payment: {
     single_immediate_payment_id: paymentId,
     provider_id,

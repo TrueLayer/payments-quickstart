@@ -47,9 +47,7 @@ describe('api', () => {
     });
 
     it('works', done => {
-      request.post('/payment')
-        .send(fakePaymentRequest())
-        .expect(200, mockPaymentResponse(), done);
+      request.post('/payment').send(fakePaymentRequest()).expect(200, mockPaymentResponse(), done);
     });
   });
 });

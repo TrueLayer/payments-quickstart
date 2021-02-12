@@ -5,18 +5,12 @@ import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 const server = {
   info: expressWinston.logger({
     transports: [new winston.transports.Console()],
-    format: winston.format.combine(
-      winston.format.colorize(),
-      winston.format.json()
-    )
+    format: winston.format.combine(winston.format.colorize(), winston.format.json())
   }),
 
   error: expressWinston.errorLogger({
     transports: [new winston.transports.Console()],
-    format: winston.format.combine(
-      winston.format.colorize(),
-      winston.format.json()
-    )
+    format: winston.format.combine(winston.format.colorize(), winston.format.json())
   })
 };
 

@@ -10,7 +10,6 @@ const routes = [payments, health];
 
 const middleware = [express.json(), logger.server.info, logger.server.error];
 
-[...middleware, ...routes, error]
-  .forEach(register => app.use(register));
+[...middleware, ...routes, error].forEach(register => app.use(register));
 
 export default app;

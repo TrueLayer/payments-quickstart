@@ -1,6 +1,10 @@
 version: 2
 
 references:
+  run_linting: &RUN_LINTING
+    run:
+      name: Run linting
+      command: 'yarn lint'
   run_unit_tests: &RUN_UNIT_TESTS
     run:
       name: Run unit tests
@@ -14,10 +18,31 @@ references:
         sudo apt-get install -y gettext-base &&
         envsubst < .circleci/templates/npmrc > .npmrc
 jobs:
+  lint:
+    docker:
+      - image: circleci/node:12
+    resource_class: medium
+    steps:
+      - checkout
+      - *COPY_NPMRC
+      - restore_cache:
+          name: Restore Yarn Package Cache & Dependencies
+          keys:
+            - yarn-cache-deps-{{ checksum "yarn.lock" }}
+      - run:
+          name: Install Dependencies
+          command: yarn install --immutable
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-cache-deps-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+            - node_modules
+      - *RUN_LINTING
   build_and_test:
     docker:
       - image: circleci/node:12
-    resource_class: xlarge
+    resource_class: medium
     steps:
       - checkout
       - *COPY_NPMRC
@@ -35,11 +60,10 @@ jobs:
             - ~/.cache/yarn
             - node_modules
       - *RUN_UNIT_TESTS
-  
 defaults: &defaults
   context:
     - org-global
-    - example-mobile-backend 
+    - example-mobile-backend
   filters:
     tags:
       only: /.*/
@@ -48,5 +72,9 @@ workflows:
   version: 2
   build-test-deploy:
     jobs:
+      - lint:
+          <<: *defaults
       - build_and_test:
           <<: *defaults
+          requires:
+            - lint
