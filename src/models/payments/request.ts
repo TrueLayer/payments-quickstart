@@ -39,7 +39,7 @@ export const buildPaymentApiRequest = ({
   scheme_id,
   provider_id,
   currency = 'GBP',
-  amount_in_minor,
+  amount_in_minor = 1,
   reference,
   paymentId = uuid()
 }: PaymentRequest): PaymentApiRequest => ({
