@@ -18,6 +18,8 @@ test('payment response serializes & de-serializes.', () => {
   expect(result.provider_id).toBe('eg-provider');
   expect(result.scheme_id).toBe('payment_scheme');
   expect(result.fee_option_id).toBe('split_fee');
+  expect(result.auth_flow.type).toBe('redirect');
+  expect(result.auth_flow.uri).toBe('https://www.eg-provider.com/authorize?token=0f9e8d7c');
 
   expect(result.beneficiary.name).toBe('Financial Services Ltd');
   switch (result.beneficiary.account.type) {

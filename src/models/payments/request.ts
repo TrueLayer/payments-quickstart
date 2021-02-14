@@ -6,7 +6,7 @@ import { v4 as uuid } from 'uuid';
 import Participant from './participant';
 import References from './references';
 import { SupportedCurrency } from './response';
-import { AuthFlowRedirect } from './auth-flow';
+import { AuthFlowRedirectRequest } from './auth-flow';
 
 interface SingleImmediatePayment {
   single_immediate_payment_id: string;
@@ -21,7 +21,7 @@ interface SingleImmediatePayment {
 }
 
 interface PaymentApiRequest {
-  auth_flow: AuthFlowRedirect;
+  auth_flow: AuthFlowRedirectRequest;
   single_immediate_payment: SingleImmediatePayment;
   webhook_uri?: string | null;
 }

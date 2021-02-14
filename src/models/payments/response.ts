@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 
-import { AuthFlowRedirect } from './auth-flow';
+import { AuthFlowRedirectResponse } from './auth-flow';
 import Participant from './participant';
 import References from './references';
 
@@ -20,7 +20,7 @@ export interface PaymentResponse {
   beneficiary: Participant;
   remitter: Participant;
   references: References;
-  auth_flow: AuthFlowRedirect;
+  auth_flow: AuthFlowRedirectResponse;
 }
 export interface PaymentResponseResult {
   result: PaymentResponse;
