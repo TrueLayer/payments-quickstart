@@ -28,6 +28,11 @@ export const json = `{
             "type": "separate",
             "beneficiary": "FinServ-1a2b3c4d",
             "remitter": "FS-1000001"
+        },
+        "auth_flow": {
+            "type": "redirect",
+            "uri": "https://www.eg-provider.com/authorize?token=0f9e8d7c",
+            "expiry": "2020-11-03T23:00:00.000Z"
         }
     }
 }`;
