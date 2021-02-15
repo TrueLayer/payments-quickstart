@@ -17,7 +17,7 @@ interface SingleImmediatePayment {
   amount_in_minor: number;
   beneficiary: Participant;
   remitter?: Participant;
-  references: References;
+  reference: References;
 }
 
 interface PaymentApiRequest {
@@ -57,7 +57,7 @@ export const buildPaymentApiRequest = ({
         account_number: config.ACCOUNT_NUMBER
       }
     },
-    references: {
+    reference: {
       type: 'single',
       reference
     }
