@@ -26,7 +26,6 @@ export default class HelpersController {
       response.data.pipe(sharpStream);
       await sharpStream.clone().resize({ width: 400 }).png().pipe(res);
     } catch (e) {
-      console.log(e);
       next(new HttpException(500, 'Failed to convert assets.'));
     }
   };
