@@ -14,18 +14,19 @@ export default class HelpersController {
       const sharpStream = sharp({
         failOnError: false
       });
+
+      res.type('png');
+
       const svgUrl = req.query.svg as string;
       if (!svgUrl) {
         next(new HttpException(400, 'Query parameter "url" is required.'));
       }
-      await this.client(svgUrl)
-        .then(res => res.data.pipe(sharpStream))
-        .catch(() => {
-          next(new HttpException(404, 'Asset not found.'));
-        });
-      res.type('png');
-      await sharpStream.clone().png().pipe(res);
+
+      const response = await this.client(svgUrl);
+      response.data.pipe(sharpStream);
+      await sharpStream.clone().resize({ width: 400 }).png().pipe(res);
     } catch (e) {
+      console.log(e);
       next(new HttpException(500, 'Failed to convert assets.'));
     }
   };
