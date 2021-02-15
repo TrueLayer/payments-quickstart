@@ -1,10 +1,12 @@
 /* eslint-disable camelcase */
 
+import config from 'config';
+import { v4 as uuid } from 'uuid';
+
 import Participant from './participant';
 import References from './references';
 import { SupportedCurrency } from './response';
-import config from 'config';
-import { v4 as uuid } from 'uuid';
+import { AuthFlowRedirectRequest } from './auth-flow';
 
 interface SingleImmediatePayment {
   single_immediate_payment_id: string;
@@ -18,17 +20,8 @@ interface SingleImmediatePayment {
   references: References;
 }
 
-interface AdditionalInputs {}
-interface AuthFlow {
-  type: string;
-  return_uri: string;
-  additional_inputs?: AdditionalInputs;
-  psu_ip_address?: string;
-  data_access_token?: string;
-}
-
 interface PaymentApiRequest {
-  auth_flow: AuthFlow;
+  auth_flow: AuthFlowRedirectRequest;
   single_immediate_payment: SingleImmediatePayment;
   webhook_uri?: string | null;
 }
@@ -46,7 +39,7 @@ export const buildPaymentApiRequest = ({
   scheme_id,
   provider_id,
   currency = 'GBP',
-  amount_in_minor,
+  amount_in_minor = 1,
   reference,
   paymentId = uuid()
 }: PaymentRequest): PaymentApiRequest => ({
