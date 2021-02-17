@@ -1,12 +1,11 @@
 import PaymentApiRequest, { buildPaymentApiRequest, PaymentRequest } from 'models/payments/request';
 
 export const fakePaymentRequest = (): PaymentRequest => ({
-  scheme_id: 'faster_payments_scheme',
   provider_id: 'provider_id',
   currency: 'GBP',
   amount_in_minor: 100,
   reference: 'reference',
-  paymentId: '12345'
+  payment_id: '12345'
 });
 
 export const fakePaymentApiRequest = (): PaymentApiRequest => buildPaymentApiRequest(fakePaymentRequest());

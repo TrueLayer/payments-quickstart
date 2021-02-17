@@ -11,7 +11,7 @@ import { AuthFlowRedirectRequest } from './auth-flow';
 interface SingleImmediatePayment {
   single_immediate_payment_id: string;
   provider_id: string;
-  scheme_id: string;
+  scheme_id?: string;
   fee_option_id?: string;
   currency: SupportedCurrency;
   amount_in_minor: number;
@@ -27,12 +27,12 @@ interface PaymentApiRequest {
 }
 
 export interface PaymentRequest {
-  scheme_id: string;
   provider_id: string;
   currency?: SupportedCurrency;
-  amount_in_minor: number;
-  reference: string;
-  paymentId?: string;
+  amount_in_minor?: number;
+  reference?: string;
+  scheme_id?: string;
+  payment_id?: string;
 }
 
 export const buildPaymentApiRequest = ({
@@ -40,11 +40,11 @@ export const buildPaymentApiRequest = ({
   provider_id,
   currency = 'GBP',
   amount_in_minor = 1,
-  reference,
-  paymentId = uuid()
+  reference = 'Test Payment',
+  payment_id = uuid()
 }: PaymentRequest): PaymentApiRequest => ({
   single_immediate_payment: {
-    single_immediate_payment_id: paymentId,
+    single_immediate_payment_id: payment_id,
     provider_id,
     scheme_id,
     currency,
