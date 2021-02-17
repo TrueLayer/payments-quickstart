@@ -46,12 +46,12 @@ export default class AuthenticationClient {
   attachAuthenticationRetry = (client: AxiosInstance) => {
     return new RetryClient({
       retries: 3,
+      errorCondition: error => error.response?.status === 401,
       retry: async request => {
         this.cache.flushAll();
         request.headers.authorization = await this.authenticate();
         return request;
-      },
-      errorCondition: error => error.response?.status === 401
+      }
     }).attach(client);
   };
 }

@@ -5,13 +5,13 @@ import PaymentsClient from '../middleware/payment-client';
 import AuthenticationClient from '../middleware/authentication-client';
 import { mockPaymentResponse } from './mock-payment-response';
 import { fakePaymentRequest } from './mock-payment-request';
+import { HttpException } from 'middleware/errors';
 
 let paymentsClient: PaymentsClient;
 let authServer: Interceptor;
 
 beforeEach(() => {
-  const authenticationClient = new AuthenticationClient();
-  paymentsClient = new PaymentsClient(authenticationClient);
+  paymentsClient = new PaymentsClient(new AuthenticationClient());
   authServer = nock('https://auth.t7r.dev', {
     reqheaders: { 'content-type': 'application/json' }
   }).post('/connect/token');
@@ -20,7 +20,11 @@ beforeEach(() => {
 function mockServerEndpoints(authTimes: number) {
   const access_token = 'access_token';
 
-  const auth = authServer.times(authTimes).reply(200, { access_token, expires_in: 3600, token_type: 'bearer' });
+  const auth = authServer.times(authTimes).reply(200, {
+    access_token,
+    expires_in: 3600,
+    token_type: 'bearer'
+  });
 
   const payments = nock('https://pay-api.t7r.dev/v2', {
     reqheaders: {
@@ -37,7 +41,7 @@ describe('`payments-client`', () => {
     it('`access_token` is attached to payments api request.', async () => {
       const { auth, payments } = mockServerEndpoints(1);
 
-      payments.get('/single-immediate-payments/1');
+      payments.get('/single-immediate-payments/1').times(1).reply(200, mockPaymentResponse());
       await paymentsClient.getPayment('1');
 
       auth.done();
@@ -69,10 +73,7 @@ describe('`payments-client`', () => {
 
       payments.get('/single-immediate-payments/1').times(3).reply(401);
 
-      const response = await paymentsClient.getPayment('1');
-      expect(response).toEqual({
-        error: 'Request failed with status code 401'
-      });
+      await expect(paymentsClient.getPayment('1')).rejects.toThrow('Request failed with status code 401');
 
       auth.done();
       payments.done();
@@ -114,10 +115,9 @@ describe('`payments-client`', () => {
 
       payments.post('/single-immediate-payment-initiation-requests').times(3).reply(401);
 
-      const response = await paymentsClient.initiatePayment(fakePaymentRequest());
-      expect(response).toEqual({
-        error: 'Request failed with status code 401'
-      });
+      await expect(paymentsClient.initiatePayment(fakePaymentRequest())).rejects.toThrowError(
+        new HttpException(401, 'Request failed with status code 401')
+      );
 
       auth.done();
       payments.done();

@@ -8,7 +8,7 @@ const app = express();
 
 const routes = [payments, health];
 
-const middleware = [express.json(), logger.server.info, logger.server.error];
+const middleware = [express.json(), logger.server];
 
 [...middleware, ...routes, error].forEach(register => app.use(register));
 

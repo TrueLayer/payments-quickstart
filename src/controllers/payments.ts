@@ -11,20 +11,21 @@ export default class PaymentsController {
       const response = await this.paymentClient.initiatePayment(req.body);
       res.status(200).send(response);
     } catch (e) {
-      next(new HttpException(500, 'Failed to initiate payments.'));
+      next(e instanceof HttpException ? e : new HttpException(500, 'Failed to initiate payments.'));
     }
   };
 
   getPayment = async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+    if (!id) {
+      return next(new HttpException(400, 'Expected `id` parameter.'));
+    }
+
     try {
-      const { id } = req.params;
-      if (!id) {
-        return next(new HttpException(400, 'Expected `id` parameter.'));
-      }
       const response = await this.paymentClient.getPayment(id);
       res.status(200).send(response);
     } catch (e) {
-      next(new HttpException(500, 'Failed to retrieve payment.'));
+      next(e instanceof HttpException ? e : new HttpException(500, `Failed to retrieve payment: ${id}.`));
     }
   };
 }
