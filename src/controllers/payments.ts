@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { HttpException } from 'middleware/errors';
-import AuthenticationClient from 'middleware/authentication-client';
-import PaymentsClient from 'middleware/payment-client';
+import AuthenticationClient from 'clients/authentication-client';
+import PaymentsClient from 'clients/payment-client';
 
 export default class PaymentsController {
   private paymentClient = new PaymentsClient(new AuthenticationClient());
