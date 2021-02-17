@@ -39,16 +39,20 @@ function mockServerEndpoints(authTimes: number) {
 describe('`payments-client`', () => {
   describe('`getPayment`', () => {
     it('`access_token` is attached to payments api request.', async () => {
+      // Arrange
       const { auth, payments } = mockServerEndpoints(1);
-
       payments.get('/single-immediate-payments/1').times(1).reply(200, mockPaymentResponse());
+
+      // Act
       await paymentsClient.getPayment('1');
 
+      // Assert
       auth.done();
       payments.done();
     });
 
     it('401 from payments-api clears cached `access_token`.', async () => {
+      // Arrange
       // An additional auth request should be made as Cache is cleared.
       const { auth, payments } = mockServerEndpoints(2);
       const mockResponse = mockPaymentResponse();
@@ -61,7 +65,10 @@ describe('`payments-client`', () => {
         .times(1)
         .reply(200, mockResponse);
 
+      // Act
       const response = await paymentsClient.getPayment('1');
+
+      // Assert
       expect(response).toEqual(mockResponse);
 
       auth.done();
@@ -69,10 +76,11 @@ describe('`payments-client`', () => {
     });
 
     it('3 x 401 from payments-api results in an error.', async () => {
+      // Arrange
       const { auth, payments } = mockServerEndpoints(3);
-
       payments.get('/single-immediate-payments/1').times(3).reply(401);
 
+      // Act & Assert
       await expect(paymentsClient.getPayment('1')).rejects.toThrow('Request failed with status code 401');
 
       auth.done();
@@ -82,17 +90,20 @@ describe('`payments-client`', () => {
 
   describe('`initiatePayment`', () => {
     it('`access_token` is attached to payments api request.', async () => {
+      // Arrange
       const { auth, payments } = mockServerEndpoints(1);
-
       payments.post('/single-immediate-payment-initiation-requests').times(1).reply(200, mockPaymentResponse());
 
+      // Act
       await paymentsClient.initiatePayment(fakePaymentRequest());
 
+      // Assert
       auth.done();
       payments.done();
     });
 
     it('401 from payments-api clears cached `access_token`.', async () => {
+      // Arrange
       const { auth, payments } = mockServerEndpoints(2);
       const mockResponse = mockPaymentResponse();
       payments
@@ -103,7 +114,10 @@ describe('`payments-client`', () => {
         .times(1)
         .reply(200, mockResponse);
 
+      // Act
       const response = await paymentsClient.initiatePayment(fakePaymentRequest());
+
+      // Assert
       expect(response).toEqual(mockResponse);
 
       auth.done();
@@ -111,10 +125,11 @@ describe('`payments-client`', () => {
     });
 
     it('3 x 401 from payments-api results in an error.', async () => {
+      // Arrange
       const { auth, payments } = mockServerEndpoints(3);
-
       payments.post('/single-immediate-payment-initiation-requests').times(3).reply(401);
 
+      // Act & Assert
       await expect(paymentsClient.initiatePayment(fakePaymentRequest())).rejects.toThrowError(
         new HttpException(401, 'Request failed with status code 401')
       );
