@@ -33,7 +33,8 @@ $ curl --location --request POST 'http://localhost:3000/payment' \
 --header 'Content-Type: application/json' \
 --data-raw '{
   "provider_id": "ob-sandbox-natwest",
-  "amount_in_minor": 1
+  "amount_in_minor": 1,
+  "reference": "Test Payment"
 }'
 ```
 
