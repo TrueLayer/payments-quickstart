@@ -12,7 +12,7 @@
 
 A sample backend server providing a thin abstraction over the [TrueLayer payments-api](https://truelayer.com/payments-api).
 <br>
-It can used as a back-end with our [android](https://github.com/TrueLayer/android-sample/) and [iOS](https://github.com/TrueLayer/truelayer-ios-demo) samples.
+Used as a back-end with our [android](https://github.com/TrueLayer/android-sample/) and [iOS](https://github.com/TrueLayer/truelayer-ios-demo) samples.
 <br>
 <br>
 For more information about Payments API integration you can browse our [documentation](https://docs.truelayer.com/#payments-api-v2).
