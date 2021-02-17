@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 
 import nock from 'nock';
-import AuthenticationClient from '../middleware/authentication-client';
+import AuthenticationClient from 'clients/authentication-client';
 
 let authenticationClient: AuthenticationClient;
 let authServerMock: any;

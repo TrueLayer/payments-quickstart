@@ -32,8 +32,11 @@ describe('api', () => {
     it('works', done => {
       request.get('/payment/1').expect(200, mockPaymentResponse(), done);
     });
-  });
 
+    it('404 occurs without `:id` paramter', done => {
+      request.get('/payment').expect(404, done);
+    });
+  });
   describe('POST `/payments`', () => {
     beforeEach(() => {
       nock('https://pay-api.t7r.dev/v2', {
