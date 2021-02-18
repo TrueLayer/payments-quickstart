@@ -1,9 +1,8 @@
-import axios, { AxiosInstance } from 'axios';
+import axios from 'axios';
 import Cache from 'node-cache';
 import { AuthenticationResponse } from 'models/authentication';
 import logger from 'middleware/logger';
 import config from 'config';
-import RetryClient from './retry-client';
 
 export default class AuthenticationClient {
   private client = logger.client(
@@ -18,6 +17,8 @@ export default class AuthenticationClient {
   private cache = new Cache();
 
   private toBearerToken = (token: string) => `Bearer ${token}`;
+
+  invalidateCache = () => this.cache.flushAll();
 
   authenticate = async () => {
     const token = this.cache.get<string>(config.CLIENT_ID);
@@ -40,18 +41,5 @@ export default class AuthenticationClient {
     } catch (e) {
       throw new Error(`Failed requesting access_token. ${e}`);
     }
-  };
-
-  // attach a retry policy for any UNAUTHORIZED requests to a client.
-  attachAuthenticationRetry = (client: AxiosInstance) => {
-    return new RetryClient({
-      retries: 3,
-      retry: async request => {
-        this.cache.flushAll();
-        request.headers.authorization = await this.authenticate();
-        return request;
-      },
-      errorCondition: error => error.response?.status === 401
-    }).attach(client);
   };
 }

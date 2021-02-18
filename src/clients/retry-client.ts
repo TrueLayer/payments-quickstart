@@ -4,7 +4,7 @@ interface RetryClientOptions {
   retries: number | undefined;
   successCondition?: (response: AxiosResponse) => boolean;
   errorCondition?: (error: AxiosError) => boolean;
-  retry: (request: AxiosRequestConfig) => AxiosRequestConfig | Promise<AxiosRequestConfig>;
+  onRetry: (request: AxiosRequestConfig) => AxiosRequestConfig | Promise<AxiosRequestConfig>;
 }
 
 const successDefault = (_: AxiosResponse) => false;
@@ -14,11 +14,11 @@ export default class RetryClient {
   private retries: number;
   private successCondition: (response: AxiosResponse) => boolean;
   private errorCondition: (error: AxiosError) => boolean;
-  private retry: (request: AxiosRequestConfig) => AxiosRequestConfig | Promise<AxiosRequestConfig>;
+  private onRetry: (request: AxiosRequestConfig) => AxiosRequestConfig | Promise<AxiosRequestConfig>;
 
   constructor(options: RetryClientOptions) {
     this.retries = options.retries || 3;
-    this.retry = options.retry;
+    this.onRetry = options.onRetry;
     this.successCondition = options.successCondition || successDefault;
     this.errorCondition = options.errorCondition || errorDefault;
   }
@@ -52,7 +52,7 @@ export default class RetryClient {
         // Any status code within the range of 2xx.
         if (this.shouldSuccessRetry(attempts, response)) {
           attempts++;
-          return client.request(await this.retry(response.request));
+          return client.request(await this.onRetry(response.request));
         }
         attempts = 1;
 
@@ -62,7 +62,7 @@ export default class RetryClient {
         // Any status code outside of the range of 2xx.
         if (this.shouldErrorRetry(attempts, error)) {
           attempts++;
-          return client.request(await this.retry(error.config));
+          return client.request(await this.onRetry(error.config));
         }
         attempts = 1;
 
