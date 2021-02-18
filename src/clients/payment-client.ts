@@ -40,10 +40,10 @@ export default class PaymentClient {
   });
 
   initiatePayment = async (request: PaymentRequest) => {
-    const headers = await this.getHeaders();
     const apiRequest = buildPaymentApiRequest(request);
 
     try {
+      const headers = await this.getHeaders();
       const { data } = await this.client.post<PaymentResponse>('single-immediate-payment-initiation-requests', apiRequest, { headers });
       return data;
     } catch (error) {
