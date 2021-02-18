@@ -1,14 +1,16 @@
 /* eslint-disable camelcase */
 
-import nock from 'nock';
+import nock, { Interceptor } from 'nock';
 import AuthenticationClient from 'clients/authentication-client';
+import { HttpException } from 'middleware/errors';
+import config from 'config';
 
 let authenticationClient: AuthenticationClient;
-let authServerMock: any;
+let authServerMock: Interceptor;
 
 beforeEach(() => {
   authenticationClient = new AuthenticationClient();
-  authServerMock = nock('https://auth.t7r.dev', {
+  authServerMock = nock(config.AUTH_URI, {
     reqheaders: { 'content-type': 'application/json' }
   }).post('/connect/token');
 });
@@ -51,7 +53,9 @@ describe('`authentication-client`', () => {
     const scope = authServerMock.times(1).reply(200, { access_token: '', expires_in: 3600, token_type: 'bearer' });
 
     // Act & Assert
-    await expect(authenticationClient.authenticate()).rejects.toThrow('Missing `access_token`.');
+    await expect(authenticationClient.authenticate()).rejects.toThrowError(
+      new HttpException(500, 'Failed parsing authentication request.')
+    );
     scope.done();
   });
 
@@ -60,7 +64,7 @@ describe('`authentication-client`', () => {
     const scope = authServerMock.reply(500);
 
     // Act & Assert
-    await expect(authenticationClient.authenticate()).rejects.toThrow('Failed requesting access_token.');
+    await expect(authenticationClient.authenticate()).rejects.toThrow('Request failed with status code 500');
     scope.done();
   });
 });

@@ -4,13 +4,14 @@ import supertest, { SuperTest } from 'supertest';
 import { mockPaymentResponse } from './mock-payment-response';
 import fakePaymentApiRequest, { fakePaymentRequest } from './mock-payment-request';
 import { buildPaymentApiRequest } from 'models/payments/request';
+import config from 'config';
 
 let request: SuperTest<any>;
 
 beforeEach(() => {
   request = supertest(app);
 
-  nock('https://auth.t7r.dev', {
+  nock(config.AUTH_URI, {
     reqheaders: { 'content-type': 'application/json' }
   })
     .post('/connect/token')
@@ -20,7 +21,7 @@ beforeEach(() => {
 describe('api', () => {
   describe('GET `/payments:id`', () => {
     beforeEach(() => {
-      nock('https://pay-api.t7r.dev/v2', {
+      nock(config.PAYMENTS_URI, {
         reqheaders: {
           'authorization': 'Bearer access_token',
           'content-type': 'application/json'
@@ -42,7 +43,7 @@ describe('api', () => {
     let paymentsApi: Scope;
 
     beforeEach(() => {
-      paymentsApi = nock('https://pay-api.t7r.dev/v2', {
+      paymentsApi = nock(config.PAYMENTS_URI, {
         reqheaders: {
           'authorization': 'Bearer access_token',
           'content-type': 'application/json'
