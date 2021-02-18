@@ -11,7 +11,10 @@ export class HttpException extends Error {
     this.message = message;
   }
 
-  static fromAxiosError = (error: AxiosError) => new HttpException(error.response?.status || 500, error.response?.data || error.message);
+  static fromAxiosError = (error: AxiosError) =>
+    error.code === 'ECONNABORTED' || error.message === 'Network Error'
+      ? new HttpException(504, 'Server client request timed out.')
+      : new HttpException(error.response?.status || 500, error.response?.data || error.message);
 }
 
 // Express requires all parameters in-order to recognize the function as a error middleware type.

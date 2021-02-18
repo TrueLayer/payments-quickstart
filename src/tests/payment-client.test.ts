@@ -6,13 +6,14 @@ import AuthenticationClient from 'clients/authentication-client';
 import { mockPaymentResponse } from './mock-payment-response';
 import { fakePaymentRequest } from './mock-payment-request';
 import { HttpException } from 'middleware/errors';
+import config from 'config';
 
 let paymentsClient: PaymentsClient;
 let authServer: Interceptor;
 
 beforeEach(() => {
   paymentsClient = new PaymentsClient(new AuthenticationClient());
-  authServer = nock('https://auth.t7r.dev', {
+  authServer = nock(config.AUTH_URI, {
     reqheaders: { 'content-type': 'application/json' }
   }).post('/connect/token');
 });
@@ -26,7 +27,7 @@ function mockServerEndpoints(authTimes: number) {
     token_type: 'bearer'
   });
 
-  const payments = nock('https://pay-api.t7r.dev/v2', {
+  const payments = nock(config.PAYMENTS_URI, {
     reqheaders: {
       'authorization': `Bearer ${access_token}`,
       'content-type': 'application/json'
