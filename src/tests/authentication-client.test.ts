@@ -67,4 +67,15 @@ describe('`authentication-client`', () => {
     await expect(authenticationClient.authenticate()).rejects.toThrow('Request failed with status code 500');
     scope.done();
   });
+
+  it('`error` messages from auth-api are passed down error chain.', async () => {
+    // Arrange
+    const errorMessage = 'Whoops incorrect scope provided';
+    const scope = authServerMock.times(1).reply(400, { error: errorMessage });
+
+    // Act & Assert
+    await expect(authenticationClient.authenticate()).rejects.toThrowError(new HttpException(400, errorMessage));
+
+    scope.done();
+  });
 });

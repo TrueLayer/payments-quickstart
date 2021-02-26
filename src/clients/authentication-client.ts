@@ -47,7 +47,7 @@ export default class AuthenticationClient {
 
       return this.parseResponse(data);
     } catch (e) {
-      throw HttpException.fromAxiosError(e);
+      throw HttpException.fromAxiosError(e, 'error');
     }
   };
 }

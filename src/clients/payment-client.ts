@@ -42,23 +42,24 @@ export default class PaymentClient {
 
   initiatePayment = async (request: PaymentRequest) => {
     const apiRequest = buildPaymentApiRequest(request);
+    const headers = await this.getHeaders();
 
     try {
-      const headers = await this.getHeaders();
       const { data } = await this.client.post<PaymentResponse>('/single-immediate-payment-initiation-requests', apiRequest, { headers });
       return data;
     } catch (error) {
-      throw HttpException.fromAxiosError(error);
+      throw HttpException.fromAxiosError(error, 'error_description');
     }
   };
 
   getPayment = async (paymentId: string) => {
+    const headers = await this.getHeaders();
+
     try {
-      const headers = await this.getHeaders();
       const { data } = await this.client.get<PaymentResponse>(`/single-immediate-payments/${paymentId}`, { headers });
       return data;
     } catch (error) {
-      throw HttpException.fromAxiosError(error);
+      throw HttpException.fromAxiosError(error, 'error_description');
     }
   };
 }
