@@ -40,11 +40,12 @@ $ yarn
 <br>
 
 ### Run
-To run the server locally you need at least these 3 environment variables set.
+`export` or create a `.env` file within the root of the project and set the variables below.
+
 ```bash
-$ export CLIENT_ID=""
-$ export CLIENT_SECRET=""
-$ export REDIRECT_URI=""
+TRUELAYER_CLIENT_ID="YOUR_CLIENT_ID" 
+TRUELAYER_CLIENT_SECRET="YOUR_CLIENT_SECRET"
+REDIRECT_URI="YOUR_DEPLOYED_SAMPLE_BACKEND_URI"
 ```
 
 ```bash
