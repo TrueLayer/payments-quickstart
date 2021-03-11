@@ -1,5 +1,6 @@
 import { AccountType, ReleaseChannel, SupportedCurrency } from 'models/payments/response';
 
+/* eslint-disable camelcase */
 export interface ProviderQuery {
   auth_flow_type: string;
   account_type: AccountType;
