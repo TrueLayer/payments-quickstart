@@ -5,6 +5,9 @@ import { mockPaymentResponse } from './mock-payment-response';
 import fakePaymentApiRequest, { fakePaymentRequest } from './mock-payment-request';
 import { buildPaymentApiRequest } from 'models/payments/request';
 import config from 'config';
+import qs from 'qs';
+import { mockProvidersResponse } from './mock-providers-response';
+import { expectedProvidersResponse } from './expected-providers-response';
 
 let request: SuperTest<any>;
 
@@ -82,6 +85,29 @@ describe('api', () => {
 
     it('invalid parameters returns a 400', async done => {
       request.post('/payment').send({}).expect(400, done);
+    });
+  });
+
+  describe('GET `/providers`', () => {
+    let paymentsApi: Scope;
+    beforeEach(() => {
+      paymentsApi = nock(config.PAYMENTS_URI);
+    });
+
+    it('works', done => {
+      const query = qs.stringify(
+        {
+          auth_flow_type: 'redirect',
+          account_type: 'sort_code_account_number',
+          currency: 'GBP',
+          release_channel: 'live',
+          client_id: ''
+        },
+        { arrayFormat: 'comma' }
+      );
+      paymentsApi.get(`/single-immediate-payments-providers?${query}`).times(1).reply(200, mockProvidersResponse);
+
+      request.get('/providers').expect(200, expectedProvidersResponse, done);
     });
   });
 });

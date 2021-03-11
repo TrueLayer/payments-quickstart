@@ -8,6 +8,10 @@ export type PaymentStatus = 'initiated' | 'cancelled' | 'authorisation_failed' |
 
 export type SupportedCurrency = 'GBP' | 'EUR';
 
+export type AccountType = 'sort_code_account_number';
+
+export type ReleaseChannel = 'live' | 'public_beta' | 'private_beta';
+
 export interface PaymentResponse {
   single_immediate_payment_id: string;
   status: PaymentStatus;
