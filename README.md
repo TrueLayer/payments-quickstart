@@ -72,3 +72,8 @@ $ curl --location --request POST 'http://localhost:3000/payment' \
 ```bash
 $ curl  'http://localhost:3000/payment/fc60ea24-318b-42cd-83b6-74c09f5f263d'
 ```
+
+### [GET] `/providers` - Get Payment Providers
+```bash
+$ curl  'http://localhost:3000/providers'
+```
