@@ -1,5 +1,5 @@
-import PaymentResponse from '../models/payments/response';
-import { SortCode } from '../models/payments/participant';
+import { SingleImmediatePaymentResponse } from '../models/payments-api/responses';
+import { SortCode } from '../models/payments-api/common';
 import paymentResponseJson from './mock-payment-response';
 
 test('payment response serializes & de-serializes.', () => {
@@ -7,7 +7,7 @@ test('payment response serializes & de-serializes.', () => {
   const json = paymentResponseJson;
 
   // Act
-  const response: PaymentResponse = JSON.parse(json);
+  const response: SingleImmediatePaymentResponse = JSON.parse(json);
   const result = response.result;
 
   // Assert

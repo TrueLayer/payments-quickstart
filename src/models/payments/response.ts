@@ -7,3 +7,5 @@ export interface Provider extends SingleImmediateProvider {
 export interface ProvidersResponse {
   results: Provider[];
 }
+
+export default ProvidersResponse;
