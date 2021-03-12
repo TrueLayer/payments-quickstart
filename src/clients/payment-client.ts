@@ -6,6 +6,9 @@ import logger from 'middleware/logger';
 import { HttpException } from 'middleware/errors';
 import RetryClient from './retry-client';
 import config from 'config';
+import { ProvidersResponse } from 'models/providers/payments-api-response';
+import { ProviderQuery } from 'models/providers/provider-query';
+import qs from 'qs';
 
 export default class PaymentClient {
   private client: AxiosInstance;
@@ -57,6 +60,16 @@ export default class PaymentClient {
 
     try {
       const { data } = await this.client.get<PaymentResponse>(`/single-immediate-payments/${paymentId}`, { headers });
+      return data;
+    } catch (error) {
+      throw HttpException.fromAxiosError(error, 'error_description');
+    }
+  };
+
+  getProviders = async (param: ProviderQuery) => {
+    const query = qs.stringify(param, { arrayFormat: 'comma' });
+    try {
+      const { data } = await this.client.get<ProvidersResponse>(`/single-immediate-payments-providers?${query}`);
       return data;
     } catch (error) {
       throw HttpException.fromAxiosError(error, 'error_description');
