@@ -1,13 +1,11 @@
 import axios, { AxiosInstance } from 'axios';
-import { buildPaymentApiRequest, PaymentRequest } from 'models/payments/request';
-import PaymentResponse from 'models/payments/response';
 import AuthenticationClient from './authentication-client';
 import logger from 'middleware/logger';
 import { HttpException } from 'middleware/errors';
 import RetryClient from './retry-client';
 import config from 'config';
-import { ProvidersResponse } from 'models/providers/payments-api-response';
-import { ProviderQuery } from 'models/providers/provider-query';
+import { SingleImmediateProviderResponse, SingleImmediatePaymentResponse } from 'models/payments-api/responses';
+import { SingleImmediateProviderRequest, SingleImmediatePaymentRequest } from 'models/payments-api/requests';
 import { intoUrlParams } from 'utils';
 
 export default class PaymentClient {
@@ -43,12 +41,13 @@ export default class PaymentClient {
     'content-type': 'application/json'
   });
 
-  initiatePayment = async (request: PaymentRequest) => {
-    const apiRequest = buildPaymentApiRequest(request);
+  initiatePayment = async (request: SingleImmediatePaymentRequest) => {
     const headers = await this.getHeaders();
 
     try {
-      const { data } = await this.client.post<PaymentResponse>('/single-immediate-payment-initiation-requests', apiRequest, { headers });
+      const { data } = await this.client.post<SingleImmediatePaymentResponse>('/single-immediate-payment-initiation-requests', request, {
+        headers
+      });
       return data;
     } catch (error) {
       throw HttpException.fromAxiosError(error, 'error_description');
@@ -59,16 +58,18 @@ export default class PaymentClient {
     const headers = await this.getHeaders();
 
     try {
-      const { data } = await this.client.get<PaymentResponse>(`/single-immediate-payments/${paymentId}`, { headers });
+      const { data } = await this.client.get<SingleImmediatePaymentResponse>(`/single-immediate-payments/${paymentId}`, { headers });
       return data;
     } catch (error) {
       throw HttpException.fromAxiosError(error, 'error_description');
     }
   };
 
-  getProviders = async (param: ProviderQuery) => {
+  getProviders = async (param: SingleImmediateProviderRequest) => {
     try {
-      const { data } = await this.client.get<ProvidersResponse>(`/single-immediate-payments-providers?${intoUrlParams(param)}`);
+      const { data } = await this.client.get<SingleImmediateProviderResponse>(
+        `/single-immediate-payments-providers?${intoUrlParams(param)}`
+      );
       return data;
     } catch (error) {
       throw HttpException.fromAxiosError(error, 'error_description');
