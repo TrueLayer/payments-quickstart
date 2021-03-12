@@ -8,7 +8,7 @@ import RetryClient from './retry-client';
 import config from 'config';
 import { ProvidersResponse } from 'models/providers/payments-api-response';
 import { ProviderQuery } from 'models/providers/provider-query';
-import qs from 'qs';
+import { intoUrlParams } from 'utils';
 
 export default class PaymentClient {
   private client: AxiosInstance;
@@ -67,9 +67,8 @@ export default class PaymentClient {
   };
 
   getProviders = async (param: ProviderQuery) => {
-    const query = qs.stringify(param, { arrayFormat: 'comma' });
     try {
-      const { data } = await this.client.get<ProvidersResponse>(`/single-immediate-payments-providers?${query}`);
+      const { data } = await this.client.get<ProvidersResponse>(`/single-immediate-payments-providers?${intoUrlParams(param)}`);
       return data;
     } catch (error) {
       throw HttpException.fromAxiosError(error, 'error_description');
