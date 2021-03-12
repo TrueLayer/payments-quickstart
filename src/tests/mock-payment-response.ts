@@ -1,4 +1,4 @@
-export const json = `{
+const json = `{
     "result": {
         "single_immediate_payment_id": "dcc3e785-76d3-415c-8bd7-553f17f49c4a",
         "status": "initiated",

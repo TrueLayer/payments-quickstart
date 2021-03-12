@@ -62,8 +62,8 @@ export default class PaymentsController {
         display_name: provider.display_name,
         country: provider.country,
         logo_url: provider.logo_url,
+        icon_url: provider.icon_url,
         release_stage: provider.release_stage,
-        icon_url: provider.logo_url,
         enabled: true
       }));
 
@@ -73,7 +73,6 @@ export default class PaymentsController {
 
       res.status(200).send(response);
     } catch (e) {
-      console.log(e);
       next(e instanceof HttpException ? e : new HttpException(500, `Failed to retrieve providers: ${query}.`));
     }
   };

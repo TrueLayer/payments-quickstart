@@ -5,9 +5,9 @@ import { mockPaymentResponse } from './mock-payment-response';
 import fakePaymentApiRequest, { fakePaymentRequest } from './mock-payment-request';
 import { buildPaymentApiRequest } from 'models/payments/request';
 import config from 'config';
-import qs from 'qs';
-import { mockProvidersResponse } from './mock-providers-response';
-import { expectedProvidersResponse } from './expected-providers-response';
+import { intoUrlParams } from 'utils';
+import mockProvidersResponse from './mock-providers-response';
+import expectedProvidersResponse from './expected-providers-response';
 
 let request: SuperTest<any>;
 
@@ -95,16 +95,14 @@ describe('api', () => {
     });
 
     it('works', done => {
-      const query = qs.stringify(
-        {
-          auth_flow_type: 'redirect',
-          account_type: 'sort_code_account_number',
-          currency: 'GBP',
-          release_channel: 'live',
-          client_id: ''
-        },
-        { arrayFormat: 'comma' }
-      );
+      const query = intoUrlParams({
+        auth_flow_type: 'redirect',
+        account_type: 'sort_code_account_number',
+        currency: 'GBP',
+        release_channel: 'live',
+        client_id: config.CLIENT_ID
+      });
+
       paymentsApi.get(`/single-immediate-payments-providers?${query}`).times(1).reply(200, mockProvidersResponse);
 
       request.get('/providers').expect(200, expectedProvidersResponse, done);
