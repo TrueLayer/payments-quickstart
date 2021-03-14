@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { HttpException } from 'middleware/errors';
 
 import config from 'config';
-import { include } from 'utils';
+import { extract } from 'utils';
 import AuthenticationClient from 'clients/authentication-client';
 import PaymentsClient from 'clients/payment-client';
 import { ReleaseChannel, SupportedCurrency } from 'models/payments-api/common';
@@ -12,21 +12,19 @@ import { Provider } from 'models/payments/response';
 export default class PaymentsController {
   private paymentClient = new PaymentsClient(new AuthenticationClient());
 
-  private parseBodyToPaymentRequest = (body: any): PaymentRequest => {
-    if (isPaymentRequest(body)) {
-      return body;
-    } else {
-      throw new HttpException(400, 'Invalid request.');
-    }
-  };
-
   createPayment = async (req: Request, res: Response, next: NextFunction) => {
+    const body = req.body;
     try {
-      const request = intoSingleImmediatePaymentRequest(this.parseBodyToPaymentRequest(req.body));
+      if (!isPaymentRequest(body)) {
+        throw new HttpException(400, 'Invalid request.');
+      }
+
+      const request = intoSingleImmediatePaymentRequest(body);
       const response = await this.paymentClient.initiatePayment(request);
+
       res.status(200).send(response);
     } catch (e) {
-      next(e instanceof HttpException ? e : new HttpException(500, 'Failed to initiate payments.'));
+      next(e instanceof HttpException ? e : new HttpException(500, 'Failed to initiate payment.'));
     }
   };
 
@@ -59,7 +57,7 @@ export default class PaymentsController {
       });
 
       const results = apiResponse.results.map<Provider>(provider => ({
-        ...include(provider, ['provider_id', 'display_name', 'country', 'logo_url', 'icon_url', 'release_stage']),
+        ...extract(provider, ['provider_id', 'display_name', 'country', 'logo_url', 'icon_url', 'release_stage']),
         enabled: true
       }));
 

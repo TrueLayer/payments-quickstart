@@ -7,7 +7,7 @@ interface KeyPair {
 }
 
 // Build a new object from another only including matched `include` key values.
-export const include = <T = KeyPair>(obj: KeyPair, include: string[]): T =>
+export const extract = <T = KeyPair>(obj: KeyPair, include: string[]): T =>
   include.reduce((collection: KeyPair, key: string) => {
     if (Object.prototype.hasOwnProperty.call(obj, key)) {
       collection[key] = obj[key];
