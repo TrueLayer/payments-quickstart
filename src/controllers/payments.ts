@@ -6,7 +6,7 @@ import { extract } from 'utils';
 import AuthenticationClient from 'clients/authentication-client';
 import PaymentsClient from 'clients/payment-client';
 import { ReleaseChannel, SupportedCurrency } from 'models/payments-api/common';
-import { intoSingleImmediatePaymentRequest, isPaymentRequest, PaymentRequest } from 'models/payments/request';
+import { intoSingleImmediatePaymentRequest, isPaymentRequest } from 'models/payments/request';
 import { Provider } from 'models/payments/response';
 
 export default class PaymentsController {

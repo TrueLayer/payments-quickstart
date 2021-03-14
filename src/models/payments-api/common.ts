@@ -11,6 +11,8 @@ export interface SingleReference {
   reference: string;
 }
 
+export type References = SingleReference | SeparateReference;
+
 export interface SortCode {
   type: 'sort_code_account_number';
   sort_code: string;
@@ -32,6 +34,13 @@ export interface Nrb {
   nrb: string;
 }
 
+export type AccountDetails = SortCode | Iban | Bban | Nrb;
+
+export interface Participant {
+  name: string;
+  account: AccountDetails;
+}
+
 export type PaymentStatus = 'initiated' | 'cancelled' | 'authorisation_failed' | 'executing' | 'rejected' | 'executed' | 'expired';
 
 export type SupportedCurrency = 'GBP' | 'EUR';
@@ -39,12 +48,3 @@ export type SupportedCurrency = 'GBP' | 'EUR';
 export type AccountType = 'sort_code_account_number';
 
 export type ReleaseChannel = 'live' | 'public_beta' | 'private_beta';
-
-export type References = SingleReference | SeparateReference;
-
-export type AccountDetails = SortCode | Iban | Bban | Nrb;
-
-export interface Participant {
-  name: string;
-  account: AccountDetails;
-}
