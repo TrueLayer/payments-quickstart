@@ -25,8 +25,8 @@ export default class PaymentClient {
     // attach a retry policy for any UNAUTHORIZED responses from payments-client.
     this.client = new RetryClient({
       retries: 3,
-      errorCondition: error => error.response?.status === 401,
-      onRetry: async request => {
+      isRetryableError: error => error.response?.status === 401,
+      retry: async request => {
         authenticationClient.invalidateCache();
         request.headers.authorization = await this.authenticationClient.authenticate();
         return request;
