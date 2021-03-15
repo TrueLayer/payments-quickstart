@@ -47,7 +47,7 @@ export default class PaymentsController {
     const channel = (query.release_channel || ['live']) as ReleaseChannel[];
 
     try {
-      const apiResponse = await this.paymentClient.getProviders({
+      const response = await this.paymentClient.getProviders({
         account_type: 'sort_code_account_number',
         auth_flow_type: 'redirect',
         release_channel: channel,
@@ -55,7 +55,7 @@ export default class PaymentsController {
         currency
       });
 
-      const results = apiResponse.results.map<Provider>(provider => intoProviderFromApiResponse(provider));
+      const results = response.results.map<Provider>(provider => intoProviderFromApiResponse(provider));
 
       res.status(200).send({ results });
     } catch (e) {
