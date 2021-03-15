@@ -6,7 +6,7 @@ import AuthenticationClient from 'clients/authentication-client';
 import PaymentsClient from 'clients/payment-client';
 import { ReleaseChannel, SupportedCurrency } from 'models/payments-api/common';
 import { intoSingleImmediatePaymentRequest, isPaymentRequest } from 'models/payments/request';
-import { intoProviderFromApiResponse, Provider } from 'models/payments/response';
+import { intoProvidersResponseFromApiResponse } from 'models/payments/response';
 
 export default class PaymentsController {
   private paymentClient = new PaymentsClient(new AuthenticationClient());
@@ -55,9 +55,8 @@ export default class PaymentsController {
         currency
       });
 
-      const results = response.results.map<Provider>(provider => intoProviderFromApiResponse(provider));
-
-      res.status(200).send({ results });
+      const providers = intoProvidersResponseFromApiResponse(response);
+      res.status(200).send(providers);
     } catch (e) {
       next(e instanceof HttpException ? e : new HttpException(500, `Failed to retrieve providers: ${query}.`));
     }

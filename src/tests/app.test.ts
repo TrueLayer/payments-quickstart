@@ -8,6 +8,7 @@ import config from 'config';
 import { intoUrlParams } from 'utils';
 import mockProvidersResponse from './mock-providers-response';
 import expectedProvidersResponse from './expected-providers-response';
+import fillerSandboxProviders from 'models/payments/sandbox-providers-response';
 
 let request: SuperTest<any>;
 
@@ -109,6 +110,7 @@ describe('api', () => {
 
       paymentsApi.get(`/single-immediate-payments-providers?${query}`).times(1).reply(200, mockProvidersResponse);
 
+      expectedProvidersResponse.results = expectedProvidersResponse.results.concat(fillerSandboxProviders);
       request.get('/providers').expect(200, expectedProvidersResponse, done);
     });
   });
