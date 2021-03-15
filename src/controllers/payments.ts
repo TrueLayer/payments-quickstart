@@ -2,12 +2,11 @@ import { NextFunction, Request, Response } from 'express';
 import { HttpException } from 'middleware/errors';
 
 import config from 'config';
-import { extract } from 'utils';
 import AuthenticationClient from 'clients/authentication-client';
 import PaymentsClient from 'clients/payment-client';
 import { ReleaseChannel, SupportedCurrency } from 'models/payments-api/common';
 import { intoSingleImmediatePaymentRequest, isPaymentRequest } from 'models/payments/request';
-import { Provider } from 'models/payments/response';
+import { intoProviderFromApiResponse, Provider } from 'models/payments/response';
 
 export default class PaymentsController {
   private paymentClient = new PaymentsClient(new AuthenticationClient());
@@ -56,10 +55,7 @@ export default class PaymentsController {
         currency
       });
 
-      const results = apiResponse.results.map<Provider>(provider => ({
-        ...extract(provider, ['provider_id', 'display_name', 'country', 'logo_url', 'icon_url', 'release_stage']),
-        enabled: true
-      }));
+      const results = apiResponse.results.map<Provider>(provider => intoProviderFromApiResponse(provider));
 
       res.status(200).send({ results });
     } catch (e) {
