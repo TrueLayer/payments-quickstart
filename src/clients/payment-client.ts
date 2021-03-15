@@ -2,11 +2,12 @@ import axios, { AxiosInstance } from 'axios';
 import AuthenticationClient from './authentication-client';
 import logger from 'middleware/logger';
 import { HttpException } from 'middleware/errors';
-import RetryClient from './retry-client';
+import RetryClientFactory from './retry-client-factory';
 import config from 'config';
 import { SingleImmediateProviderResponse, SingleImmediatePaymentResponse } from 'models/payments-api/responses';
 import { SingleImmediateProviderRequest, SingleImmediatePaymentRequest } from 'models/payments-api/requests';
 import { intoUrlParams } from 'utils';
+import initRetryPolicy from './retry-policy';
 
 export default class PaymentClient {
   private client: AxiosInstance;
@@ -22,17 +23,7 @@ export default class PaymentClient {
       })
     );
 
-    // attach a retry policy for any UNAUTHORIZED responses from payments-client.
-    this.client = new RetryClient({
-      retries: 3,
-      isRetryableError: error => error.response?.status === 401,
-      retry: async request => {
-        authenticationClient.invalidateCache();
-        request.headers.authorization = await this.authenticationClient.authenticate();
-        return request;
-      }
-    }).attach(client);
-
+    this.client = new RetryClientFactory(initRetryPolicy(authenticationClient)).attach(client);
     this.authenticationClient = authenticationClient;
   }
 
