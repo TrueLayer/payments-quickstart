@@ -3,13 +3,19 @@ import { AxiosInstance, AxiosResponse, AxiosError, AxiosRequestConfig } from 'ax
 export interface RetryPolicy {
   retries: number | undefined;
   isRetryable: (response: AxiosResponse) => boolean;
-  retryRequest?: (request: AxiosRequestConfig, response: AxiosResponse) => AxiosRequestConfig | Promise<AxiosRequestConfig>;
+  retryRequest?: (
+    request: AxiosRequestConfig,
+    response: AxiosResponse
+  ) => AxiosRequestConfig | Promise<AxiosRequestConfig>;
 }
 
 export default class RetryClientFactory {
   private retries: number;
   private isRetryable: (response: AxiosResponse) => boolean;
-  private retryRequest?: (request: AxiosRequestConfig, response: AxiosResponse) => AxiosRequestConfig | Promise<AxiosRequestConfig>;
+  private retryRequest?: (
+    request: AxiosRequestConfig,
+    response: AxiosResponse
+  ) => AxiosRequestConfig | Promise<AxiosRequestConfig>;
 
   constructor(options: RetryPolicy) {
     this.retries = options.retries || 3;

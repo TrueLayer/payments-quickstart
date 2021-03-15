@@ -9,6 +9,7 @@ export const fakePaymentRequest = (): PaymentRequest => ({
   payment_id: '12345'
 });
 
-export const fakePaymentApiRequest = (): SingleImmediatePaymentRequest => intoSingleImmediatePaymentRequest(fakePaymentRequest());
+export const fakePaymentApiRequest = (): SingleImmediatePaymentRequest =>
+  intoSingleImmediatePaymentRequest(fakePaymentRequest());
 
 export default fakePaymentApiRequest;

@@ -85,7 +85,9 @@ describe('`payments-client`', () => {
       payments.get('/single-immediate-payments/1').times(3).reply(401);
 
       // Act & Assert
-      await expect(paymentsClient.getPayment('1')).rejects.toThrowError(new HttpException(401, 'Request failed with status code 401'));
+      await expect(paymentsClient.getPayment('1')).rejects.toThrowError(
+        new HttpException(401, 'Request failed with status code 401')
+      );
 
       auth.done();
       payments.done();
@@ -161,10 +163,15 @@ describe('`payments-client`', () => {
       const { auth, payments } = mockServerEndpoints(1);
       const errorMessage = 'Whoops incorrect parameter provided';
 
-      payments.post('/single-immediate-payment-initiation-requests').times(1).reply(400, { error_description: errorMessage });
+      payments
+        .post('/single-immediate-payment-initiation-requests')
+        .times(1)
+        .reply(400, { error_description: errorMessage });
 
       // Act & Assert
-      await expect(paymentsClient.initiatePayment(fakePaymentApiRequest())).rejects.toThrowError(new HttpException(400, errorMessage));
+      await expect(paymentsClient.initiatePayment(fakePaymentApiRequest())).rejects.toThrowError(
+        new HttpException(400, errorMessage)
+      );
 
       auth.done();
       payments.done();
