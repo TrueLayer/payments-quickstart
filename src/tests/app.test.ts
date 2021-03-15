@@ -57,7 +57,10 @@ describe('api', () => {
     it('works', done => {
       // Arrange
       const expectedBody = JSON.stringify(fakePaymentApiRequest());
-      paymentsApi.post('/single-immediate-payment-initiation-requests', expectedBody).times(1).reply(200, mockPaymentResponse());
+      paymentsApi
+        .post('/single-immediate-payment-initiation-requests', expectedBody)
+        .times(1)
+        .reply(200, mockPaymentResponse());
 
       // Act & Assert
       request.post('/payment').send(fakePaymentRequest()).expect(200, mockPaymentResponse(), done);
@@ -70,7 +73,8 @@ describe('api', () => {
       paymentsApi
         .post('/single-immediate-payment-initiation-requests', body => {
           // Uuid is created on the fly.
-          expectedBody.single_immediate_payment.single_immediate_payment_id = body.single_immediate_payment.single_immediate_payment_id;
+          expectedBody.single_immediate_payment.single_immediate_payment_id =
+            body.single_immediate_payment.single_immediate_payment_id;
           expect(body).toEqual(expectedBody);
           return true;
         })

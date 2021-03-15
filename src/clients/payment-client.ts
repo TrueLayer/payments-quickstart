@@ -36,9 +36,11 @@ export default class PaymentClient {
     const headers = await this.getHeaders();
 
     try {
-      const { data } = await this.client.post<SingleImmediatePaymentResponse>('/single-immediate-payment-initiation-requests', request, {
-        headers
-      });
+      const { data } = await this.client.post<SingleImmediatePaymentResponse>(
+        '/single-immediate-payment-initiation-requests',
+        request,
+        { headers }
+      );
       return data;
     } catch (error) {
       throw HttpException.fromAxiosError(error, 'error_description');
@@ -49,7 +51,10 @@ export default class PaymentClient {
     const headers = await this.getHeaders();
 
     try {
-      const { data } = await this.client.get<SingleImmediatePaymentResponse>(`/single-immediate-payments/${paymentId}`, { headers });
+      const { data } = await this.client.get<SingleImmediatePaymentResponse>(
+        `/single-immediate-payments/${paymentId}`,
+        { headers }
+      );
       return data;
     } catch (error) {
       throw HttpException.fromAxiosError(error, 'error_description');

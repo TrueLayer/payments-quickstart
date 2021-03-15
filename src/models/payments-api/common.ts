@@ -41,7 +41,14 @@ export interface Participant {
   account: AccountDetails;
 }
 
-export type PaymentStatus = 'initiated' | 'cancelled' | 'authorisation_failed' | 'executing' | 'rejected' | 'executed' | 'expired';
+export type PaymentStatus =
+  | 'initiated'
+  | 'cancelled'
+  | 'authorisation_failed'
+  | 'executing'
+  | 'rejected'
+  | 'executed'
+  | 'expired';
 
 export type SupportedCurrency = 'GBP' | 'EUR';
 
