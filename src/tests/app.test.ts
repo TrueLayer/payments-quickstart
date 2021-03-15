@@ -8,6 +8,7 @@ import config from 'config';
 import { intoUrlParams } from 'utils';
 import mockProvidersResponse from './mock-providers-response';
 import expectedProvidersResponse from './expected-providers-response';
+import disabledSandboxProviders from 'models/payments/sandbox-providers-response';
 
 let request: SuperTest<any>;
 
@@ -34,7 +35,7 @@ describe('api', () => {
         .reply(200, mockPaymentResponse());
     });
 
-    it('works', done => {
+    it('200 GET payment response from payments api is returned successfully through the proxy.', done => {
       request.get('/payment/1').expect(200, mockPaymentResponse(), done);
     });
 
@@ -54,19 +55,21 @@ describe('api', () => {
       });
     });
 
-    it('works', done => {
+    it('Successful initiated payment from payments api is returned successfully through the proxy.', done => {
       // Arrange
       const expectedBody = JSON.stringify(fakePaymentApiRequest());
+      const paymentResponse = mockPaymentResponse();
+
       paymentsApi
         .post('/single-immediate-payment-initiation-requests', expectedBody)
         .times(1)
-        .reply(200, mockPaymentResponse());
+        .reply(200, paymentResponse);
 
       // Act & Assert
-      request.post('/payment').send(fakePaymentRequest()).expect(200, mockPaymentResponse(), done);
+      request.post('/payment').send(fakePaymentRequest()).expect(200, paymentResponse, done);
     });
 
-    it('Only requires `provider_id` as a paramter', async done => {
+    it('Only requires `provider_id` as a paramter', done => {
       const paymentRequest = { provider_id: 'provider_id' };
       const expectedBody = intoSingleImmediatePaymentRequest(paymentRequest);
 
@@ -87,18 +90,26 @@ describe('api', () => {
         .expect(200, mockPaymentResponse(), done);
     });
 
-    it('invalid parameters returns a 400', async done => {
+    it('invalid parameters returns a 400', done => {
       request.post('/payment').send({}).expect(400, done);
     });
   });
 
   describe('GET `/providers`', () => {
     let paymentsApi: Scope;
+    const paymentsUri = config.PAYMENTS_URI;
+
     beforeEach(() => {
       paymentsApi = nock(config.PAYMENTS_URI);
     });
 
-    it('works', done => {
+    afterEach(() => {
+      config.PAYMENTS_URI = paymentsUri;
+    });
+
+    it('Non sandbox env returns expected providers.', done => {
+      config.PAYMENTS_URI = 'https://truelayer.com/v2';
+
       const query = intoUrlParams({
         auth_flow_type: 'redirect',
         account_type: 'sort_code_account_number',
@@ -108,7 +119,25 @@ describe('api', () => {
       });
 
       paymentsApi.get(`/single-immediate-payments-providers?${query}`).times(1).reply(200, mockProvidersResponse);
+      request.get('/providers').expect(200, expectedProvidersResponse, done);
+    });
 
+    it('sandbox env concatenates disabled providers to api response.', done => {
+      // Arrange
+      config.PAYMENTS_URI = 'https://pay-api.truelayer-sandbox.com/v2';
+
+      const query = intoUrlParams({
+        auth_flow_type: 'redirect',
+        account_type: 'sort_code_account_number',
+        currency: 'GBP',
+        release_channel: 'live',
+        client_id: config.CLIENT_ID
+      });
+
+      // Act & Assert
+      paymentsApi.get(`/single-immediate-payments-providers?${query}`).times(1).reply(200, mockProvidersResponse);
+      // Check disabled sandbox providers are added to the response.
+      expectedProvidersResponse.results = expectedProvidersResponse.results.concat(disabledSandboxProviders);
       request.get('/providers').expect(200, expectedProvidersResponse, done);
     });
   });
