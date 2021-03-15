@@ -8,7 +8,7 @@ import config from 'config';
 import { intoUrlParams } from 'utils';
 import mockProvidersResponse from './mock-providers-response';
 import expectedProvidersResponse from './expected-providers-response';
-import fillerSandboxProviders from 'models/payments/sandbox-providers-response';
+import disabledSandboxProviders from 'models/payments/sandbox-providers-response';
 
 let request: SuperTest<any>;
 
@@ -137,7 +137,7 @@ describe('api', () => {
       // Act & Assert
       paymentsApi.get(`/single-immediate-payments-providers?${query}`).times(1).reply(200, mockProvidersResponse);
       // Check disabled sandbox providers are added to the response.
-      expectedProvidersResponse.results = expectedProvidersResponse.results.concat(fillerSandboxProviders);
+      expectedProvidersResponse.results = expectedProvidersResponse.results.concat(disabledSandboxProviders);
       request.get('/providers').expect(200, expectedProvidersResponse, done);
     });
   });

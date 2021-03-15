@@ -1,5 +1,5 @@
 import { SingleImmediateProvider, SingleImmediateProviderResponse } from 'models/payments-api/responses';
-import fillerSandboxProviders from 'models/payments/sandbox-providers-response';
+import disabledSandboxProviders from 'models/payments/sandbox-providers-response';
 import config from 'config';
 
 export interface Provider extends SingleImmediateProvider {
@@ -25,7 +25,7 @@ export const intoProvidersResponseFromApiResponse = (response: SingleImmediatePr
     .map(provider => intoProviderFromApiResponse(provider))
     .concat(
       // Inject some disabled providers if using sandbox as providers list is sparse at the moment.
-      config.PAYMENTS_URI.includes('sandbox') ? fillerSandboxProviders : []
+      config.PAYMENTS_URI.includes('sandbox') ? disabledSandboxProviders : []
     );
 
   return { results };
