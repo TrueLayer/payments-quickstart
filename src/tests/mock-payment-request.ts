@@ -1,4 +1,5 @@
-import PaymentApiRequest, { buildPaymentApiRequest, PaymentRequest } from 'models/payments/request';
+import { intoSingleImmediatePaymentRequest, PaymentRequest } from 'models/payments/request';
+import { SingleImmediatePaymentRequest } from 'models/payments-api/requests';
 
 export const fakePaymentRequest = (): PaymentRequest => ({
   provider_id: 'provider_id',
@@ -8,6 +9,6 @@ export const fakePaymentRequest = (): PaymentRequest => ({
   payment_id: '12345'
 });
 
-export const fakePaymentApiRequest = (): PaymentApiRequest => buildPaymentApiRequest(fakePaymentRequest());
+export const fakePaymentApiRequest = (): SingleImmediatePaymentRequest => intoSingleImmediatePaymentRequest(fakePaymentRequest());
 
 export default fakePaymentApiRequest;

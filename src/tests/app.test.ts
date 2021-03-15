@@ -3,7 +3,7 @@ import nock, { Scope } from 'nock';
 import supertest, { SuperTest } from 'supertest';
 import { mockPaymentResponse } from './mock-payment-response';
 import fakePaymentApiRequest, { fakePaymentRequest } from './mock-payment-request';
-import { buildPaymentApiRequest } from 'models/payments/request';
+import { intoSingleImmediatePaymentRequest } from 'models/payments/request';
 import config from 'config';
 import { intoUrlParams } from 'utils';
 import mockProvidersResponse from './mock-providers-response';
@@ -65,7 +65,7 @@ describe('api', () => {
 
     it('Only requires `provider_id` as a paramter', async done => {
       const paymentRequest = { provider_id: 'provider_id' };
-      const expectedBody = buildPaymentApiRequest(paymentRequest);
+      const expectedBody = intoSingleImmediatePaymentRequest(paymentRequest);
 
       paymentsApi
         .post('/single-immediate-payment-initiation-requests', body => {

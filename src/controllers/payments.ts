@@ -1,30 +1,29 @@
 import { NextFunction, Request, Response } from 'express';
 import { HttpException } from 'middleware/errors';
-import { PaymentRequest } from 'models/payments/request';
+
+import config from 'config';
 import AuthenticationClient from 'clients/authentication-client';
 import PaymentsClient from 'clients/payment-client';
-import { Provider, ProvidersResponse } from 'models/providers/response';
-import config from 'config';
-import { ProviderQuery } from 'models/providers/provider-query';
-import { ReleaseChannel, SupportedCurrency } from 'models/payments/response';
+import { ReleaseChannel, SupportedCurrency } from 'models/payments-api/common';
+import { intoSingleImmediatePaymentRequest, isPaymentRequest } from 'models/payments/request';
+import { intoProviderFromApiResponse, Provider } from 'models/payments/response';
 
 export default class PaymentsController {
   private paymentClient = new PaymentsClient(new AuthenticationClient());
 
-  private parseBodyToPaymentRequest(body: any): PaymentRequest {
-    if (!body.provider_id) {
-      throw new HttpException(400, '`provider_id` is required.');
-    }
-    return body;
-  }
-
   createPayment = async (req: Request, res: Response, next: NextFunction) => {
+    const body = req.body;
     try {
-      const request = this.parseBodyToPaymentRequest(req.body);
+      if (!isPaymentRequest(body)) {
+        throw new HttpException(400, 'Invalid request.');
+      }
+
+      const request = intoSingleImmediatePaymentRequest(body);
       const response = await this.paymentClient.initiatePayment(request);
+
       res.status(200).send(response);
     } catch (e) {
-      next(e instanceof HttpException ? e : new HttpException(500, 'Failed to initiate payments.'));
+      next(e instanceof HttpException ? e : new HttpException(500, 'Failed to initiate payment.'));
     }
   };
 
@@ -43,35 +42,22 @@ export default class PaymentsController {
   };
 
   getProviders = async (req: Request, res: Response, next: NextFunction) => {
-    const currency = (req.query.currency as SupportedCurrency[]) || ['GBP'];
-    const releaseChannel = (req.query.release_channel as ReleaseChannel[]) || ['live'];
-
-    const query: ProviderQuery = {
-      auth_flow_type: 'redirect',
-      account_type: 'sort_code_account_number',
-      currency: currency,
-      release_channel: releaseChannel,
-      client_id: config.CLIENT_ID
-    };
+    const query = req.query;
+    const currency = (query.currency || ['GBP']) as SupportedCurrency[];
+    const channel = (query.release_channel || ['live']) as ReleaseChannel[];
 
     try {
-      const apiResponse = await this.paymentClient.getProviders(query);
+      const response = await this.paymentClient.getProviders({
+        account_type: 'sort_code_account_number',
+        auth_flow_type: 'redirect',
+        release_channel: channel,
+        client_id: config.CLIENT_ID,
+        currency
+      });
 
-      const providers: Provider[] = apiResponse.results.map(provider => ({
-        provider_id: provider.provider_id,
-        display_name: provider.display_name,
-        country: provider.country,
-        logo_url: provider.logo_url,
-        icon_url: provider.icon_url,
-        release_stage: provider.release_stage,
-        enabled: true
-      }));
+      const results = response.results.map<Provider>(provider => intoProviderFromApiResponse(provider));
 
-      const response: ProvidersResponse = {
-        results: providers
-      };
-
-      res.status(200).send(response);
+      res.status(200).send({ results });
     } catch (e) {
       next(e instanceof HttpException ? e : new HttpException(500, `Failed to retrieve providers: ${query}.`));
     }

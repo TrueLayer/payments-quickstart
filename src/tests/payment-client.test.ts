@@ -5,11 +5,11 @@ import PaymentsClient from 'clients/payment-client';
 import AuthenticationClient from 'clients/authentication-client';
 import { mockPaymentResponse } from './mock-payment-response';
 import mockProvidersResponse from './mock-providers-response';
-import { fakePaymentRequest } from './mock-payment-request';
+import { fakePaymentApiRequest } from './mock-payment-request';
 import { HttpException } from 'middleware/errors';
-import { ProviderQuery } from 'models/providers/provider-query';
 import { intoUrlParams } from 'utils';
 import config from 'config';
+import { SingleImmediateProviderRequest } from 'models/payments-api/requests';
 
 let paymentsClient: PaymentsClient;
 let authServer: Interceptor;
@@ -113,7 +113,7 @@ describe('`payments-client`', () => {
       payments.post('/single-immediate-payment-initiation-requests').times(1).reply(200, mockPaymentResponse());
 
       // Act
-      await paymentsClient.initiatePayment(fakePaymentRequest());
+      await paymentsClient.initiatePayment(fakePaymentApiRequest());
 
       // Assert
       auth.done();
@@ -133,7 +133,7 @@ describe('`payments-client`', () => {
         .reply(200, mockResponse);
 
       // Act
-      const response = await paymentsClient.initiatePayment(fakePaymentRequest());
+      const response = await paymentsClient.initiatePayment(fakePaymentApiRequest());
 
       // Assert
       expect(response).toEqual(mockResponse);
@@ -148,7 +148,7 @@ describe('`payments-client`', () => {
       payments.post('/single-immediate-payment-initiation-requests').times(3).reply(401);
 
       // Act & Assert
-      await expect(paymentsClient.initiatePayment(fakePaymentRequest())).rejects.toThrowError(
+      await expect(paymentsClient.initiatePayment(fakePaymentApiRequest())).rejects.toThrowError(
         new HttpException(401, 'Request failed with status code 401')
       );
 
@@ -164,7 +164,7 @@ describe('`payments-client`', () => {
       payments.post('/single-immediate-payment-initiation-requests').times(1).reply(400, { error_description: errorMessage });
 
       // Act & Assert
-      await expect(paymentsClient.initiatePayment(fakePaymentRequest())).rejects.toThrowError(new HttpException(400, errorMessage));
+      await expect(paymentsClient.initiatePayment(fakePaymentApiRequest())).rejects.toThrowError(new HttpException(400, errorMessage));
 
       auth.done();
       payments.done();
@@ -179,18 +179,21 @@ describe('`payments-client`', () => {
 
       process.env.CLIENT_ID = clientId;
 
-      const providerQuery: ProviderQuery = {
+      const query: SingleImmediateProviderRequest = {
         auth_flow_type: 'redirect',
         account_type: 'sort_code_account_number',
         currency: ['GBP'],
         release_channel: ['live'],
         client_id: clientId
       };
-      const query = intoUrlParams(providerQuery);
-      paymentsApi.get(`/single-immediate-payments-providers?${query}`).times(1).reply(200, mockProvidersResponse);
+
+      paymentsApi
+        .get(`/single-immediate-payments-providers?${intoUrlParams(query)}`)
+        .times(1)
+        .reply(200, mockProvidersResponse);
 
       // Act
-      const response = await paymentsClient.getProviders(providerQuery);
+      const response = await paymentsClient.getProviders(query);
 
       // Assert
       expect(response).toEqual(mockProvidersResponse);
