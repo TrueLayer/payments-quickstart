@@ -30,8 +30,8 @@ export const isPaymentRequest = (obj: any): obj is PaymentRequest => {
 };
 
 export const intoSingleImmediatePaymentRequest = ({
-  scheme_id,
   provider_id,
+  scheme_id = 'faster_payments_service',
   currency = 'GBP',
   amount_in_minor = 1,
   reference = 'Test Payment',
