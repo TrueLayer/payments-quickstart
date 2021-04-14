@@ -54,4 +54,4 @@ export type SupportedCurrency = 'GBP' | 'EUR';
 
 export type AccountType = 'sort_code_account_number';
 
-export type ReleaseChannel = 'live' | 'public_beta' | 'private_beta';
+export type ReleaseChannel = 'live' | 'public_beta' | 'private_beta' | 'alpha';
