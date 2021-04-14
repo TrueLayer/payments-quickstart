@@ -44,7 +44,7 @@ export default class PaymentsController {
   getProviders = async (req: Request, res: Response, next: NextFunction) => {
     const query = req.query;
     const currency = (query.currency || ['GBP']) as SupportedCurrency[];
-    const channel = (query.release_channel || ['live']) as ReleaseChannel[];
+    const channel = (query.release_channel || ['alpha']) as ReleaseChannel[];
 
     try {
       const response = await this.paymentClient.getProviders({

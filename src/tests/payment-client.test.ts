@@ -190,7 +190,7 @@ describe('`payments-client`', () => {
         auth_flow_type: 'redirect',
         account_type: 'sort_code_account_number',
         currency: ['GBP'],
-        release_channel: ['live'],
+        release_channel: ['alpha'],
         client_id: clientId
       };
 
