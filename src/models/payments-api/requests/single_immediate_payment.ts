@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { SupportedCurrency, Participant, References } from 'models/payments-api/common';
+import { SupportedCurrency, Participant, References, AdditionalInputValues } from 'models/payments-api/common';
 
 // Currently only supporting `redirect` payment flow for sample app.
 interface AuthFlow {
@@ -7,7 +7,7 @@ interface AuthFlow {
   return_uri: string;
   psu_ip_address?: string;
   data_access_token?: string;
-  additional_inputs?: Map<String, String>;
+  additional_inputs?: AdditionalInputValues;
 }
 
 interface SingleImmediatePayment {

@@ -3,7 +3,7 @@ import { HttpException } from 'middleware/errors';
 
 import AuthenticationClient from 'clients/authentication-client';
 import PaymentsClient from 'clients/payment-client';
-import { intoSingleImmediatePaymentRequest, isPaymentRequest } from 'models/payments/request';
+import { intoSingleImmediatePaymentRequest, isPaymentRequest } from 'models/payment-request';
 
 export default class PaymentsController {
   private paymentClient = new PaymentsClient(new AuthenticationClient());
