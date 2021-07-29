@@ -24,7 +24,8 @@ export const isPaymentRequest = (obj: any): obj is PaymentRequest => {
     isTypeOf(obj.amount_in_minor, ['number', 'undefined']),
     isTypeOf(obj.reference, ['string', 'undefined']),
     isTypeOf(obj.scheme_id, ['string', 'undefined']),
-    isTypeOf(obj.payment_id, ['string', 'undefined'])
+    isTypeOf(obj.payment_id, ['string', 'undefined']),
+    isTypeOf(obj.additional_inputs, ['object', 'undefined'])
   ].some(isType => !isType);
 
   return !invalidParam;
