@@ -3,12 +3,8 @@ import nock, { Scope } from 'nock';
 import supertest, { SuperTest } from 'supertest';
 import { mockPaymentResponse } from './mock-payment-response';
 import fakePaymentApiRequest, { fakePaymentRequest } from './mock-payment-request';
-import { intoSingleImmediatePaymentRequest } from 'models/payments/request';
+import { intoSingleImmediatePaymentRequest } from 'models/payment-request';
 import config from 'config';
-import { intoUrlParams } from 'utils';
-import mockProvidersResponse from './mock-providers-response';
-import expectedProvidersResponse from './expected-providers-response';
-import disabledSandboxProviders from 'models/payments/sandbox-providers-response';
 
 let request: SuperTest<any>;
 
@@ -92,53 +88,6 @@ describe('api', () => {
 
     it('invalid parameters returns a 400', done => {
       request.post('/payment').send({}).expect(400, done);
-    });
-  });
-
-  describe('GET `/providers`', () => {
-    let paymentsApi: Scope;
-    const paymentsUri = config.PAYMENTS_URI;
-
-    beforeEach(() => {
-      paymentsApi = nock(config.PAYMENTS_URI);
-    });
-
-    afterEach(() => {
-      config.PAYMENTS_URI = paymentsUri;
-    });
-
-    it('Non sandbox env returns expected providers.', done => {
-      config.PAYMENTS_URI = 'https://truelayer.com/v2';
-
-      const query = intoUrlParams({
-        auth_flow_type: 'redirect',
-        account_type: 'sort_code_account_number',
-        currency: 'GBP',
-        release_channel: 'alpha',
-        client_id: config.CLIENT_ID
-      });
-
-      paymentsApi.get(`/single-immediate-payments-providers?${query}`).times(1).reply(200, mockProvidersResponse);
-      request.get('/providers').expect(200, expectedProvidersResponse, done);
-    });
-
-    it('sandbox env concatenates disabled providers to api response.', done => {
-      // Arrange
-      config.PAYMENTS_URI = 'https://pay-api.truelayer-sandbox.com/v2';
-
-      const query = intoUrlParams({
-        auth_flow_type: 'redirect',
-        account_type: 'sort_code_account_number',
-        currency: 'GBP',
-        release_channel: 'alpha',
-        client_id: config.CLIENT_ID
-      });
-
-      // Act & Assert
-      paymentsApi.get(`/single-immediate-payments-providers?${query}`).times(1).reply(200, mockProvidersResponse);
-      // Check disabled sandbox providers are added to the response.
-      expectedProvidersResponse.results = expectedProvidersResponse.results.concat(disabledSandboxProviders);
-      request.get('/providers').expect(200, expectedProvidersResponse, done);
     });
   });
 });

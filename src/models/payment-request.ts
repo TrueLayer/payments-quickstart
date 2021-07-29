@@ -2,7 +2,7 @@
 
 import config from 'config';
 import { v4 as uuid } from 'uuid';
-import { SupportedCurrency } from 'models/payments-api/common';
+import { AdditionalInputValues, SupportedCurrency } from 'models/payments-api/common';
 import { SingleImmediatePaymentRequest } from 'models/payments-api/requests';
 import { isTypeOf } from 'utils';
 
@@ -13,6 +13,7 @@ export interface PaymentRequest {
   reference?: string;
   scheme_id?: string;
   payment_id?: string;
+  additional_inputs?: AdditionalInputValues;
 }
 
 // Dynamic type check to validate request.
@@ -23,7 +24,8 @@ export const isPaymentRequest = (obj: any): obj is PaymentRequest => {
     isTypeOf(obj.amount_in_minor, ['number', 'undefined']),
     isTypeOf(obj.reference, ['string', 'undefined']),
     isTypeOf(obj.scheme_id, ['string', 'undefined']),
-    isTypeOf(obj.payment_id, ['string', 'undefined'])
+    isTypeOf(obj.payment_id, ['string', 'undefined']),
+    isTypeOf(obj.additional_inputs, ['object', 'undefined'])
   ].some(isType => !isType);
 
   return !invalidParam;
@@ -35,7 +37,8 @@ export const intoSingleImmediatePaymentRequest = ({
   currency = 'GBP',
   amount_in_minor = 1,
   reference = 'Test Payment',
-  payment_id = uuid()
+  payment_id = uuid(),
+  additional_inputs
 }: PaymentRequest): SingleImmediatePaymentRequest => ({
   single_immediate_payment: {
     single_immediate_payment_id: payment_id,
@@ -58,7 +61,8 @@ export const intoSingleImmediatePaymentRequest = ({
   },
   auth_flow: {
     type: 'redirect',
-    return_uri: config.REDIRECT_URI
+    return_uri: config.REDIRECT_URI,
+    additional_inputs: additional_inputs
   },
   webhook_uri: config.WEBHOOK_URI || null
 });
