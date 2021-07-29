@@ -7,6 +7,7 @@ interface AuthFlow {
   return_uri: string;
   psu_ip_address?: string;
   data_access_token?: string;
+  additional_inputs?: Map<String, String>;
 }
 
 interface SingleImmediatePayment {
