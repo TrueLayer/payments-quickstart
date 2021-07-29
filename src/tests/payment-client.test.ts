@@ -4,12 +4,9 @@ import nock, { Interceptor } from 'nock';
 import PaymentsClient from 'clients/payment-client';
 import AuthenticationClient from 'clients/authentication-client';
 import { mockPaymentResponse } from './mock-payment-response';
-import mockProvidersResponse from './mock-providers-response';
 import { fakePaymentApiRequest } from './mock-payment-request';
 import { HttpException } from 'middleware/errors';
-import { intoUrlParams } from 'utils';
 import config from 'config';
-import { SingleImmediateProviderRequest } from 'models/payments-api/requests';
 
 let paymentsClient: PaymentsClient;
 let authServer: Interceptor;
@@ -175,35 +172,6 @@ describe('`payments-client`', () => {
 
       auth.done();
       payments.done();
-    });
-  });
-
-  describe('getProviders', () => {
-    it('Returns Providers on 200', async () => {
-      // Arrange
-      const paymentsApi = nock(config.PAYMENTS_URI);
-      const clientId = '';
-
-      process.env.CLIENT_ID = clientId;
-
-      const query: SingleImmediateProviderRequest = {
-        auth_flow_type: 'redirect',
-        account_type: 'sort_code_account_number',
-        currency: ['GBP'],
-        release_channel: ['alpha'],
-        client_id: clientId
-      };
-
-      paymentsApi
-        .get(`/single-immediate-payments-providers?${intoUrlParams(query)}`)
-        .times(1)
-        .reply(200, mockProvidersResponse);
-
-      // Act
-      const response = await paymentsClient.getProviders(query);
-
-      // Assert
-      expect(response).toEqual(mockProvidersResponse);
     });
   });
 });

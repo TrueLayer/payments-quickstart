@@ -4,9 +4,8 @@ import logger from 'middleware/logger';
 import { HttpException } from 'middleware/errors';
 import RetryClientFactory from './retry-client-factory';
 import config from 'config';
-import { SingleImmediateProviderResponse, SingleImmediatePaymentResponse } from 'models/payments-api/responses';
-import { SingleImmediateProviderRequest, SingleImmediatePaymentRequest } from 'models/payments-api/requests';
-import { intoUrlParams } from 'utils';
+import { SingleImmediatePaymentResponse } from 'models/payments-api/responses';
+import { SingleImmediatePaymentRequest } from 'models/payments-api/requests';
 import initRetryPolicy from './retry-policy';
 
 export default class PaymentClient {
@@ -54,17 +53,6 @@ export default class PaymentClient {
       const { data } = await this.client.get<SingleImmediatePaymentResponse>(
         `/single-immediate-payments/${paymentId}`,
         { headers }
-      );
-      return data;
-    } catch (error) {
-      throw HttpException.fromAxiosError(error, 'error_description');
-    }
-  };
-
-  getProviders = async (param: SingleImmediateProviderRequest) => {
-    try {
-      const { data } = await this.client.get<SingleImmediateProviderResponse>(
-        `/single-immediate-payments-providers?${intoUrlParams(param)}`
       );
       return data;
     } catch (error) {
