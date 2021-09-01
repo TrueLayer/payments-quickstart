@@ -2,8 +2,8 @@
 
 import config from 'config';
 import { v4 as uuid } from 'uuid';
-import { AdditionalInputValues, SupportedCurrency } from 'models/payments-api/common';
-import { SingleImmediatePaymentRequest } from 'models/payments-api/requests';
+import { AdditionalInputValues, SupportedCurrency } from 'models/v2/payments-api/common';
+import { SingleImmediatePaymentRequest } from 'models/v2/payments-api/requests';
 import { isTypeOf } from 'utils';
 
 export interface PaymentRequest {

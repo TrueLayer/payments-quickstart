@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Cache from 'node-cache';
-import { AuthenticationResponse } from 'models/payments-api/responses';
+import { AuthenticationResponse } from 'models/authentication';
 import logger from 'middleware/logger';
 import config from 'config';
 import { HttpException } from 'middleware/errors';

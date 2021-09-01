@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 
 import nock, { Interceptor } from 'nock';
-import PaymentsClient from 'clients/payment-client';
+import PaymentsClient from 'clients/paymentv2-client';
 import AuthenticationClient from 'clients/authentication-client';
 import { mockPaymentResponse } from './mock-payment-response';
 import { fakePaymentApiRequest } from './mock-payment-request';

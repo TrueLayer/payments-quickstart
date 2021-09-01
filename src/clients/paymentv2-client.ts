@@ -4,8 +4,8 @@ import logger from 'middleware/logger';
 import { HttpException } from 'middleware/errors';
 import RetryClientFactory from './retry-client-factory';
 import config from 'config';
-import { SingleImmediatePaymentResponse } from 'models/payments-api/responses';
-import { SingleImmediatePaymentRequest } from 'models/payments-api/requests';
+import { SingleImmediatePaymentResponse } from 'models/v2/payments-api/responses';
+import { SingleImmediatePaymentRequest } from 'models/v2/payments-api/requests';
 import initRetryPolicy from './retry-policy';
 
 export default class PaymentClient {
