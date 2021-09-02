@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { SupportedCurrency, Participant, References, AdditionalInputValues } from 'models/payments-api/common';
+import { SupportedCurrency, Participant, References, AdditionalInputValues } from 'models/v2/payments-api/common';
 
 // Currently only supporting `redirect` payment flow for sample app.
 interface AuthFlow {

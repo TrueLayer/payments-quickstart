@@ -2,10 +2,10 @@ import { NextFunction, Request, Response } from 'express';
 import { HttpException } from 'middleware/errors';
 
 import AuthenticationClient from 'clients/authentication-client';
-import PaymentsClient from 'clients/payment-client';
+import PaymentsClient from 'clients/paymentv2-client';
 import { intoSingleImmediatePaymentRequest, isPaymentRequest } from 'models/payment-request';
 
-export default class PaymentsController {
+export default class PaymentsV2Controller {
   private paymentClient = new PaymentsClient(new AuthenticationClient());
 
   createPayment = async (req: Request, res: Response, next: NextFunction) => {

@@ -1,5 +1,5 @@
-import { SingleImmediatePaymentResponse } from '../models/payments-api/responses';
-import { SortCode } from '../models/payments-api/common';
+import { SingleImmediatePaymentResponse } from '../models/v2/payments-api/responses';
+import { SortCode } from '../models/v2/payments-api/common';
 import paymentResponseJson from './mock-payment-response';
 
 test('payment response serializes & de-serializes.', () => {

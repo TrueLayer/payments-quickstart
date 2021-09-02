@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 
-import { PaymentStatus, SupportedCurrency, Participant, References } from 'models/payments-api/common';
+import { PaymentStatus, SupportedCurrency, Participant, References } from 'models/v2/payments-api/common';
 
 interface AuthFlow {
   type: 'redirect';
