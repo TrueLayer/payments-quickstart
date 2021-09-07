@@ -5,7 +5,7 @@ import AuthenticationClient from 'clients/authentication-client';
 import PaymentsClient from 'clients/paymentv3-client';
 import { HttpException } from 'middleware/errors';
 import config from 'config';
-import { BeneficiaryType, PaymentMethodType, SchemeIdentifierType } from 'models/v3/payments-api/create_payment';
+import { CreatePaymentRequest } from 'models/v3/payments-api/create_payment';
 
 export default class PaymentsV3Controller {
   private paymentClient = new PaymentsClient(new AuthenticationClient());
@@ -26,21 +26,21 @@ export default class PaymentsV3Controller {
     res.status(501).send();
   };
 
-  private buildPaymentRequest() {
+  private buildPaymentRequest(): CreatePaymentRequest {
     return {
       id: uuid(),
       amount_in_minor: 1,
       currency: 'GBP',
       payment_method: {
         statement_reference: 'some ref',
-        type: 'bank_transfer' as PaymentMethodType
+        type: 'bank_transfer'
       },
       beneficiary: {
-        type: 'external' as BeneficiaryType,
+        type: 'external',
         name: 'John Doe',
         reference: 'Test Ref',
         scheme_identifier: {
-          type: 'sort_code_account_number' as SchemeIdentifierType,
+          type: 'sort_code_account_number',
           account_number: config.ACCOUNT_NUMBER,
           sort_code: config.SORT_CODE
         }
