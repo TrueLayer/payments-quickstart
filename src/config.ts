@@ -9,5 +9,6 @@ export default {
   HTTP_CLIENT_TIMEOUT: process.env.HTTP_CLIENT_TIMEOUT ? +process.env.HTTP_CLIENT_TIMEOUT : 10000,
   AUTH_URI: process.env.AUTH_URI || 'https://auth.truelayer-sandbox.com',
   PAYMENTS_URI: process.env.PAYMENTS_URI || 'https://pay-api.truelayer-sandbox.com/v2',
+  PAYMENTS_V3_URI: process.env.PAYMENTS_V3_URI || 'https://test-pay-api.t7r.dev',
   PORT: process.env.PORT || 3000
 };
