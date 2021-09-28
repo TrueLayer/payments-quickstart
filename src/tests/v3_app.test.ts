@@ -22,7 +22,8 @@ describe('api v3', () => {
     beforeEach(() => {
       paymentsApi = nock(config.PAYMENTS_V3_URI, {
         reqheaders: {
-          'authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfaWQiOiJwZW5ueWRldi1lNTkzOGEiLCJqdGkiOiIzMTNlNTg2Zi1iYmViLTQ2NzktOTc0ZC1hMTMyYTM0ZGFlOTkiLCJuYmYiOjE2MzA1NjgzOTUsImV4cCI6MTYzMDU3MTk5NSwiaXNzIjoiaHR0cHM6Ly9hcGkudDdyLmRldiIsImF1ZCI6Imh0dHBzOi8vYXBpLnQ3ci5kZXYifQ.acqlq2lI1UbF-NyUGa57QU9P1faOYmjF-2BGpgfDnok',
+          'authorization':
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfaWQiOiJwZW5ueWRldi1lNTkzOGEiLCJqdGkiOiIzMTNlNTg2Zi1iYmViLTQ2NzktOTc0ZC1hMTMyYTM0ZGFlOTkiLCJuYmYiOjE2MzA1NjgzOTUsImV4cCI6MTYzMDU3MTk5NSwiaXNzIjoiaHR0cHM6Ly9hcGkudDdyLmRldiIsImF1ZCI6Imh0dHBzOi8vYXBpLnQ3ci5kZXYifQ.acqlq2lI1UbF-NyUGa57QU9P1faOYmjF-2BGpgfDnok',
           'content-type': 'application/json'
         }
       });
@@ -35,7 +36,9 @@ describe('api v3', () => {
       // Act & Assert
       request
         .get('/v3/payment/313e586f-bbeb-4679-974d-a132a34dae99')
-        .set('authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfaWQiOiJwZW5ueWRldi1lNTkzOGEiLCJqdGkiOiIzMTNlNTg2Zi1iYmViLTQ2NzktOTc0ZC1hMTMyYTM0ZGFlOTkiLCJuYmYiOjE2MzA1NjgzOTUsImV4cCI6MTYzMDU3MTk5NSwiaXNzIjoiaHR0cHM6Ly9hcGkudDdyLmRldiIsImF1ZCI6Imh0dHBzOi8vYXBpLnQ3ci5kZXYifQ.acqlq2lI1UbF-NyUGa57QU9P1faOYmjF-2BGpgfDnok')
+        .set(
+          'authorization', 
+          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfaWQiOiJwZW5ueWRldi1lNTkzOGEiLCJqdGkiOiIzMTNlNTg2Zi1iYmViLTQ2NzktOTc0ZC1hMTMyYTM0ZGFlOTkiLCJuYmYiOjE2MzA1NjgzOTUsImV4cCI6MTYzMDU3MTk5NSwiaXNzIjoiaHR0cHM6Ly9hcGkudDdyLmRldiIsImF1ZCI6Imh0dHBzOi8vYXBpLnQ3ci5kZXYifQ.acqlq2lI1UbF-NyUGa57QU9P1faOYmjF-2BGpgfDnok')
         .send()
         .expect(200, mockStatusResponse, done);
     });
@@ -106,9 +109,8 @@ const mockStatusResponse = {
     type: 'bank_transfer',
     statement_reference: 'some ref'
   },
-  resource_token:
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfaWQiOiJwZW5ueWRldi1lNTkzOGEiLCJqdGkiOiIzMTNlNTg2Zi1iYmViLTQ2NzktOTc0ZC1hMTMyYTM0ZGFlOTkiLCJuYmYiOjE2MzA1NjgzOTUsImV4cCI6MTYzMDU3MTk5NSwiaXNzIjoiaHR0cHM6Ly9hcGkudDdyLmRldiIsImF1ZCI6Imh0dHBzOi8vYXBpLnQ3ci5kZXYifQ.acqlq2lI1UbF-NyUGa57QU9P1faOYmjF-2BGpgfDnok',
-  created_at: "2020-09-28T17:17:17",
+  resource_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfaWQiOiJwZW5ueWRldi1lNTkzOGEiLCJqdGkiOiIzMTNlNTg2Zi1iYmViLTQ2NzktOTc0ZC1hMTMyYTM0ZGFlOTkiLCJuYmYiOjE2MzA1NjgzOTUsImV4cCI6MTYzMDU3MTk5NSwiaXNzIjoiaHR0cHM6Ly9hcGkudDdyLmRldiIsImF1ZCI6Imh0dHBzOi8vYXBpLnQ3ci5kZXYifQ.acqlq2lI1UbF-NyUGa57QU9P1faOYmjF-2BGpgfDnok',
+  created_at: '2020-09-28T17:17:17',
   status: 'authorization_required'
 
 };

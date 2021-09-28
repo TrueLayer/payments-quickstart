@@ -10,7 +10,7 @@ import initRetryPolicy from './retry-policy';
 
 /**
  * It interacts with the Payments V3 API.
- * 
+ *
  * The main features exposed by this client is the creation of a payment and the retrieval of a payment status.
  */
 export default class PaymentClient {
@@ -43,9 +43,9 @@ export default class PaymentClient {
 
   /**
    * It creates a payment starting from a [CreatePaymentRequest](../models/v3/payments-api/create_payments.ts)
-   * 
+   *
    * - returns: A new payment.
-   */ 
+   */
   initiatePayment = async (request: CreatePaymentRequest) => {
     const headers = await this.getHeaders();
 
@@ -59,15 +59,15 @@ export default class PaymentClient {
   };
 
   /**
-   * It returns the status of a payment
-   * 
+   * It returns the status of a payment.
+   *
    * - parameters:
-   *   - paymentId: the identifier of a payment
+   *   - paymentId: the identifier of a payment.
    *   - authorizationHeader: the authorization header that need to be sent to the Payments V3 Backend.
-   * - returns: a payment status
+   * - returns: a payment status.
    */
   getStatus = async (paymentId: string, authorizationHeader: string) => {
-    const headers = this.getResourceHeaders(authorizationHeader)
+    const headers = this.getResourceHeaders(authorizationHeader);
 
     try {
       const { data } = await this.client.get<PaymentStatus>(`/payments/${paymentId}`, { headers });
@@ -76,5 +76,5 @@ export default class PaymentClient {
       console.log(error);
       throw HttpException.fromAxiosError(error, 'error_description');
     }
-  }
+  };
 }

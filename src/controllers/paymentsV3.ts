@@ -10,13 +10,13 @@ import { CreatePaymentRequest } from 'models/v3/payments-api/create_payment';
 /**
  * Controller for the PaymentsV3 API.
  * It responds to two endpoints, one to create a payment and one to retrieve the status of a payment.
- */ 
+ */
 export default class PaymentsV3Controller {
   private paymentClient = new PaymentsClient(new AuthenticationClient());
 
   /**
    * It creates a new payment.
-   * 
+   *
    * Method: POST
    * Path: /v3/payment
    * Header: Authorization: Bearer {auth_token}
@@ -64,8 +64,8 @@ export default class PaymentsV3Controller {
    *   'status': 'authorization_required', // string
    *   'resource_token': 'a resource token', // string
    * }
-   * ``` 
-   */ 
+   * ```
+   */
   createPayment = async (_req: Request, res: Response, next: NextFunction) => {
     const request = this.buildPaymentRequest();
 
@@ -80,7 +80,7 @@ export default class PaymentsV3Controller {
 
   /**
    * It returns the status of a payment, given its id.
-   * 
+   *
    * Method: GET
    * Path: /v3/payment/{payment_id}
    * Header: Authorization: Bearer {payment_resource_token}
@@ -88,16 +88,16 @@ export default class PaymentsV3Controller {
    */
   getPayment = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { id } = req.params
-      var authorization = req.headers.authorization
-      if(!id){
-        throw new HttpException(400, 'Wrong endpoint. You need to pass a payment Id in the path.')
+      const { id } = req.params;
+      const authorization = req.headers.authorization;
+      if (!id) {
+        throw new HttpException(400, 'Wrong endpoint. You need to pass a payment Id in the path.');
       }
-      if(!authorization) {
-        throw new HttpException(401, 'The call requires and Authorization header with the resource token associated to the payment') 
+      if (!authorization) {
+        throw new HttpException(401, 'The call requires and Authorization header with the resource token associated to the payment');
       }
 
-      const response = await this.paymentClient.getStatus(id, authorization)
+      const response = await this.paymentClient.getStatus(id, authorization);
       res.status(200).send(response);
     } catch (e) {
       next(e instanceof HttpException ? e : new HttpException(500, 'Failed to initiate payment.'));
