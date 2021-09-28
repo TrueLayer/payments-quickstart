@@ -94,7 +94,10 @@ export default class PaymentsV3Controller {
         throw new HttpException(400, 'Wrong endpoint. You need to pass a payment Id in the path.');
       }
       if (!authorization) {
-        throw new HttpException(401, 'The call requires and Authorization header with the resource token associated to the payment');
+        throw new HttpException(
+          401,
+          'The call requires and Authorization header with the resource token associated to the payment'
+        );
       }
 
       const response = await this.paymentClient.getStatus(id, authorization);
