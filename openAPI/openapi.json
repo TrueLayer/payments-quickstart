@@ -1,0 +1,277 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Example Mobile Backend",
+    "description": "This backend provides an example on how to create such services. It provides a thin abstraction over the [TrueLayer payments-api](https://truelayer.com/payments-api) that allow you to quickly create a payment and to query the status of that payment. <br> The payment created with this backend can be used to extract the information required by our [Android](https://github.com/TrueLayer/android-sample/) and [iOS](https://github.com/TrueLayer/truelayer-ios-sdk) samples.",
+    "version": "0.0.1"
+  },
+  "tags": [
+    {
+      "name": "Payments V3",
+      "description": "A thin abstraction over the TrueLayer Payments API",
+      "externalDocs": {
+        "description": "more info",
+        "url": "https://docs.truelayer.com/#payments-api-v2"
+      }
+    }
+  ],
+  "paths": {
+    "/v3/payment": {
+      "post": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "Creates a new payment",
+        "operationId": "createPayment",
+        "requestBody": {
+          "description": "A Payment request object which contains the payments details",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "the payment successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Payment"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Parameters",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthenticated",
+            "content": {}
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {}
+          },
+          "409": {
+            "description": "Idempotency-Key Concurrency Conflict",
+            "content": {}
+          },
+          "422": {
+            "description": "Idempotency-Key Reuse",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/v3/payment/{paymentId}": {
+      "get": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "Retrieve a payment status from the payment id",
+        "operationId": "paymentStatus",
+        "parameters": [
+          {
+            "name": "paymentId",
+            "in": "path",
+            "description": "The identifier of the payment",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successfully retrieve the status of the payment",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Payment"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated",
+            "content": {}
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {}
+          },
+          "404": {
+            "description": "Payment Not Found",
+            "content": {}
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PaymentRequest": {
+        "required": [
+          "amount_in_minor",
+          "currency",
+          "payment_method",
+          "beneficiary"
+        ],
+        "type": "object",
+        "properties": {
+          "amount_in_minor": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1234
+          },
+          "currency": {
+            "type": "string",
+            "example": "GBP"
+          },
+          "payment_method": {
+            "$ref": "#/components/schemas/PaymentMethod"
+          },
+          "beneficiary": {
+            "$ref": "#/components/schemas/Beneficiary"
+          }
+        }
+      },
+      "PaymentMethod": {
+        "required": [
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "availablepayments methods",
+            "example": "bank_transfer",
+            "enum": [
+              "bank_transfer"
+            ]
+          },
+          "statement_reference": {
+            "type": "string",
+            "example": "a statement reference"
+          }
+        }
+      },
+      "Beneficiary": {
+        "required": [
+          "type",
+          "scheme_identifier"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "the type of beneficiary",
+            "example": "external",
+            "enum": [
+              "external"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "example": "a name"
+          },
+          "reference": {
+            "type": "string",
+            "example": "a reference"
+          },
+          "scheme_identifier": {
+            "$ref": "#/components/schemas/SchemeIdentifier"
+          }
+        }
+      },
+      "SchemeIdentifier": {
+        "required": [
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "the type of scheme identifier",
+            "example": "sort_code_account_number",
+            "enum": [
+              "sort_code_account_number"
+            ]
+          },
+          "sort_code": {
+            "type": "string",
+            "description": "the sort code. It must be of 6 numeric characters only",
+            "example": "012345"
+          },
+          "account_number": {
+            "type": "string",
+            "description": "the account number. It must be of 8 numeric characters only",
+            "example": "01234567"
+          }
+        }
+      },
+      "Payment": {
+        "required": [
+          "id",
+          "amount_in_minor",
+          "currency",
+          "payment_method",
+          "beneficiary",
+          "status",
+          "resource_token"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "pmt-0123456789qwerty"
+          },
+          "amount_in_minor": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1234
+          },
+          "currency": {
+            "type": "string",
+            "example": "GBP"
+          },
+          "payment_method": {
+            "$ref": "#/components/schemas/PaymentMethod"
+          },
+          "beneficiary": {
+            "$ref": "#/components/schemas/Beneficiary"
+          },
+          "status": {
+            "type": "string",
+            "description": "The current state of the payment",
+            "example": "authorization_required",
+            "enum": [
+              "authorized",
+              "authorization_required",
+              "authorizing",
+              "authorization_failed",
+              "failed",
+              "success"
+            ]
+          },
+          "resource_token": {
+            "type": "string",
+            "format": "JWT",
+            "example": "a.jwt.token"
+          }
+        }
+      }
+    }
+  }
+}
