@@ -96,14 +96,14 @@ export default class PaymentsV3Controller {
       if (!authorization) {
         throw new HttpException(
           401,
-          'The call requires and Authorization header with the resource token associated to the payment'
+          'The call requires an Authorization header with the resource_token associated with the payment'
         );
       }
 
       const response = await this.paymentClient.getStatus(id, authorization);
       res.status(200).send(response);
     } catch (e) {
-      next(e instanceof HttpException ? e : new HttpException(500, 'Failed to initiate payment.'));
+      next(e instanceof HttpException ? e : new HttpException(500, 'Failed to retrieve the payment.'));
     }
   };
 
