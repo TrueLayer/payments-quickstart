@@ -7,7 +7,7 @@
  */ 
 export type PaymentMethodType = 'bank_transfer';
 
-interface PaymentMethod {
+export interface PaymentMethod {
   type: PaymentMethodType;
   statement_reference: string;
 }
@@ -24,7 +24,7 @@ export type BeneficiaryType = 'external';
  */ 
 export type SchemeIdentifierType = 'sort_code_account_number';
 
-interface Beneficiary {
+export interface Beneficiary {
   type: BeneficiaryType;
   scheme_identifier: {
     type: SchemeIdentifierType;

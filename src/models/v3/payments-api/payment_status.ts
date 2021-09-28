@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-
+import { Beneficiary, PaymentMethod } from './create_payment';
 /**
  * It defines a payment status
  */
