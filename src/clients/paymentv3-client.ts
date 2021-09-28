@@ -7,6 +7,11 @@ import config from 'config';
 import { CreatePaymentRequest, CreatePaymentRequestReponse } from 'models/v3/payments-api/create_payment';
 import initRetryPolicy from './retry-policy';
 
+/**
+ * It interacts with the Payments V3 API.
+ * 
+ * The main feature exposed by this client is the creation of a payment.
+ */
 export default class PaymentClient {
   private client: AxiosInstance;
   private authenticationClient: AuthenticationClient;
@@ -30,6 +35,11 @@ export default class PaymentClient {
     'content-type': 'application/json'
   });
 
+  /**
+   * It creates a payment starting from a [CreatePaymentRequest](../models/v3/payments-api/create_payments.ts)
+   * 
+   * - returns: A new payment.
+   */ 
   initiatePayment = async (request: CreatePaymentRequest) => {
     const headers = await this.getHeaders();
 
