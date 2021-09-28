@@ -52,7 +52,6 @@ There are some more parameters that can be customised. The following list contai
 ```bash
   SORT_CODE='123456' # a default sort code
   ACCOUNT_NUMBER='12345678' # a default account number
-  WEB_HOOK_URI='' # a web hook
   REDIRECT_URI="YOUR_DEPLOYED_SAMPLE_BACKEND_URI" # a redirect uri. For a mobile app, use the deep link 
   BENEFICIARY_NAME='beneficiary' # a default beneficiary
   TRUELAYER_CLIENT_ID="YOUR_CLIENT_ID" 
