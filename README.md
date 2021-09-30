@@ -7,7 +7,7 @@
 **Warning:** This backend is not intended to be used in production. It is some sample code provided by TrueLayer to test the Android and iOS SDK and the Hosted Payment Page.
 
 When integrating your payment system with the TrueLayer SDKs, there are some setup operations that your organization need to perform to achieve maximum security and to carry out a complete payment.
-In particular, TrueLayer SDK does not requires secrets or token. Instead, they relies on your organization backend to create a payment and to pass the payment id and the resource token to the SDK.
+In particular, TrueLayer SDK does not requires secrets or token. Instead, they rely on your organization backend to create a payment and to pass the payment id and the resource token to the SDK.
 
 This backend provides an example on how to create such services. It provides a thin abstraction over the [TrueLayer payments-api](https://truelayer.com/payments-api) that allow you to quickly create a payment and to query the status of that payment.
 The payment created with this backend can be used to extract the information required by our [android](https://github.com/TrueLayer/android-sample/) and [iOS](https://github.com/TrueLayer/truelayer-ios-sdk) samples.
