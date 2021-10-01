@@ -3,11 +3,11 @@
 // Payment Method Details
 
 /**
- * The supported payment methods
+ * The supported payment methods.
  */
 export type PaymentMethodType = 'bank_transfer';
 
-interface PaymentMethod {
+export interface PaymentMethod {
   type: PaymentMethodType;
   statement_reference: string;
 }
@@ -15,16 +15,16 @@ interface PaymentMethod {
 // Beneficiary Details
 
 /**
- * The supported beneficiary types
+ * The supported beneficiary types.
  */
 export type BeneficiaryType = 'external';
 
 /**
- * The supported scheme identifiers
+ * The supported scheme identifiers.
  */
 export type SchemeIdentifierType = 'sort_code_account_number';
 
-interface Beneficiary {
+export interface Beneficiary {
   type: BeneficiaryType;
   scheme_identifier: {
     type: SchemeIdentifierType;
@@ -36,7 +36,7 @@ interface Beneficiary {
 }
 
 /**
- * It defines a request to create a payment
+ * It defines a request to create a payment.
  */
 export interface CreatePaymentRequest {
   id: string;

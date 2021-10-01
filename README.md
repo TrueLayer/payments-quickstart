@@ -64,7 +64,7 @@ There are some more parameters that can be customised. The following list contai
 
 ## Endpoints
 
-### [POST] `/payment` - Create Payment
+### [POST] `/v3/payment` - Create Payment
 To create a payment, you can try and run this command.
 
 ```bash
@@ -89,9 +89,9 @@ $ curl -X POST 'http://localhost:3000/v3/payment' -H 'Content-Type: application/
 }'
 ```
 
-### [GET] `/payment/{paymentId}` - Get Payment status
+### [GET] `/v3/payment/{paymentId}` - Get Payment status
 Once the payment has been created, you can retrieve its status by using this command.
 
 ```bash
-$ curl 'http://localhost:3000/v3/payment/{payment_id}'
+$ curl -H 'Authorization: Bearer {resource_token}' 'http://localhost:3000/v3/payment/{payment_id}'
 ```

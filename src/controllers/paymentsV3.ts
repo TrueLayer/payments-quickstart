@@ -86,8 +86,25 @@ export default class PaymentsV3Controller {
    * Header: Authorization: Bearer {payment_resource_token}
    * Response: A payment status object, following [the specification](https://pay-api-specs.t7r.dev/#operation/get-payment)
    */
-  getPayment = async (_req: Request, res: Response, _next: NextFunction) => {
-    res.status(501).send();
+  getPayment = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      const authorization = req.headers.authorization;
+      if (!id) {
+        throw new HttpException(400, 'Bad URL: the URL is missing the paymentId parameter in the URL path.');
+      }
+      if (!authorization) {
+        throw new HttpException(
+          401,
+          'The call requires an Authorization header with the resource_token associated with the payment'
+        );
+      }
+
+      const response = await this.paymentClient.getStatus(id, authorization);
+      res.status(200).send(response);
+    } catch (e) {
+      next(e instanceof HttpException ? e : new HttpException(500, 'Failed to retrieve the payment.'));
+    }
   };
 
   private buildPaymentRequest(): CreatePaymentRequest {
