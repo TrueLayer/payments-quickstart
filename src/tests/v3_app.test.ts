@@ -1,7 +1,7 @@
-import app from 'app';
+import app from '../app';
 import nock, { Scope } from 'nock';
 import supertest, { SuperTest } from 'supertest';
-import config from 'config';
+import config from '../config';
 
 let request: SuperTest<any>;
 
