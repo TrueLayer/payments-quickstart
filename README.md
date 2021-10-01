@@ -7,7 +7,7 @@
 **Warning:** This backend is not intended to be used in production. It is some sample code provided by TrueLayer to test the Android and iOS SDK and the Hosted Payment Page.
 
 When integrating your payment system with the TrueLayer SDKs, there are some setup operations that your organization need to perform to achieve maximum security and to carry out a complete payment.
-In particular, TrueLayer SDK does not requires secrets or token. Instead, they relies on your organization backend to create a payment and to pass the payment id and the resource token to the SDK.
+In particular, TrueLayer SDK does not requires secrets or token. Instead, they rely on your organization backend to create a payment and to pass the payment id and the resource token to the SDK.
 
 This backend provides an example on how to create such services. It provides a thin abstraction over the [TrueLayer payments-api](https://truelayer.com/payments-api) that allow you to quickly create a payment and to query the status of that payment.
 The payment created with this backend can be used to extract the information required by our [android](https://github.com/TrueLayer/android-sample/) and [iOS](https://github.com/TrueLayer/truelayer-ios-sdk) samples.
@@ -52,7 +52,6 @@ There are some more parameters that can be customised. The following list contai
 ```bash
   SORT_CODE='123456' # a default sort code
   ACCOUNT_NUMBER='12345678' # a default account number
-  WEB_HOOK_URI='' # a web hook
   REDIRECT_URI="YOUR_DEPLOYED_SAMPLE_BACKEND_URI" # a redirect uri. For a mobile app, use the deep link 
   BENEFICIARY_NAME='beneficiary' # a default beneficiary
   TRUELAYER_CLIENT_ID="YOUR_CLIENT_ID" 

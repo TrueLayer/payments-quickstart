@@ -1,9 +1,9 @@
 /* eslint-disable camelcase */
 
 import nock, { Interceptor } from 'nock';
-import AuthenticationClient from 'clients/authentication-client';
-import { HttpException } from 'middleware/errors';
-import config from 'config';
+import AuthenticationClient from '../clients/authentication-client';
+import { HttpException } from '../middleware/errors';
+import config from '../config';
 
 let authenticationClient: AuthenticationClient;
 let authServerMock: Interceptor;

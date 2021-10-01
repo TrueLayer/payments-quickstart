@@ -6,7 +6,7 @@ import config from 'config';
 import { HttpException } from 'middleware/errors';
 
 /**
- *  It can authenticate the user given a clientId and a clientSecret
+ *  It can authenticate the user given a clientId and a clientsecret
  */
 export default class AuthenticationClient {
   private cache = new Cache();

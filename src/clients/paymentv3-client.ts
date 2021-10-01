@@ -11,7 +11,7 @@ import initRetryPolicy from './retry-policy';
 /**
  * It interacts with the Payments V3 API.
  *
- * The main features exposed by this client is the creation of a payment and the retrieval of a payment status.
+ * The main features exposed by this client are the creation of a payment and the retrieval of a payment status.
  */
 export default class PaymentClient {
   private client: AxiosInstance;
