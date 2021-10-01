@@ -91,7 +91,7 @@ export default class PaymentsV3Controller {
       const { id } = req.params;
       const authorization = req.headers.authorization;
       if (!id) {
-        throw new HttpException(400, 'Wrong endpoint. You need to pass a payment Id in the path.');
+        throw new HttpException(400, 'Bad URL: the URL is missing the paymentId parameter in the URL path.');
       }
       if (!authorization) {
         throw new HttpException(
