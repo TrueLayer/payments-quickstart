@@ -4,7 +4,7 @@
 
 /**
  * The supported payment methods
- */ 
+ */
 export type PaymentMethodType = 'bank_transfer';
 
 interface PaymentMethod {
@@ -21,7 +21,7 @@ export type BeneficiaryType = 'external';
 
 /**
  * The supported scheme identifiers
- */ 
+ */
 export type SchemeIdentifierType = 'sort_code_account_number';
 
 interface Beneficiary {
@@ -37,7 +37,7 @@ interface Beneficiary {
 
 /**
  * It defines a request to create a payment
- */ 
+ */
 export interface CreatePaymentRequest {
   id: string;
   amount_in_minor: number;
@@ -48,7 +48,7 @@ export interface CreatePaymentRequest {
 
 /**
  * It defines the response of a create payment request
- */ 
+ */
 export interface CreatePaymentRequestReponse {
   id: string;
   amount_in_minor: number;

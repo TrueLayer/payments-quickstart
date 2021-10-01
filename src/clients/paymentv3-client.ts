@@ -9,7 +9,7 @@ import initRetryPolicy from './retry-policy';
 
 /**
  * It interacts with the Payments V3 API.
- * 
+ *
  * The main feature exposed by this client is the creation of a payment.
  */
 export default class PaymentClient {
@@ -37,9 +37,9 @@ export default class PaymentClient {
 
   /**
    * It creates a payment starting from a [CreatePaymentRequest](../models/v3/payments-api/create_payments.ts)
-   * 
+   *
    * - returns: A new payment.
-   */ 
+   */
   initiatePayment = async (request: CreatePaymentRequest) => {
     const headers = await this.getHeaders();
 
