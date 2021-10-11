@@ -5,6 +5,9 @@ import logger from 'middleware/logger';
 import config from 'config';
 import { HttpException } from 'middleware/errors';
 
+/**
+ *  It can authenticate the user given a clientId and a clientsecret
+ */
 export default class AuthenticationClient {
   private cache = new Cache();
 
@@ -33,6 +36,11 @@ export default class AuthenticationClient {
 
   invalidateCache = () => this.cache.flushAll();
 
+  /**
+   * Main function that authenticate the user against the TrueLayer authentication endpoint.
+   *
+   * returns: an auth token following what specified [here](https://docs.truelayer.com/#payments-api)
+   */
   authenticate = async () => {
     const token = this.cache.get<string>(config.CLIENT_ID);
     if (token) return this.toBearerToken(token);
