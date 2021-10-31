@@ -117,7 +117,7 @@ export default class PaymentsV3Controller {
         type: 'bank_transfer'
       },
       beneficiary: {
-        type: 'external',
+        type: 'external_account',
         name: 'John Doe',
         reference: 'Test Ref',
         scheme_identifier: {

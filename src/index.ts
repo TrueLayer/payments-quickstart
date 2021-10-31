@@ -4,10 +4,13 @@ import { exit } from 'process';
 
 const clientId = config.CLIENT_ID;
 const clientSecret = config.CLIENT_SECRET;
-const redirectUri = config.REDIRECT_URI;
+const kid = config.KID;
+const privateKey = config.PRIVATE_KEY;
 
-if (!clientId || !clientSecret || !redirectUri) {
-  console.error("'CLIENT_ID', 'CLIENT_SECRET' and 'REDIRECT_URI' environment variables are required to run the server");
+if (!clientId || !clientSecret || !kid || !privateKey) {
+  console.error(
+    "'CLIENT_ID', 'CLIENT_SECRET' and 'KID' and 'PRIVATE_KEY' environment variables are required to run the server"
+  );
   exit();
 }
 

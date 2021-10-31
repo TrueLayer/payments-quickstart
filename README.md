@@ -33,13 +33,7 @@ $ yarn
 ```
 
 ### Run
-In order to properly run the backend, you need to provide some configurations. Please, `export` or create a `.env` file within the root of the project and set the variables below.
-
-```bash
-TRUELAYER_CLIENT_ID="YOUR_CLIENT_ID" 
-TRUELAYER_CLIENT_SECRET="YOUR_CLIENT_SECRET"
-REDIRECT_URI="YOUR_DEPLOYED_SAMPLE_BACKEND_URI"
-```
+In order to properly run the backend, you need to provide some configurations. Please, `export` or create a `.env` (can be copied from `.env.example`) file within the root of the project and set the variables below based on your setup.
 
 Then, you can run the following command:
 
@@ -52,7 +46,6 @@ There are some more parameters that can be customised. The following list contai
 ```bash
   SORT_CODE='123456' # a default sort code
   ACCOUNT_NUMBER='12345678' # a default account number
-  REDIRECT_URI="YOUR_DEPLOYED_SAMPLE_BACKEND_URI" # a redirect uri. For a mobile app, use the deep link 
   BENEFICIARY_NAME='beneficiary' # a default beneficiary
   TRUELAYER_CLIENT_ID="YOUR_CLIENT_ID" 
   TRUELAYER_CLIENT_SECRET="YOUR_CLIENT_SECRET"
@@ -68,26 +61,7 @@ There are some more parameters that can be customised. The following list contai
 To create a payment, you can try and run this command.
 
 ```bash
-$ curl -X POST 'http://localhost:3000/v3/payment' -H 'Content-Type: application/json'  \
---data-raw '{
-  "amount_in_minor": 1,
-  "currency": "GBP", // string
-  "payment_method": {
-    "type": "bank_transfer", // string
-    "statement_reference": "a reference" // string
-  },
-  "beneficiary: {
-   "type": "external", // string
-   "name": "a name", // string
-   "reference": "a reference", // string
-   "scheme_identifier": {
-     "type": "sort_code_account_number", // string
-     "sort_code": "012345", // string, 6 numeric chars
-     "account_number": "01234567", // string, 8 numeric chars
-   }
-  }
-}'
-```
+$ curl -X POST 'http://localhost:3000/v3/payment' 
 
 ### [GET] `/v3/payment/{paymentId}` - Get Payment status
 Once the payment has been created, you can retrieve its status by using this command.
