@@ -61,6 +61,7 @@ There are some more parameters that can be customised. The following list contai
 To create a payment, you can try and run this command.
 
 ```bash
+
 $ curl -X POST 'http://localhost:3000/v3/payment' 
 
 ### [GET] `/v3/payment/{paymentId}` - Get Payment status
