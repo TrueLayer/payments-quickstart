@@ -74,7 +74,7 @@ const mockPaymentResponse = {
   amount_in_minor: 1,
   currency: 'GBP',
   beneficiary: {
-    type: 'external',
+    type: 'external_account',
     scheme_identifier: {
       type: 'sort_code_account_number',
       sort_code: '123456',
@@ -97,7 +97,7 @@ const mockStatusResponse = {
   amount_in_minor: 1,
   currency: 'GBP',
   beneficiary: {
-    type: 'external',
+    type: 'external_account',
     scheme_identifier: {
       type: 'sort_code_account_number',
       sort_code: '123456',

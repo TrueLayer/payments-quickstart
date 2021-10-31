@@ -17,7 +17,7 @@ export interface PaymentMethod {
 /**
  * The supported beneficiary types.
  */
-export type BeneficiaryType = 'external';
+export type BeneficiaryType = 'external_account';
 
 /**
  * The supported scheme identifiers.

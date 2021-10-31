@@ -77,7 +77,7 @@ $ curl -X POST 'http://localhost:3000/v3/payment' -H 'Content-Type: application/
     "statement_reference": "a reference" // string
   },
   "beneficiary: {
-   "type": "external", // string
+   "type": "external_account", // string
    "name": "a name", // string
    "reference": "a reference", // string
    "scheme_identifier": {
