@@ -177,9 +177,9 @@
           "type": {
             "type": "string",
             "description": "the type of beneficiary",
-            "example": "external",
+            "example": "external_account",
             "enum": [
-              "external"
+              "external_account"
             ]
           },
           "name": {

@@ -30,7 +30,7 @@ export default class PaymentsV3Controller {
    *     'statement_reference': 'a reference' // string
    *   },
    *   'beneficiary': {
-   *    'type': 'external', // string
+   *    'type': 'external_account', // string
    *    'name': 'a name', // string
    *    'reference': 'a reference', // string
    *    'scheme_identifier': {
@@ -52,7 +52,7 @@ export default class PaymentsV3Controller {
    *     'statement_reference': 'a reference' // string
    *   },
    *   'beneficiary': {
-   *    'type': 'external', // string
+   *    'type': 'external_account', // string
    *    'name': 'a name', // string
    *    'reference': 'a reference', // string
    *    'scheme_identifier': {
