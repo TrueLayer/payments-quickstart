@@ -72,7 +72,10 @@ export default class PaymentsV3Controller {
     try {
       // Ideally we should use DTOs / Domain Types but givent that the API spec is still work in progress, we keep the type transparent
       const response = await this.paymentClient.initiatePayment(request);
-      res.status(200).send(response);
+      res.status(200).send({
+        hpp_url: `https://checkout.t7r.dev/payments#payment_id=${response.id}&resource_token=${response.resource_token}&return_uri=${config.REDIRECT_URI}&c_primary=253655`,
+        ...response
+      });
     } catch (e) {
       next(e instanceof HttpException ? e : new HttpException(500, 'Failed to initiate payment.'));
     }
@@ -116,9 +119,15 @@ export default class PaymentsV3Controller {
         statement_reference: 'some ref',
         type: 'bank_transfer'
       },
+      user: {
+        type: 'new',
+        name: 'John Doe',
+        phone: '12345',
+        email: 'johndoe@gmail.com'
+      },
       beneficiary: {
         type: 'external_account',
-        name: 'John Doe',
+        name: config.BENEFICIARY_NAME,
         reference: 'Test Ref',
         scheme_identifier: {
           type: 'sort_code_account_number',
