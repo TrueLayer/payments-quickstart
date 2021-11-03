@@ -92,18 +92,11 @@ export default class PaymentsV3Controller {
   getPayment = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
-      const authorization = req.headers.authorization;
       if (!id) {
         throw new HttpException(400, 'Bad URL: the URL is missing the paymentId parameter in the URL path.');
       }
-      if (!authorization) {
-        throw new HttpException(
-          401,
-          'The call requires an Authorization header with the resource_token associated with the payment'
-        );
-      }
 
-      const response = await this.paymentClient.getStatus(id, authorization);
+      const response = await this.paymentClient.getStatus(id);
       res.status(200).send(response);
     } catch (e) {
       next(e instanceof HttpException ? e : new HttpException(500, 'Failed to retrieve the payment.'));

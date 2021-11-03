@@ -38,11 +38,6 @@ export default class PaymentClient {
     'content-type': 'application/json'
   });
 
-  private getResourceHeaders = (authorization: String) => ({
-    'authorization': authorization,
-    'content-type': 'application/json'
-  });
-
   /**
    * It creates a payment starting from a [CreatePaymentRequest](../models/v3/payments-api/create_payments.ts)
    *
@@ -85,8 +80,8 @@ export default class PaymentClient {
    *   - authorizationHeader: the authorization header that need to be sent to the Payments V3 Backend.
    * - returns: a payment status.
    */
-  getStatus = async (paymentId: string, authorizationHeader: string) => {
-    const headers = this.getResourceHeaders(authorizationHeader);
+  getStatus = async (paymentId: string) => {
+    const headers = await this.getHeaders();
 
     try {
       const { data } = await this.client.get<PaymentStatus>(`/payments/${paymentId}`, { headers });

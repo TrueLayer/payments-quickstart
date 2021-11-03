@@ -20,13 +20,7 @@ describe('api v3', () => {
     let paymentsApi: Scope;
 
     beforeEach(() => {
-      paymentsApi = nock(config.PAYMENTS_V3_URI, {
-        reqheaders: {
-          'authorization':
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfaWQiOiJwZW5ueWRldi1lNTkzOGEiLCJqdGkiOiIzMTNlNTg2Zi1iYmViLTQ2NzktOTc0ZC1hMTMyYTM0ZGFlOTkiLCJuYmYiOjE2MzA1NjgzOTUsImV4cCI6MTYzMDU3MTk5NSwiaXNzIjoiaHR0cHM6Ly9hcGkudDdyLmRldiIsImF1ZCI6Imh0dHBzOi8vYXBpLnQ3ci5kZXYifQ.acqlq2lI1UbF-NyUGa57QU9P1faOYmjF-2BGpgfDnok',
-          'content-type': 'application/json'
-        }
-      });
+      paymentsApi = nock(config.PAYMENTS_V3_URI);
     });
 
     it('200 GET payment response from payments api is returned successfully through the proxy.', done => {
@@ -34,14 +28,7 @@ describe('api v3', () => {
 
       paymentsApi.get('/payments/313e586f-bbeb-4679-974d-a132a34dae99').times(1).reply(200, status);
       // Act & Assert
-      request
-        .get('/v3/payment/313e586f-bbeb-4679-974d-a132a34dae99')
-        .set(
-          'authorization',
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfaWQiOiJwZW5ueWRldi1lNTkzOGEiLCJqdGkiOiIzMTNlNTg2Zi1iYmViLTQ2NzktOTc0ZC1hMTMyYTM0ZGFlOTkiLCJuYmYiOjE2MzA1NjgzOTUsImV4cCI6MTYzMDU3MTk5NSwiaXNzIjoiaHR0cHM6Ly9hcGkudDdyLmRldiIsImF1ZCI6Imh0dHBzOi8vYXBpLnQ3ci5kZXYifQ.acqlq2lI1UbF-NyUGa57QU9P1faOYmjF-2BGpgfDnok'
-        )
-        .send()
-        .expect(200, mockStatusResponse, done);
+      request.get('/v3/payment/313e586f-bbeb-4679-974d-a132a34dae99').send().expect(200, mockStatusResponse, done);
     });
   });
 
