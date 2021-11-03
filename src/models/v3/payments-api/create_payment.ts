@@ -44,6 +44,7 @@ export interface CreatePaymentRequest {
   currency: string;
   payment_method: PaymentMethod;
   beneficiary: Beneficiary;
+  user: unknown;
 }
 
 /**

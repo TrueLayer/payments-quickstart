@@ -50,6 +50,7 @@
     "express-winston": "^4.0.5",
     "node-cache": "^5.1.2",
     "qs": "^6.9.6",
+    "truelayer-signing": "^0.1.0",
     "uuid": "^8.3.2",
     "winston": "^3.3.3"
   }

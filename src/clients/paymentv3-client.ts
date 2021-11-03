@@ -7,6 +7,8 @@ import config from 'config';
 import { CreatePaymentRequest, CreatePaymentRequestReponse } from 'models/v3/payments-api/create_payment';
 import { PaymentStatus } from 'models/v3/payments-api/payment_status';
 import initRetryPolicy from './retry-policy';
+import tlSigning from 'truelayer-signing';
+import { v4 as uuid } from 'uuid';
 
 /**
  * It interacts with the Payments V3 API.
@@ -48,12 +50,29 @@ export default class PaymentClient {
    */
   initiatePayment = async (request: CreatePaymentRequest) => {
     const headers = await this.getHeaders();
+    const idempotencyKey = uuid();
+    const idempotencyHeader = { 'Idempotency-Key': idempotencyKey };
+
+    const signature = tlSigning.sign({
+      kid: config.KID,
+      privateKeyPem: config.PRIVATE_KEY,
+      method: 'POST',
+      path: '/payments',
+      headers: idempotencyHeader,
+      body: JSON.stringify(request)
+    });
 
     try {
-      const { data } = await this.client.post<CreatePaymentRequestReponse>('/payments', request, { headers });
+      const { data } = await this.client.post<CreatePaymentRequestReponse>('/payments', request, {
+        headers: {
+          ...headers,
+          'Tl-Signature': signature,
+          ...idempotencyHeader
+        }
+      });
       return data;
     } catch (error) {
-      console.log(error);
+      console.error(error.response.data);
       throw HttpException.fromAxiosError(error, 'error_description');
     }
   };
