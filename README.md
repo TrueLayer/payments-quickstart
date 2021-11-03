@@ -63,6 +63,7 @@ To create a payment, you can try and run this command.
 ```bash
 
 $ curl -X POST 'http://localhost:3000/v3/payment' 
+```
 
 ### [GET] `/v3/payment/{paymentId}` - Get Payment status
 Once the payment has been created, you can retrieve its status by using this command.
