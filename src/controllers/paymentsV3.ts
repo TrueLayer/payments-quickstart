@@ -115,7 +115,7 @@ export default class PaymentsV3Controller {
       user: {
         type: 'new',
         name: 'John Doe',
-        phone: '12345',
+        phone: '+447514983456',
         email: 'johndoe@gmail.com'
       },
       beneficiary: {
