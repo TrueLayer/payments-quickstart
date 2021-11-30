@@ -11,7 +11,7 @@ export default class AuthController {
       const responseBody = { auth_token: token };
       res.status(200).send(responseBody);
     } catch (e) {
-      next(e instanceof HttpException ? e : new HttpException(500, 'Failed to retrieve the payment.'));
+      next(e instanceof HttpException ? e : new HttpException(500, 'Failed to retrieve the token.'));
     }
   };
 }
