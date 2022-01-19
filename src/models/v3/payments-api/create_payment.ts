@@ -7,9 +7,27 @@
  */
 export type PaymentMethodType = 'bank_transfer';
 
+export interface ProviderFilterExcludes {
+  provider_ids: [string] | null;
+}
+
+export interface ProviderFilter {
+  countries: [string] | null;
+  release_channel: string | null;
+  customer_segments: [string] | null;
+  provider_ids: [string] | null;
+  excludes: ProviderFilterExcludes | null;
+}
+
+export interface Provider {
+  type: string;
+  filter: ProviderFilter | null;
+}
+
 export interface PaymentMethod {
   type: PaymentMethodType;
   statement_reference: string;
+  provider: Provider;
 }
 
 // Beneficiary Details

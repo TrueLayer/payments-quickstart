@@ -110,7 +110,11 @@ export default class PaymentsV3Controller {
       currency: 'GBP',
       payment_method: {
         statement_reference: 'some ref',
-        type: 'bank_transfer'
+        type: 'bank_transfer',
+        provider: {
+          type: 'user_selection',
+          filter: null
+        }
       },
       user: {
         type: 'new',
