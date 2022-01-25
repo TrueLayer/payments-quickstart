@@ -4,7 +4,7 @@ import logger from 'middleware/logger';
 import { HttpException } from 'middleware/errors';
 import RetryClientFactory from './retry-client-factory';
 import config from 'config';
-import { CreatePaymentRequest, CreatePaymentRequestReponse } from 'models/v3/payments-api/create_payment';
+import { CreatePaymentRequest, CreatePaymentRequestResponse } from 'models/v3/payments-api/create_payment';
 import { PaymentStatus } from 'models/v3/payments-api/payment_status';
 import initRetryPolicy from './retry-policy';
 import tlSigning from 'truelayer-signing';
@@ -58,7 +58,7 @@ export default class PaymentClient {
     });
 
     try {
-      const { data } = await this.client.post<CreatePaymentRequestReponse>('/payments', request, {
+      const { data } = await this.client.post<CreatePaymentRequestResponse>('/payments', request, {
         headers: {
           ...headers,
           'Tl-Signature': signature,

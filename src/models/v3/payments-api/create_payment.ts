@@ -26,7 +26,6 @@ export interface Provider {
 
 export interface PaymentMethod {
   type: PaymentMethodType;
-  statement_reference: string;
   provider: Provider;
 }
 
@@ -68,7 +67,7 @@ export interface CreatePaymentRequest {
 /**
  * It defines the response of a create payment request
  */
-export interface CreatePaymentRequestReponse {
+export interface CreatePaymentRequestResponse {
   id: string;
   amount_in_minor: number;
   currency: string;
