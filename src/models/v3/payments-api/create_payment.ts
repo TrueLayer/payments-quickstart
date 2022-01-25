@@ -8,14 +8,14 @@
 export type PaymentMethodType = 'bank_transfer';
 
 export interface ProviderFilterExcludes {
-  provider_ids: [string] | null;
+  provider_ids: string[] | null;
 }
 
 export interface ProviderFilter {
-  countries: [string] | null;
+  countries: string[] | null;
   release_channel: string | null;
-  customer_segments: [string] | null;
-  provider_ids: [string] | null;
+  customer_segments: string[] | null;
+  provider_ids: string[] | null;
   excludes: ProviderFilterExcludes | null;
 }
 
