@@ -109,11 +109,13 @@ export default class PaymentsV3Controller {
       amount_in_minor: 1,
       currency: 'GBP',
       payment_method: {
-        statement_reference: 'some ref',
-        type: 'bank_transfer'
+        type: 'bank_transfer',
+        provider: {
+          type: 'user_selection',
+          filter: null
+        }
       },
       user: {
-        type: 'new',
         name: 'John Doe',
         phone: '+447514983456',
         email: 'johndoe@gmail.com'
