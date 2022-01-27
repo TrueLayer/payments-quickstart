@@ -69,5 +69,5 @@ $ curl -X POST 'http://localhost:3000/v3/payment'
 Once the payment has been created, you can retrieve its status by using this command.
 
 ```bash
-$ curl -H 'Authorization: Bearer {resource_token}' 'http://localhost:3000/v3/payment/{payment_id}'
+$ curl -H 'Authorization: Bearer {payment_token}' 'http://localhost:3000/v3/payment/{payment_id}'
 ```

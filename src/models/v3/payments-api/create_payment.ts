@@ -74,5 +74,5 @@ export interface CreatePaymentRequestResponse {
   payment_method: PaymentMethod;
   beneficiary: Beneficiary;
   status: string;
-  resource_token: string;
+  payment_token: string;
 }

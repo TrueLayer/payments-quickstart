@@ -62,7 +62,7 @@ export default class PaymentsV3Controller {
    *    }
    *   },
    *   'status': 'authorization_required', // string
-   *   'resource_token': 'a resource token', // string
+   *   'payment_token': 'a resource token', // string
    * }
    * ```
    */
@@ -73,10 +73,11 @@ export default class PaymentsV3Controller {
       // Ideally we should use DTOs / Domain Types but givent that the API spec is still work in progress, we keep the type transparent
       const response = await this.paymentClient.initiatePayment(request);
       res.status(200).send({
-        hpp_url: `https://payment.t7r.dev/payments#payment_id=${response.id}&resource_token=${response.resource_token}&return_uri=${config.REDIRECT_URI}`,
+        hpp_url: `https://payment.t7r.dev/payments#payment_id=${response.id}&payment_token=${response.payment_token}&return_uri=${config.REDIRECT_URI}`,
         ...response
       });
     } catch (e) {
+      console.log(e);
       next(e instanceof HttpException ? e : new HttpException(500, 'Failed to initiate payment.'));
     }
   };
@@ -86,7 +87,7 @@ export default class PaymentsV3Controller {
    *
    * Method: GET
    * Path: /v3/payment/{payment_id}
-   * Header: Authorization: Bearer {payment_resource_token}
+   * Header: Authorization: Bearer {payment_token}
    * Response: A payment status object, following [the specification](https://pay-api-specs.t7r.dev/#operation/get-payment)
    */
   getPayment = async (req: Request, res: Response, next: NextFunction) => {

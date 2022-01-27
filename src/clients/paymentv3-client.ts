@@ -66,7 +66,7 @@ export default class PaymentClient {
         }
       });
       return data;
-    } catch (error) {
+    } catch (error: any) {
       console.error(error.response.data);
       throw HttpException.fromAxiosError(error, 'error_description');
     }
@@ -86,7 +86,7 @@ export default class PaymentClient {
     try {
       const { data } = await this.client.get<PaymentStatus>(`/payments/${paymentId}`, { headers });
       return data;
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
       throw HttpException.fromAxiosError(error, 'error_description');
     }
