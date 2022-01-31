@@ -43,7 +43,7 @@ export interface Beneficiary {
     sort_code: string;
     account_number: string;
   };
-  name: string;
+  account_holder_name: string;
   reference: string;
 }
 
