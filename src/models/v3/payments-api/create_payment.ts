@@ -27,6 +27,7 @@ export interface Provider {
 export interface PaymentMethod {
   type: PaymentMethodType;
   provider: Provider;
+  beneficiary: Beneficiary;
 }
 
 // Beneficiary Details
@@ -43,7 +44,7 @@ export type SchemeIdentifierType = 'sort_code_account_number';
 
 export interface Beneficiary {
   type: BeneficiaryType;
-  scheme_identifier: {
+  account_identifier: {
     type: SchemeIdentifierType;
     sort_code: string;
     account_number: string;
@@ -60,7 +61,6 @@ export interface CreatePaymentRequest {
   amount_in_minor: number;
   currency: string;
   payment_method: PaymentMethod;
-  beneficiary: Beneficiary;
   user: unknown;
 }
 
@@ -74,5 +74,5 @@ export interface CreatePaymentRequestResponse {
   payment_method: PaymentMethod;
   beneficiary: Beneficiary;
   status: string;
-  resource_token: string;
+  payment_token: string;
 }
