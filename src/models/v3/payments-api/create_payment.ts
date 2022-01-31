@@ -24,12 +24,6 @@ export interface Provider {
   filter: ProviderFilter | null;
 }
 
-export interface PaymentMethod {
-  type: PaymentMethodType;
-  provider: Provider;
-  beneficiary: Beneficiary;
-}
-
 // Beneficiary Details
 
 /**
@@ -38,19 +32,25 @@ export interface PaymentMethod {
 export type BeneficiaryType = 'external_account';
 
 /**
- * The supported scheme identifiers.
+ * The supported Account identifiers.
  */
-export type SchemeIdentifierType = 'sort_code_account_number';
+export type AccountIdentifierType = 'sort_code_account_number';
 
 export interface Beneficiary {
   type: BeneficiaryType;
   account_identifier: {
-    type: SchemeIdentifierType;
+    type: AccountIdentifierType;
     sort_code: string;
     account_number: string;
   };
   name: string;
   reference: string;
+}
+
+export interface PaymentMethod {
+  type: PaymentMethodType;
+  provider: Provider;
+  beneficiary: Beneficiary;
 }
 
 /**
