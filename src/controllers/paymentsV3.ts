@@ -116,7 +116,7 @@ export default class PaymentsV3Controller {
         },
         beneficiary: {
           type: 'external_account',
-          name: config.BENEFICIARY_NAME,
+          account_holder_name: config.BENEFICIARY_NAME,
           reference: 'Test Ref',
           account_identifier: {
             type: 'sort_code_account_number',
