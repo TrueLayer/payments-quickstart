@@ -73,7 +73,7 @@ export default class PaymentsV3Controller {
       // Ideally we should use DTOs / Domain Types but givent that the API spec is still work in progress, we keep the type transparent
       const response = await this.paymentClient.initiatePayment(request);
       res.status(200).send({
-        hpp_url: `https://payment.t7r.dev/payments#payment_id=${response.id}&resource_token=${response.resource_token}&return_uri=${config.REDIRECT_URI}`,
+        hpp_url: `https://payment.t7r.dev/payments#payment_id=${response.id}&payment_token=${response.payment_token}&return_uri=${config.REDIRECT_URI}`,
         ...response
       });
     } catch (e) {
@@ -113,22 +113,22 @@ export default class PaymentsV3Controller {
         provider: {
           type: 'user_selection',
           filter: null
+        },
+        beneficiary: {
+          type: 'external_account',
+          account_holder_name: config.BENEFICIARY_NAME,
+          reference: 'Test Ref',
+          account_identifier: {
+            type: 'sort_code_account_number',
+            account_number: config.ACCOUNT_NUMBER,
+            sort_code: config.SORT_CODE
+          }
         }
       },
       user: {
         name: 'John Doe',
         phone: '+447514983456',
         email: 'johndoe@gmail.com'
-      },
-      beneficiary: {
-        type: 'external_account',
-        name: config.BENEFICIARY_NAME,
-        reference: 'Test Ref',
-        scheme_identifier: {
-          type: 'sort_code_account_number',
-          account_number: config.ACCOUNT_NUMBER,
-          sort_code: config.SORT_CODE
-        }
       }
     };
   }
