@@ -51,6 +51,9 @@ export interface PaymentMethod {
   type: PaymentMethodType;
   provider: Provider;
   beneficiary: Beneficiary;
+  provider_selection: {
+    type: 'user_selected';
+  };
 }
 
 /**
