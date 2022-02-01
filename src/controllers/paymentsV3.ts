@@ -76,8 +76,9 @@ export default class PaymentsV3Controller {
         hpp_url: `https://payment.t7r.dev/payments#payment_id=${response.id}&payment_token=${response.payment_token}&return_uri=${config.REDIRECT_URI}`,
         ...response
       });
-    } catch (e) {
-      next(e instanceof HttpException ? e : new HttpException(500, 'Failed to initiate payment.'));
+    } catch (error) {
+      console.log('Failed to initiate payment.', error);
+      next(error instanceof HttpException ? error : new HttpException(500, 'Failed to initiate payment.'));
     }
   };
 
@@ -98,8 +99,9 @@ export default class PaymentsV3Controller {
 
       const response = await this.paymentClient.getStatus(id);
       res.status(200).send(response);
-    } catch (e) {
-      next(e instanceof HttpException ? e : new HttpException(500, 'Failed to retrieve the payment.'));
+    } catch (error) {
+      console.log('Failed to initiate payment.', error);
+      next(error instanceof HttpException ? error : new HttpException(500, 'Failed to retrieve the payment.'));
     }
   };
 
@@ -123,6 +125,9 @@ export default class PaymentsV3Controller {
             account_number: config.ACCOUNT_NUMBER,
             sort_code: config.SORT_CODE
           }
+        },
+        provider_selection: {
+          type: 'user_selected'
         }
       },
       user: {
