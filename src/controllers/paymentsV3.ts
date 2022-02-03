@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { v4 as uuid } from 'uuid';
 import AuthenticationClient from 'clients/authentication-client';
 import PaymentsClient from 'clients/paymentv3-client';
 import { HttpException } from 'middleware/errors';
@@ -107,13 +106,12 @@ export default class PaymentsV3Controller {
 
   private buildPaymentRequest(): CreatePaymentRequest {
     return {
-      id: uuid(),
       amount_in_minor: 1,
       currency: 'GBP',
       payment_method: {
         type: 'bank_transfer',
-        provider: {
-          type: 'user_selection',
+        provider_selection: {
+          type: 'user_selected',
           filter: null
         },
         beneficiary: {
@@ -125,9 +123,6 @@ export default class PaymentsV3Controller {
             account_number: config.ACCOUNT_NUMBER,
             sort_code: config.SORT_CODE
           }
-        },
-        provider_selection: {
-          type: 'user_selected'
         }
       },
       user: {
