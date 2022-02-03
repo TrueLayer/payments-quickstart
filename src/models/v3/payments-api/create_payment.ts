@@ -19,11 +19,6 @@ export interface ProviderFilter {
   excludes: ProviderFilterExcludes | null;
 }
 
-export interface Provider {
-  type: string;
-  filter: ProviderFilter | null;
-}
-
 // Beneficiary Details
 
 /**
@@ -47,24 +42,34 @@ export interface Beneficiary {
   reference: string;
 }
 
+export type ProviderSelectionType = 'user_selected' | 'preselected';
+
+export interface ProviderSelection {
+  type: ProviderSelectionType;
+  filter: ProviderFilter | null;
+}
+
 export interface PaymentMethod {
   type: PaymentMethodType;
-  provider: Provider;
+  provider_selection: ProviderSelection;
   beneficiary: Beneficiary;
-  provider_selection: {
-    type: 'user_selected';
-  };
+}
+
+export interface User {
+  id?: string;
+  name: string;
+  email: string;
+  phone: string;
 }
 
 /**
  * It defines a request to create a payment.
  */
 export interface CreatePaymentRequest {
-  id: string;
   amount_in_minor: number;
   currency: string;
   payment_method: PaymentMethod;
-  user: unknown;
+  user: User;
 }
 
 /**
