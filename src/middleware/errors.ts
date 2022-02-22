@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios';
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 
 export class HttpException extends Error {
   public status: number;
@@ -35,7 +35,7 @@ export class HttpException extends Error {
 
 // Express requires all parameters in-order to recognize the function as a error middleware type.
 // With out all 4 params express will treat as a standard middleware.
-export default function error(error: HttpException, _req: Request, res: Response, _next: NextFunction) {
+export default function error(error: HttpException, _req: Request, res: Response) {
   if (process.env.NODE_ENV !== 'test') {
     error.log();
   }
