@@ -53,5 +53,9 @@
     "truelayer-signing": "^0.1.0",
     "uuid": "^8.3.2",
     "winston": "^3.3.3"
+  },
+  "resolutions": {
+    "ansi-regex": "^5.0.1",
+    "json-schema": "0.4.0"
   }
 }
