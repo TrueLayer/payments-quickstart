@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosError, AxiosInstance } from 'axios';
 import AuthenticationClient from './authentication-client';
 import logger from 'middleware/logger';
 import { HttpException } from 'middleware/errors';
@@ -66,9 +66,10 @@ export default class PaymentClient {
         }
       });
       return data;
-    } catch (error) {
-      console.error(error.response.data);
-      throw HttpException.fromAxiosError(error, 'error_description');
+    } catch (error: unknown) {
+      console.error(error);
+
+      throw HttpException.fromAxiosError(error as AxiosError<any>, 'error_description');
     }
   };
 

@@ -32,7 +32,7 @@ describe('api v3', () => {
     });
   });
 
-  describe('POST `/v3/payments`', () => {
+  describe('POST creation ', () => {
     let paymentsApi: Scope;
 
     beforeEach(() => {
@@ -44,17 +44,44 @@ describe('api v3', () => {
       });
     });
 
-    it('Successful initiated payment from payments api is returned successfully through the proxy.', done => {
-      // Arrange
-      const paymentResponse = mockPaymentResponse;
+    describe('GBP `/v3/payment`', () => {
+      it('Successful initiated payment from payments api is returned successfully through the proxy.', done => {
+        // Arrange
+        const paymentResponse = mockPaymentResponse;
 
-      paymentsApi.post('/payments').times(1).reply(200, paymentResponse);
+        paymentsApi.post('/payments').times(1).reply(200, paymentResponse);
 
-      // Act & Assert
-      request.post('/v3/payment').send().expect(200, mockPaymentResponse, done);
+        // Act & Assert
+        request.post('/v3/payment').send().expect(200, mockPaymentResponse, done);
+      });
+    });
+    describe('EUR `/v3/payment/euro`', () => {
+      it('Successful initiate a payment with EUR currency', done => {
+        // Arrange
+        const paymentResponse = mockPaymentEurResponse;
+
+        paymentsApi.post('/payments').times(1).reply(200, paymentResponse);
+
+        // Act & Assert
+        request.post('/v3/payment/euro').send().expect(200, mockPaymentEurResponse, done);
+      });
     });
   });
 });
+
+const mockPaymentEurResponse = {
+  hpp_url:
+    'https://payment.t7r.dev/payments#payment_id=764fb58a-55a4-4d65-9462-66af2958b905&resource_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfaWQiOiJwZW5ueWRldi1lNTkzOGEiLCJqdGkiOiIzMTNlNTg2Zi1iYmViLTQ2NzktOTc0ZC1hMTMyYTM0ZGFlOTkiLCJuYmYiOjE2MzA1NjgzOTUsImV4cCI6MTYzMDU3MTk5NSwiaXNzIjoiaHR0cHM6Ly9hcGkudDdyLmRldiIsImF1ZCI6Imh0dHBzOi8vYXBpLnQ3ci5kZXYifQ.acqlq2lI1UbF-NyUGa57QU9P1faOYmjF-2BGpgfDnok&return_uri=truelayer://payments_sample',
+  id: '764fb58a-55a4-4d65-9462-66af2958b905',
+  amount_in_minor: 1,
+  currency: 'EUR',
+  user: { id: '9a779a8f-5dd9-4683-9ac7-f797c16428aa' },
+  payment_method: {
+    type: 'bank_transfer',
+    beneficiary: { type: 'external_account', account_holder_name: 'fede', reference: 'fede' }
+  },
+  status: 'authorization_required'
+};
 
 const mockPaymentResponse = {
   hpp_url:
