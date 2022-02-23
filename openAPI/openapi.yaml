@@ -48,6 +48,44 @@ paths:
         422:
           description: Idempotency-Key Reuse
           content: {}
+  /v3/payment/euro:
+    post:
+      tags:
+      - payment
+      - euro
+      summary: Creates a new payment with euro as currency
+      operationId: createPayment
+      requestBody:
+        description: A Payment request object which contains the payments details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentRequest'
+        required: true
+      responses:
+        201:
+          description: the payment successfully created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Payment'
+        400:
+          description: Invalid Parameters
+          content: {}
+        401:
+          description: Unauthenticated
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        409:
+          description: Idempotency-Key Concurrency Conflict
+          content: {}
+        422:
+          description: Idempotency-Key Reuse
+          content: {}
   /v3/payment/{paymentId}:
     get:
       tags:

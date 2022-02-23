@@ -39,6 +39,7 @@ describe('api', () => {
       request.get('/payment').expect(404, done);
     });
   });
+
   describe('POST `/payments`', () => {
     let paymentsApi: Scope;
 

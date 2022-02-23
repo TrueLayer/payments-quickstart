@@ -12,6 +12,7 @@ router.post('/payment', v2Controller.createPayment);
 router.get('/payment/:id', v2Controller.getPayment);
 
 router.post('/v3/payment', v3Controller.createPayment);
+router.post('/v3/payment/euro', v3Controller.createEuroPayment);
 router.get('/v3/payment/:id', v3Controller.getPayment);
 
 router.get('/auth/get-auth-token', authController.getAuthToken);

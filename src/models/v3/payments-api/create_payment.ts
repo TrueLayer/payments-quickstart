@@ -29,15 +29,24 @@ export type BeneficiaryType = 'external_account';
 /**
  * The supported Account identifiers.
  */
-export type AccountIdentifierType = 'sort_code_account_number';
+
+export enum AccountIdentifierType {
+  SortCodeAccountNumber = 'sort_code_account_number',
+  Iban = 'iban'
+}
 
 export interface Beneficiary {
   type: BeneficiaryType;
-  account_identifier: {
-    type: AccountIdentifierType;
-    sort_code: string;
-    account_number: string;
-  };
+  account_identifier:
+    | {
+        type: AccountIdentifierType.SortCodeAccountNumber;
+        sort_code: string;
+        account_number: string;
+      }
+    | {
+        type: AccountIdentifierType.Iban;
+        iban: string;
+      };
   account_holder_name: string;
   reference: string;
 }

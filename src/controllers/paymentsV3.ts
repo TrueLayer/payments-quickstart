@@ -4,7 +4,7 @@ import AuthenticationClient from 'clients/authentication-client';
 import PaymentsClient from 'clients/paymentv3-client';
 import { HttpException } from 'middleware/errors';
 import config from 'config';
-import { CreatePaymentRequest } from 'models/v3/payments-api/create_payment';
+import { AccountIdentifierType, CreatePaymentRequest } from 'models/v3/payments-api/create_payment';
 
 /**
  * Controller for the PaymentsV3 API.
@@ -65,21 +65,26 @@ export default class PaymentsV3Controller {
    * }
    * ```
    */
-  createPayment = async (_req: Request, res: Response, next: NextFunction) => {
-    const request = this.buildPaymentRequest();
-
-    try {
-      // Ideally we should use DTOs / Domain Types but givent that the API spec is still work in progress, we keep the type transparent
-      const response = await this.paymentClient.initiatePayment(request);
-      res.status(200).send({
-        hpp_url: `https://payment.t7r.dev/payments#payment_id=${response.id}&resource_token=${response.resource_token}&return_uri=${config.REDIRECT_URI}`,
-        ...response
-      });
-    } catch (error) {
-      console.log('Failed to initiate payment.', error);
-      next(error instanceof HttpException ? error : new HttpException(500, 'Failed to initiate payment.'));
-    }
+  private makePayment = (currency?: 'EUR') => {
+    const request = this.buildPaymentRequest(currency);
+    return async (_req: Request, res: Response, next: NextFunction) => {
+      try {
+        // Ideally we should use DTOs / Domain Types but givent that the API spec is still work in progress, we keep the type transparent
+        const response = await this.paymentClient.initiatePayment(request);
+        res.status(200).send({
+          hpp_url: `https://payment.t7r.dev/payments#payment_id=${response.id}&resource_token=${response.resource_token}&return_uri=${config.REDIRECT_URI}`,
+          ...response
+        });
+      } catch (error) {
+        console.log('Failed to initiate payment.', error);
+        next(error instanceof HttpException ? error : new HttpException(500, 'Failed to initiate payment.'));
+      }
+    };
   };
+
+  createPayment = this.makePayment();
+
+  createEuroPayment = this.makePayment('EUR');
 
   /**
    * It returns the status of a payment, given its id.
@@ -104,32 +109,57 @@ export default class PaymentsV3Controller {
     }
   };
 
-  private buildPaymentRequest(): CreatePaymentRequest {
-    return {
+  private buildPaymentRequest(currency?: 'EUR'): CreatePaymentRequest {
+    const basePayment = {
       amount_in_minor: 1,
-      currency: 'GBP',
-      payment_method: {
-        type: 'bank_transfer',
-        provider_selection: {
-          type: 'user_selected',
-          filter: null
-        },
-        beneficiary: {
-          type: 'external_account',
-          account_holder_name: config.BENEFICIARY_NAME,
-          reference: 'Test Ref',
-          account_identifier: {
-            type: 'sort_code_account_number',
-            account_number: config.ACCOUNT_NUMBER,
-            sort_code: config.SORT_CODE
-          }
-        }
-      },
       user: {
         name: 'John Doe',
         phone: '+447514983456',
         email: 'johndoe@gmail.com'
       }
     };
+
+    return currency
+      ? {
+          ...basePayment,
+          currency,
+          payment_method: {
+            type: 'bank_transfer',
+            provider_selection: {
+              type: 'user_selected',
+              filter: null
+            },
+            beneficiary: {
+              type: 'external_account',
+              reference: 'reference',
+              account_holder_name: config.BENEFICIARY_NAME,
+              account_identifier: {
+                type: AccountIdentifierType.Iban,
+                iban: 'IE64IRCE92050112345678'
+              }
+            }
+          }
+        }
+      : {
+          ...basePayment,
+          currency: 'GBP',
+          payment_method: {
+            type: 'bank_transfer',
+            provider_selection: {
+              type: 'user_selected',
+              filter: null
+            },
+            beneficiary: {
+              type: 'external_account',
+              reference: 'reference',
+              account_holder_name: config.BENEFICIARY_NAME,
+              account_identifier: {
+                type: AccountIdentifierType.SortCodeAccountNumber,
+                account_number: config.ACCOUNT_NUMBER,
+                sort_code: config.SORT_CODE
+              }
+            }
+          }
+        };
   }
 }
