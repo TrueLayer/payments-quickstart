@@ -82,8 +82,7 @@ export default class PaymentsV3Controller {
     try {
       // Ideally we should use DTOs / Domain Types but givent that the API spec is still work in progress, we keep the type transparent
       const response = await this.paymentClient.initiatePayment(request);
-      console.log('========================response========================');
-      console.log(response);
+
       res.status(200).send({
         hpp_url: `https://payment.t7r.dev/payments#payment_id=${response.id}&resource_token=${response.resource_token}&return_uri=${config.REDIRECT_URI}`,
         ...response
