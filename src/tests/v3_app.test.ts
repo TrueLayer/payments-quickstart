@@ -66,8 +66,29 @@ describe('api v3', () => {
         request.post('/v3/payment/euro').send().expect(200, mockPaymentEurResponse, done);
       });
     });
+
+    describe('with provider `/v3/payment/provider`', () => {
+      it('Successful initiate a payment with a provider', done => {
+        // Arrange
+        const paymentResponse = mockPaymentWithProviderResponse;
+
+        paymentsApi.post('/payments').times(1).reply(200, paymentResponse);
+
+        // Act & Assert
+        request.post('/v3/payment/provider').send().expect(200, mockPaymentWithProviderResponse, done);
+      });
+    });
   });
 });
+
+const mockPaymentWithProviderResponse = {
+  hpp_url:
+    'https://payment.t7r.dev/payments#payment_id=b3ae12f1-21fd-470e-9489-bfa7a862a918&resource_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6InBheW1lbnQiLCJjbGllbnRfaWQiOiJlbnJpY29jYXNhZGVpLWZjNjY3ZCIsImp0aSI6ImIzYWUxMmYxLTIxZmQtNDcwZS05NDg5LWJmYTdhODYyYTkxOCIsIm5iZiI6MTY0NzQ0MTA5NCwiZXhwIjoxNjQ3NDQxOTk0LCJpc3MiOiJodHRwczovL2FwaS50N3IuZGV2IiwiYXVkIjoiaHR0cHM6Ly9hcGkudDdyLmRldiJ9._j2Cn0Rp7WABS-EbmgjtntpVedpxtCyoLNagax5Jycs&return_uri=truelayer://payments_sample',
+  id: 'b3ae12f1-21fd-470e-9489-bfa7a862a918',
+  user: { id: '52a0a47b-9d0f-4d91-acca-fe50d0d015ca' },
+  resource_token:
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6InBheW1lbnQiLCJjbGllbnRfaWQiOiJlbnJpY29jYXNhZGVpLWZjNjY3ZCIsImp0aSI6ImIzYWUxMmYxLTIxZmQtNDcwZS05NDg5LWJmYTdhODYyYTkxOCIsIm5iZiI6MTY0NzQ0MTA5NCwiZXhwIjoxNjQ3NDQxOTk0LCJpc3MiOiJodHRwczovL2FwaS50N3IuZGV2IiwiYXVkIjoiaHR0cHM6Ly9hcGkudDdyLmRldiJ9._j2Cn0Rp7WABS-EbmgjtntpVedpxtCyoLNagax5Jycs'
+};
 
 const mockPaymentEurResponse = {
   hpp_url:
