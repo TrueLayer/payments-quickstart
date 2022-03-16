@@ -53,10 +53,17 @@ export interface Beneficiary {
 
 export type ProviderSelectionType = 'user_selected' | 'preselected';
 
-export interface ProviderSelection {
-  type: ProviderSelectionType;
-  filter: ProviderFilter | null;
-}
+export type ProviderSelection = { type: ProviderSelectionType } & (
+  | {
+      type: 'user_selected';
+      filter: ProviderFilter | null;
+    }
+  | {
+      type: 'preselected';
+      provider_id: string;
+      scheme_id: string;
+    }
+);
 
 export interface PaymentMethod {
   type: PaymentMethodType;
