@@ -179,6 +179,9 @@ export default class PaymentsV3Controller {
         };
   }
 
+  // ob-lloyds works
+  // mock-payments-gb-redirect
+  // ob-monzo does not work with preselected
   private buildPaymentRequestWithProvider(): CreatePaymentRequest {
     return {
       ...this.basePayment,
