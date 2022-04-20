@@ -187,8 +187,8 @@ export default class PaymentsV3Controller {
         type: 'bank_transfer',
         provider_selection: {
           type: 'preselected',
-          provider_id: 'ob-monzo',
-          scheme_id: 'provider_determined'
+          provider_id: 'ob-lloyds',
+          scheme_id: 'faster_payments_service'
         },
         beneficiary: {
           type: 'external_account',
