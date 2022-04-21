@@ -179,6 +179,9 @@ export default class PaymentsV3Controller {
         };
   }
 
+  // ob-lloyds works
+  // mock-payments-gb-redirect
+  // ob-monzo does not work with preselected
   private buildPaymentRequestWithProvider(): CreatePaymentRequest {
     return {
       ...this.basePayment,
@@ -187,8 +190,8 @@ export default class PaymentsV3Controller {
         type: 'bank_transfer',
         provider_selection: {
           type: 'preselected',
-          provider_id: 'ob-monzo',
-          scheme_id: 'provider_determined'
+          provider_id: 'ob-lloyds',
+          scheme_id: 'faster_payments_service'
         },
         beneficiary: {
           type: 'external_account',
