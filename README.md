@@ -102,3 +102,18 @@ Once the payment has been created, you can retrieve its status by using this com
 ```bash
 $ curl -H 'Authorization: Bearer {resource_token}' 'http://localhost:3000/v3/payment/{payment_id}'
 ```
+
+### [POST] `/v3/mandate` - Create a Mandate
+To create a mandate, you can try and run this command.
+
+```bash
+
+$ curl -X POST 'http://localhost:3000/v3/mandate' 
+```
+
+### [GET] `/v3/mandate/{mandateId}` - Get Mandate status
+Once the mandate has been created, you can retrieve its status by using this command.
+
+```bash
+$ curl -H 'Authorization: Bearer {resource_token}' 'http://localhost:3000/v3/mandate/{mandate_id}'
+```
