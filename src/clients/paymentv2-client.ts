@@ -41,7 +41,7 @@ export default class PaymentClient {
         { headers }
       );
       return data;
-    } catch (error) {
+    } catch (error: any) {
       throw HttpException.fromAxiosError(error, 'error_description');
     }
   };
@@ -55,7 +55,7 @@ export default class PaymentClient {
         { headers }
       );
       return data;
-    } catch (error) {
+    } catch (error: any) {
       throw HttpException.fromAxiosError(error, 'error_description');
     }
   };
