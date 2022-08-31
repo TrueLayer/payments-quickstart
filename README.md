@@ -84,7 +84,7 @@ To create a payment, you can try and run this command.
 
 ```bash
 
-$ curl -X POST 'http://localhost:4000/v3/payment/euro' 
+$ curl -X POST 'http://localhost:3000/v3/payment/euro' 
 ```
 
 ### [POST] `/v3/payment/provider` - Create Payment with Provider
@@ -92,7 +92,7 @@ To create a payment, you can try and run this command.
 
 ```bash
 
-$ curl -X POST 'http://localhost:4000/v3/payment/provider' 
+$ curl -X POST 'http://localhost:3000/v3/payment/provider' 
 ```
 
 
