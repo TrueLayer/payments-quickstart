@@ -1,10 +1,10 @@
-import app from 'app';
+import app from '../app';
 import nock, { Scope } from 'nock';
 import supertest, { SuperTest } from 'supertest';
 import { mockPaymentResponse } from './mock-payment-response';
 import fakePaymentApiRequest, { fakePaymentRequest } from './mock-payment-request';
-import { intoSingleImmediatePaymentRequest } from 'models/payment-request';
-import config from 'config';
+import { intoSingleImmediatePaymentRequest } from '../models/payment-request';
+import config from '../config';
 
 let request: SuperTest<any>;
 
