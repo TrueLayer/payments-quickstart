@@ -83,11 +83,11 @@ export default class PaymentsV3Controller {
       // Ideally we should use DTOs / Domain Types but givent that the API spec is still work in progress, we keep the type transparent
       const response = await this.paymentClient.initiatePayment(request);
 
-      res
-        .status(200)
-        .send(
-          `http://localhost:3000/payments#payment_id=${response.id}&resource_token=${response.resource_token}&return_uri=${config.REDIRECT_URI}`
-        );
+      res.status(200).send({
+        localhost: `http://localhost:3000/payments#payment_id=${response.id}&resource_token=${response.resource_token}&return_uri=${config.REDIRECT_URI}`,
+        hpp_url: `https://payment.t7r.dev/payments#payment_id=${response.id}&resource_token=${response.resource_token}&return_uri=${config.REDIRECT_URI}`,
+        ...response
+      });
     } catch (error) {
       console.log('Failed to initiate payment.', error);
       next(error instanceof HttpException ? error : new HttpException(500, 'Failed to initiate payment.'));
