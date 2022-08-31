@@ -35,6 +35,20 @@ $ yarn
 ### Run
 In order to properly run the backend, you need to provide some configurations. Please, `export` or create a `.env` (can be copied from `.env.example`) file within the root of the project and set the variables below based on your setup.
 
+Private Key Format:
+
+```bash 
+"-----BEGIN EC PRIVATE KEY-----\nMIHcAgEBBEIBgW93aGZ0/KlD3DT/1G0/McMo92WdsJUB/nNb5/ZPlXEw+0R0uAUg\nzJcZ6qgAP5AFoXA3E1Z9zfxPehUfjeNpTWegBwYFK4EEACOhgYkDgYYABAFf+jXs\nT2VL2mM6OmpNKq98E1mQm3ugXL88iSw8yppDeOQWav9L+QDgmX6+1RK22lImln+v\nuj3hSNwSfAVxODGtCgBlASM+4n2hmduNcgiP0gm2k/6f1mwIrtVxnvuuGKm/DGoa\npjUMXCyZT/g2bR7vldQHoNN2qFJB8LTlqq2833t3tg==\n-----END EC PRIVATE KEY-----"
+```
+
+NOTE:
+Now you can optionally use BASE64_PRIVATE_KEY instead of PRIVATE_KEY to prevent issues if the format. To do so you can simply use the command bellow:
+
+```bash 
+  base64 your-private-key.pem | pbcopy
+```
+
+
 Then, you can run the following command:
 
 ```bash
@@ -87,4 +101,19 @@ Once the payment has been created, you can retrieve its status by using this com
 
 ```bash
 $ curl -H 'Authorization: Bearer {resource_token}' 'http://localhost:3000/v3/payment/{payment_id}'
+```
+
+### [POST] `/v3/mandate` - Create a Mandate
+To create a mandate, you can try and run this command.
+
+```bash
+
+$ curl -X POST 'http://localhost:3000/v3/mandate' 
+```
+
+### [GET] `/v3/mandate/{mandateId}` - Get Mandate status
+Once the mandate has been created, you can retrieve its status by using this command.
+
+```bash
+$ curl -H 'Authorization: Bearer {resource_token}' 'http://localhost:3000/v3/mandate/{mandate_id}'
 ```

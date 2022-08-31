@@ -130,7 +130,7 @@ export default class PaymentsV3Controller {
       const response = await this.paymentClient.getStatus(id);
       res.status(200).send(response);
     } catch (error) {
-      console.log('Failed to initiate payment.', error);
+      console.log('Failed to get payment.', error);
       next(error instanceof HttpException ? error : new HttpException(500, 'Failed to retrieve the payment.'));
     }
   };

@@ -4,12 +4,14 @@ import error from 'middleware/errors';
 import logger from 'middleware/logger';
 import payments from 'routes/payments';
 import health from 'routes/health';
+import auth from 'routes/auth';
+import mandates from 'routes/mandates';
 
 const app = express();
 
 app.use(cors());
 
-const routes = [payments, health];
+const routes = [auth, payments, mandates, health];
 
 const middleware = [express.json(), logger.server];
 

@@ -1,27 +1,27 @@
-import axios, { AxiosError, AxiosInstance } from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import AuthenticationClient from './authentication-client';
 import logger from 'middleware/logger';
 import { HttpException } from 'middleware/errors';
 import RetryClientFactory from './retry-client-factory';
 import config from 'config';
-import { CreatePaymentRequest, CreatePaymentRequestResponse } from 'models/v3/payments-api/create_payment';
-import { PaymentStatus } from 'models/v3/payments-api/payment_status';
 import initRetryPolicy from './retry-policy';
 import { sign, HttpMethod } from 'truelayer-signing';
 import { v4 as uuid } from 'uuid';
+import { CreateMandateRequest, CreateMandateResponse } from 'models/v3/payments-api/create_mandates';
+import { MandateResponse } from 'models/v3/payments-api/mandate_reponse';
 
 /**
  * It interacts with the Payments V3 API.
  *
  * The main features exposed by this client are the creation of a payment and the retrieval of a payment status.
  */
-export default class PaymentClient {
+export default class MandateClient {
   private client: AxiosInstance;
   private authenticationClient: AuthenticationClient;
 
   constructor(authenticationClient: AuthenticationClient) {
     const client = logger.client(
-      'payment',
+      'mandate',
       axios.create({
         timeout: config.HTTP_CLIENT_TIMEOUT,
         baseURL: config.PAYMENTS_V3_URI,
@@ -34,16 +34,16 @@ export default class PaymentClient {
   }
 
   private getHeaders = async () => ({
-    'authorization': await this.authenticationClient.authenticate(),
+    'authorization': await this.authenticationClient.authenticate('recurring_payments:sweeping'),
     'content-type': 'application/json'
   });
 
   /**
-   * It creates a payment starting from a [CreatePaymentRequest](../models/v3/payments-api/create_payments.ts)
+   * It creates a mandate starting from a [CreateMandateRequest](../models/v3/payments-api/create_mandates.ts)
    *
-   * - returns: A new payment.
+   * - returns: A new mandate.
    */
-  initiatePayment = async (request: CreatePaymentRequest) => {
+  initiateMandate = async (request: CreateMandateRequest) => {
     const headers = await this.getHeaders();
     const idempotencyKey = uuid();
     const idempotencyHeader = { 'Idempotency-Key': idempotencyKey };
@@ -52,46 +52,46 @@ export default class PaymentClient {
       kid: config.KID,
       privateKeyPem: config.PRIVATE_KEY,
       method: HttpMethod.Post,
-      path: '/payments',
+      path: '/mandates',
       headers: idempotencyHeader,
       body: JSON.stringify(request)
     });
 
     try {
-      const { data } = await this.client.post<CreatePaymentRequestResponse>('/payments', request, {
+      const response = await this.client.post<CreateMandateResponse>('/mandates', request, {
         headers: {
           ...headers,
           'Tl-Signature': signature,
           ...idempotencyHeader
         }
       });
-      return data;
-    } catch (error: unknown) {
-      console.error(error);
 
-      throw HttpException.fromAxiosError(error as AxiosError<any>, 'error_description');
+      return response.data;
+    } catch (error: any) {
+      console.log('Mandate Client:', error?.response?.data);
+
+      throw HttpException.fromAxiosError(error as any, 'error_description');
     }
   };
 
   /**
-   * It returns the status of a payment.
+   * It returns the status of a mandate.
    *
    * - parameters:
-   *   - paymentId: the identifier of a payment.
+   *   - mandateId: the identifier of a mandate.
    *   - authorizationHeader: the authorization header that need to be sent to the Payments V3 Backend.
    * - returns: a payment status.
    */
-  getStatus = async (paymentId: string) => {
+  getMandate = async (mandateId: string) => {
     const headers = await this.getHeaders();
 
     try {
-      const { data } = await this.client.get<PaymentStatus>(`/payments/${paymentId}`, { headers });
+      const { data } = await this.client.get<MandateResponse>(`/mandates/${mandateId}`, { headers });
       return data;
-    } catch (error) {
-      console.log('error in initiate payment');
-      console.log(error);
+    } catch (error: any) {
+      console.log(error.data);
 
-      throw HttpException.fromAxiosError(error as any, 'error_description');
+      throw HttpException.fromAxiosError(error, 'error_description');
     }
   };
 }

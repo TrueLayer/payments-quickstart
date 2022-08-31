@@ -41,7 +41,7 @@ export default class AuthenticationClient {
    *
    * returns: an auth token following what specified [here](https://docs.truelayer.com/#payments-api)
    */
-  authenticate = async () => {
+  authenticate = async (scope: string = 'payments') => {
     const token = this.cache.get<string>(config.CLIENT_ID);
     if (token) return this.toBearerToken(token);
 
@@ -50,11 +50,11 @@ export default class AuthenticationClient {
         grant_type: 'client_credentials',
         client_id: config.CLIENT_ID,
         client_secret: config.CLIENT_SECRET,
-        scope: 'payments'
+        scope: scope
       });
 
       return this.parseResponse(data);
-    } catch (e) {
+    } catch (e: any) {
       throw HttpException.fromAxiosError(e, 'error');
     }
   };
