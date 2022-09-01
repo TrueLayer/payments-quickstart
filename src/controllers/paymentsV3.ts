@@ -84,6 +84,7 @@ export default class PaymentsV3Controller {
       const response = await this.paymentClient.initiatePayment(request);
 
       res.status(200).send({
+        localhost: `http://localhost:3000/payments#payment_id=${response.id}&resource_token=${response.resource_token}&return_uri=${config.REDIRECT_URI}`,
         hpp_url: `https://payment.t7r.dev/payments#payment_id=${response.id}&resource_token=${response.resource_token}&return_uri=${config.REDIRECT_URI}`,
         ...response
       });
@@ -141,10 +142,16 @@ export default class PaymentsV3Controller {
           currency,
           payment_method: {
             type: 'bank_transfer',
-            provider_selection: {
-              type: 'user_selected',
-              filter: null
-            },
+            provider_selection: config.PROVIDER_ID_PRESELECTED
+              ? {
+                  type: 'preselected',
+                  provider_id: config.PROVIDER_ID_PRESELECTED,
+                  scheme_id: 'sepa_credit_transfer'
+                }
+              : {
+                  type: 'user_selected',
+                  filter: null
+                },
             beneficiary: {
               type: 'external_account',
               reference: 'reference',
@@ -190,7 +197,7 @@ export default class PaymentsV3Controller {
         type: 'bank_transfer',
         provider_selection: {
           type: 'preselected',
-          provider_id: 'ob-lloyds',
+          provider_id: config.PROVIDER_ID_PRESELECTED,
           scheme_id: 'faster_payments_service'
         },
         beneficiary: {
