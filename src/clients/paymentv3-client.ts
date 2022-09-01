@@ -88,6 +88,7 @@ export default class PaymentClient {
       const { data } = await this.client.get<PaymentStatus>(`/payments/${paymentId}`, { headers });
       return data;
     } catch (error) {
+      console.log('error in initiate payment');
       console.log(error);
 
       throw HttpException.fromAxiosError(error as any, 'error_description');

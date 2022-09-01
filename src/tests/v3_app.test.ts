@@ -82,6 +82,8 @@ describe('api v3', () => {
 });
 
 const mockPaymentWithProviderResponse = {
+  localhost:
+    'http://localhost:3000/payments#payment_id=b3ae12f1-21fd-470e-9489-bfa7a862a918&resource_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6InBheW1lbnQiLCJjbGllbnRfaWQiOiJlbnJpY29jYXNhZGVpLWZjNjY3ZCIsImp0aSI6ImIzYWUxMmYxLTIxZmQtNDcwZS05NDg5LWJmYTdhODYyYTkxOCIsIm5iZiI6MTY0NzQ0MTA5NCwiZXhwIjoxNjQ3NDQxOTk0LCJpc3MiOiJodHRwczovL2FwaS50N3IuZGV2IiwiYXVkIjoiaHR0cHM6Ly9hcGkudDdyLmRldiJ9._j2Cn0Rp7WABS-EbmgjtntpVedpxtCyoLNagax5Jycs&return_uri=truelayer://payments_sample',
   hpp_url:
     'https://payment.t7r.dev/payments#payment_id=b3ae12f1-21fd-470e-9489-bfa7a862a918&resource_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6InBheW1lbnQiLCJjbGllbnRfaWQiOiJlbnJpY29jYXNhZGVpLWZjNjY3ZCIsImp0aSI6ImIzYWUxMmYxLTIxZmQtNDcwZS05NDg5LWJmYTdhODYyYTkxOCIsIm5iZiI6MTY0NzQ0MTA5NCwiZXhwIjoxNjQ3NDQxOTk0LCJpc3MiOiJodHRwczovL2FwaS50N3IuZGV2IiwiYXVkIjoiaHR0cHM6Ly9hcGkudDdyLmRldiJ9._j2Cn0Rp7WABS-EbmgjtntpVedpxtCyoLNagax5Jycs&return_uri=truelayer://payments_sample',
   id: 'b3ae12f1-21fd-470e-9489-bfa7a862a918',
@@ -91,6 +93,8 @@ const mockPaymentWithProviderResponse = {
 };
 
 const mockPaymentEurResponse = {
+  localhost:
+    'http://localhost:3000/payments#payment_id=764fb58a-55a4-4d65-9462-66af2958b905&resource_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfaWQiOiJwZW5ueWRldi1lNTkzOGEiLCJqdGkiOiIzMTNlNTg2Zi1iYmViLTQ2NzktOTc0ZC1hMTMyYTM0ZGFlOTkiLCJuYmYiOjE2MzA1NjgzOTUsImV4cCI6MTYzMDU3MTk5NSwiaXNzIjoiaHR0cHM6Ly9hcGkudDdyLmRldiIsImF1ZCI6Imh0dHBzOi8vYXBpLnQ3ci5kZXYifQ.acqlq2lI1UbF-NyUGa57QU9P1faOYmjF-2BGpgfDnok&return_uri=truelayer://payments_sample',
   hpp_url:
     'https://payment.t7r.dev/payments#payment_id=764fb58a-55a4-4d65-9462-66af2958b905&resource_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfaWQiOiJwZW5ueWRldi1lNTkzOGEiLCJqdGkiOiIzMTNlNTg2Zi1iYmViLTQ2NzktOTc0ZC1hMTMyYTM0ZGFlOTkiLCJuYmYiOjE2MzA1NjgzOTUsImV4cCI6MTYzMDU3MTk5NSwiaXNzIjoiaHR0cHM6Ly9hcGkudDdyLmRldiIsImF1ZCI6Imh0dHBzOi8vYXBpLnQ3ci5kZXYifQ.acqlq2lI1UbF-NyUGa57QU9P1faOYmjF-2BGpgfDnok&return_uri=truelayer://payments_sample',
   id: '764fb58a-55a4-4d65-9462-66af2958b905',
@@ -105,6 +109,7 @@ const mockPaymentEurResponse = {
 };
 
 const mockPaymentResponse = {
+  localhost: `http://localhost:3000/payments#payment_id=313e586f-bbeb-4679-974d-a132a34dae99&resource_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfaWQiOiJwZW5ueWRldi1lNTkzOGEiLCJqdGkiOiIzMTNlNTg2Zi1iYmViLTQ2NzktOTc0ZC1hMTMyYTM0ZGFlOTkiLCJuYmYiOjE2MzA1NjgzOTUsImV4cCI6MTYzMDU3MTk5NSwiaXNzIjoiaHR0cHM6Ly9hcGkudDdyLmRldiIsImF1ZCI6Imh0dHBzOi8vYXBpLnQ3ci5kZXYifQ.acqlq2lI1UbF-NyUGa57QU9P1faOYmjF-2BGpgfDnok&return_uri=truelayer://payments_sample`,
   hpp_url:
     'https://payment.t7r.dev/payments#payment_id=313e586f-bbeb-4679-974d-a132a34dae99&resource_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfaWQiOiJwZW5ueWRldi1lNTkzOGEiLCJqdGkiOiIzMTNlNTg2Zi1iYmViLTQ2NzktOTc0ZC1hMTMyYTM0ZGFlOTkiLCJuYmYiOjE2MzA1NjgzOTUsImV4cCI6MTYzMDU3MTk5NSwiaXNzIjoiaHR0cHM6Ly9hcGkudDdyLmRldiIsImF1ZCI6Imh0dHBzOi8vYXBpLnQ3ci5kZXYifQ.acqlq2lI1UbF-NyUGa57QU9P1faOYmjF-2BGpgfDnok&return_uri=truelayer://payments_sample',
   id: '313e586f-bbeb-4679-974d-a132a34dae99',

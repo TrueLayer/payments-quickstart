@@ -69,6 +69,14 @@ There are some more parameters that can be customised. The following list contai
   PORT=3000 # the port that must be used by the server to run
 ```
 
+It is possible also to preselect a specific kind of provider setting a provider_id in the environment
+
+```bash
+  # this is just an example 
+  # please remeber to change also the `scheme_id` in case 
+  PROVIDER_ID_PRESELECTED="mock-payments-de-embedded" 
+```
+
 ## Endpoints
 
 ### [POST] `/v3/payment` - Create Payment
