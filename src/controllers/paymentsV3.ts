@@ -48,7 +48,7 @@ export default class PaymentsV3Controller {
    *   }
    * }
    * ```
-   * Response: a payment, following the [response specification](https://pay-api-specs.t7r.dev/#operation/create-payment)
+   * Response: a payment, following the [response specification](https://docs.truelayer.com/reference/create-payment)
    * ```json
    * {
    *   'id': 'an id', // string
@@ -85,7 +85,7 @@ export default class PaymentsV3Controller {
 
       res.status(200).send({
         localhost: `http://localhost:3000/payments#payment_id=${response.id}&resource_token=${response.resource_token}&return_uri=${config.REDIRECT_URI}`,
-        hpp_url: `https://payment.t7r.dev/payments#payment_id=${response.id}&resource_token=${response.resource_token}&return_uri=${config.REDIRECT_URI}`,
+        hpp_url: `https://payment.truelayer-sandbox.com/payments#payment_id=${response.id}&resource_token=${response.resource_token}&return_uri=${config.REDIRECT_URI}`,
         ...response
       });
     } catch (error) {
@@ -118,7 +118,7 @@ export default class PaymentsV3Controller {
    * Method: GET
    * Path: /v3/payment/{payment_id}
    * Header: Authorization: Bearer {payment_resource_token}
-   * Response: A payment status object, following [the specification](https://pay-api-specs.t7r.dev/#operation/get-payment)
+   * Response: A payment status object, following [the specification](https://docs.truelayer.com/reference/get-payment-1)
    */
   getPayment = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -158,7 +158,7 @@ export default class PaymentsV3Controller {
               account_holder_name: config.BENEFICIARY_NAME,
               account_identifier: {
                 type: AccountIdentifierType.Iban,
-                iban: 'IE64IRCE92050112345678'
+                iban: config.BENEFICIARY_IBAN
               }
             }
           }

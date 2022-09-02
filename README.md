@@ -65,7 +65,7 @@ There are some more parameters that can be customised. The following list contai
   TRUELAYER_CLIENT_SECRET="YOUR_CLIENT_SECRET"
   HTTP_CLIENT_TIMEOUT=10000 # a default http timeout
   AUTH_URI='https://auth.truelayer-sandbox.com' # the auth uri to retrieve the auth token
-  PAYMENTS_V3_URI='https://test-pay-api.t7r.dev' # the endpoint for the payments API
+  PAYMENTS_V3_URI='https://api.truelayer-sandbox.com' # the endpoint for the payments API
   PORT=3000 # the port that must be used by the server to run
 ```
 
