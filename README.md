@@ -2,7 +2,7 @@
 <img height="100px" src="./truelayer_logo.svg" />
 </p>
 
-# Example Payments Backend
+# Payments Quickstart
 
 **Warning:** This backend is not intended to be used in production. It is some sample code provided by TrueLayer to test the Android and iOS SDK and the Hosted Payment Page.
 
@@ -16,7 +16,7 @@ For more information about Payments API integration you can browse our [document
 
 ## Local Setup
 
-Follow this instruction to set up the example backend locally.
+Follow this instruction to set up the payments-quickstart locally.
 
 ### Prerequisites
 In order to install and run the backend, the following programs are required:
