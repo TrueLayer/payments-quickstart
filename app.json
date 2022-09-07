@@ -1,8 +1,8 @@
 {
-    "name": "TrueLayer payments backend example",
-    "description": "Setup Android & IOS test backend server for TrueLayer Payments v2 API",
-    "repository": "https://github.com/stripe/example-mobile-backend",
-    "keywords": [ "android", "ios", "truelayer"],
+    "name": "TrueLayer Payments Quickstart",
+    "description": "Setup test backend server for TrueLayer Payments v3 API",
+    "repository": "https://github.com/TrueLayer/payments-quickstart",
+    "keywords": [ "web", "android", "ios", "truelayer"],
     "env": {
         "CLIENT_ID": {
             "description": "Your sandbox `client_id` i.e. `sandbox-****` found 👉 https://console.truelayer.com/settings/",
