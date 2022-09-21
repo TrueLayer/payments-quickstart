@@ -5,9 +5,13 @@ import { HttpException } from '../middleware/errors';
 export default class AuthController {
   private authClient = new AuthenticationClient();
 
-  getAuthToken = async (_: Request, res: Response, next: NextFunction) => {
+  getAuthToken = async (request: Request, res: Response, next: NextFunction) => {
     try {
-      const token = await this.authClient.authenticate();
+      let scope = 'payments';
+      if (request.query.type === 'mandate') {
+        scope = 'recurring_payments:sweeping';
+      }
+      const token = await this.authClient.authenticate(scope);
       const responseBody = { auth_token: token };
       res.status(200).send(responseBody);
     } catch (e) {
