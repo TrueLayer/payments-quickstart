@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { HttpException } from 'middleware/errors';
-
+import config from 'config';
 import AuthenticationClient from 'clients/authentication-client';
 import MandatesClient from 'clients/mandatev3-client';
 import { CreateMandateRequest, createMandateRequestSchema } from 'models/v3/payments-api/create_mandates';
@@ -59,9 +59,14 @@ export default class MandatesV3Controller {
       },
       mandate: {
         type: 'sweeping',
-        provider_selection: {
-          type: 'user_selected'
-        },
+        provider_selection: config.PROVIDER_ID_PRESELECTED
+              ? {
+                  type: 'preselected',
+                  provider_id: config.PROVIDER_ID_PRESELECTED,
+                }
+              : {
+                  type: 'user_selected',
+                },
         beneficiary: {
           type: 'external_account',
           account_holder_name: 'Ted Smith',
