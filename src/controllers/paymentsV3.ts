@@ -136,9 +136,9 @@ export default class PaymentsV3Controller {
   };
 
   private buildPaymentRequest(currency?: 'EUR'): CreatePaymentRequest {
-    // Include private_beta providers by default 
+    // Include private_beta providers by default
     const filter: ProviderFilter = {
-      release_channel: "alpha",
+      release_channel: 'alpha',
       countries: null,
       customer_segments: null,
       provider_ids: null,
@@ -155,7 +155,7 @@ export default class PaymentsV3Controller {
               ? {
                   type: 'preselected',
                   provider_id: config.PROVIDER_ID_PRESELECTED,
-                  scheme_id: 'sepa_credit_transfer',
+                  scheme_id: 'sepa_credit_transfer'
                 }
               : {
                   type: 'user_selected',
