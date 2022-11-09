@@ -4,7 +4,7 @@ import AuthenticationClient from 'clients/authentication-client';
 import PaymentsClient from 'clients/paymentv3-client';
 import { HttpException } from 'middleware/errors';
 import config from 'config';
-import { AccountIdentifierType, CreatePaymentRequest } from 'models/v3/payments-api/create_payment';
+import { AccountIdentifierType, CreatePaymentRequest, ProviderFilter } from 'models/v3/payments-api/create_payment';
 
 /**
  * Controller for the PaymentsV3 API.
@@ -136,6 +136,16 @@ export default class PaymentsV3Controller {
   };
 
   private buildPaymentRequest(currency?: 'EUR'): CreatePaymentRequest {
+    // Include all providers by default,
+    // this is particulary useful when testing against embedded flow mock banks on Mobile (xs2a-volksbanken-de-sandbox)
+    const filter: ProviderFilter = {
+      release_channel: 'alpha',
+      countries: null,
+      customer_segments: null,
+      provider_ids: null,
+      excludes: null
+    };
+
     return currency
       ? {
           ...this.basePayment,
@@ -150,7 +160,7 @@ export default class PaymentsV3Controller {
                 }
               : {
                   type: 'user_selected',
-                  filter: null
+                  filter
                 },
             beneficiary: {
               type: 'external_account',
@@ -170,7 +180,7 @@ export default class PaymentsV3Controller {
             type: 'bank_transfer',
             provider_selection: {
               type: 'user_selected',
-              filter: null
+              filter
             },
             beneficiary: {
               type: 'external_account',
