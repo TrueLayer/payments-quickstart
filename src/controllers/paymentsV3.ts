@@ -137,7 +137,7 @@ export default class PaymentsV3Controller {
 
   private buildPaymentRequest(currency?: 'EUR'): CreatePaymentRequest {
     // Include all providers by default,
-    // this is particulary useful when testing on Mobile to test against embedded flow mock banks (xs2a-volksbanken-de-sandbox)
+    // this is particulary useful when testing against embedded flow mock banks on Mobile (xs2a-volksbanken-de-sandbox)
     const filter: ProviderFilter = {
       release_channel: 'alpha',
       countries: null,
