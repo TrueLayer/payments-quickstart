@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosError, AxiosInstance } from 'axios';
 import AuthenticationClient from './authentication-client';
 import logger from 'middleware/logger';
 import { HttpException } from 'middleware/errors';
@@ -48,6 +48,14 @@ export default class MandateClient {
     const idempotencyKey = uuid();
     const idempotencyHeader = { 'Idempotency-Key': idempotencyKey };
 
+    if (!config.KID) {
+      throw new Error('Missing KID');
+    }
+
+    if (!config.PRIVATE_KEY) {
+      throw new Error('Missing PRIVATE_KEY');
+    }
+
     const signature = sign({
       kid: config.KID,
       privateKeyPem: config.PRIVATE_KEY,
@@ -67,10 +75,10 @@ export default class MandateClient {
       });
 
       return response.data;
-    } catch (error: any) {
-      console.log('Mandate Client:', error?.response?.data);
+    } catch (error: unknown) {
+      console.error(error);
 
-      throw HttpException.fromAxiosError(error as any, 'error_description');
+      throw HttpException.fromAxiosError(error as AxiosError, 'error_description');
     }
   };
 

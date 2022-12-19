@@ -85,7 +85,7 @@ export default class PaymentsV3Controller {
 
       res.status(200).send({
         localhost: `http://localhost:3000/payments#payment_id=${response.id}&resource_token=${response.resource_token}&return_uri=${config.REDIRECT_URI}`,
-        hpp_url: `https://payment.truelayer-sandbox.com/payments#payment_id=${response.id}&resource_token=${response.resource_token}&return_uri=${config.REDIRECT_URI}`,
+        hpp_url: `${config.HPP_URI}/payments#payment_id=${response.id}&resource_token=${response.resource_token}&return_uri=${config.REDIRECT_URI}`,
         ...response
       });
     } catch (error) {
@@ -146,6 +146,8 @@ export default class PaymentsV3Controller {
       excludes: null
     };
 
+    const beneficiary = this.getBeneficiary(currency);
+
     return currency
       ? {
           ...this.basePayment,
@@ -162,15 +164,7 @@ export default class PaymentsV3Controller {
                   type: 'user_selected',
                   filter
                 },
-            beneficiary: {
-              type: 'external_account',
-              reference: 'reference',
-              account_holder_name: config.BENEFICIARY_NAME,
-              account_identifier: {
-                type: AccountIdentifierType.Iban,
-                iban: config.BENEFICIARY_IBAN
-              }
-            }
+            beneficiary
           }
         }
       : {
@@ -182,16 +176,7 @@ export default class PaymentsV3Controller {
               type: 'user_selected',
               filter
             },
-            beneficiary: {
-              type: 'external_account',
-              reference: 'reference',
-              account_holder_name: config.BENEFICIARY_NAME,
-              account_identifier: {
-                type: AccountIdentifierType.SortCodeAccountNumber,
-                account_number: config.ACCOUNT_NUMBER,
-                sort_code: config.SORT_CODE
-              }
-            }
+            beneficiary
           }
         };
   }
@@ -200,6 +185,12 @@ export default class PaymentsV3Controller {
   // mock-payments-gb-redirect
   // ob-monzo does not work with preselected
   private buildPaymentRequestWithProvider(): CreatePaymentRequest {
+    if (!config.PROVIDER_ID_PRESELECTED) {
+      throw new Error('Requiring payment with provider pre-selected but missing PROVIDER_ID_PRESELECTED');
+    }
+
+    const beneficiary = this.getBeneficiary();
+
     return {
       ...this.basePayment,
       currency: 'GBP',
@@ -210,17 +201,49 @@ export default class PaymentsV3Controller {
           provider_id: config.PROVIDER_ID_PRESELECTED,
           scheme_id: 'faster_payments_service'
         },
-        beneficiary: {
-          type: 'external_account',
-          reference: 'reference',
-          account_holder_name: config.BENEFICIARY_NAME,
-          account_identifier: {
-            type: AccountIdentifierType.SortCodeAccountNumber,
-            account_number: config.ACCOUNT_NUMBER,
-            sort_code: config.SORT_CODE
-          }
-        }
+        beneficiary
       }
     };
+  }
+
+  private getBeneficiary(currency?: 'EUR'): CreatePaymentRequest['payment_method']['beneficiary'] {
+    if (!config.BENEFICIARY_NAME) {
+      throw new Error('Missing BENEFICIARY_NAME');
+    }
+
+    if (currency === 'EUR') {
+      if (!config.BENEFICIARY_IBAN) {
+        throw new Error('Missing BENEFICIARY_IBAN');
+      }
+
+      return {
+        type: 'external_account',
+        reference: 'reference',
+        account_holder_name: config.BENEFICIARY_NAME,
+        account_identifier: {
+          type: AccountIdentifierType.Iban,
+          iban: config.BENEFICIARY_IBAN
+        }
+      };
+    } else {
+      if (!config.ACCOUNT_NUMBER) {
+        throw new Error('Missing ACCOUNT_NUMBER');
+      }
+
+      if (!config.SORT_CODE) {
+        throw new Error('Missing SORT_CODE');
+      }
+
+      return {
+        type: 'external_account',
+        reference: 'reference',
+        account_holder_name: config.BENEFICIARY_NAME,
+        account_identifier: {
+          type: AccountIdentifierType.SortCodeAccountNumber,
+          account_number: config.ACCOUNT_NUMBER,
+          sort_code: config.SORT_CODE
+        }
+      };
+    }
   }
 }

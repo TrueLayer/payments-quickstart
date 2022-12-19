@@ -20,7 +20,11 @@ export default class MandatesV3Controller {
 
       const response = await this.mandatesClient.initiateMandate(baseBody);
 
-      res.status(200).send(response);
+      res.status(200).send({
+        localhost: `http://localhost:3000/mandates#mandate_id=${response.id}&resource_token=${response.resource_token}&return_uri=${config.REDIRECT_URI}`,
+        hpp_url: `${config.HPP_URI}/mandates#mandate_id=${response.id}&resource_token=${response.resource_token}&return_uri=${config.REDIRECT_URI}`,
+        ...response
+      });
     } catch (e) {
       next(e instanceof HttpException ? e : new HttpException(500, 'Failed to initiate mandate.'));
     }
@@ -41,6 +45,7 @@ export default class MandatesV3Controller {
   };
 
   generateMandate(): CreateMandateRequest {
+    const beneficiary = this.getBeneficiary();
     return {
       metadata: {},
       constraints: {
@@ -67,15 +72,31 @@ export default class MandatesV3Controller {
           : {
               type: 'user_selected'
             },
-        beneficiary: {
-          type: 'external_account',
-          account_holder_name: 'Ted Smith',
-          account_identifier: {
-            type: 'sort_code_account_number',
-            sort_code: '112233',
-            account_number: '12345678'
-          }
-        }
+        beneficiary
+      }
+    };
+  }
+
+  private getBeneficiary(): CreateMandateRequest['mandate']['beneficiary'] {
+    if (!config.BENEFICIARY_NAME) {
+      throw new Error('Missing BENEFICIARY_NAME');
+    }
+
+    if (!config.ACCOUNT_NUMBER) {
+      throw new Error('Missing ACCOUNT_NUMBER');
+    }
+
+    if (!config.SORT_CODE) {
+      throw new Error('Missing SORT_CODE');
+    }
+
+    return {
+      type: 'external_account',
+      account_holder_name: config.BENEFICIARY_NAME,
+      account_identifier: {
+        type: 'sort_code_account_number',
+        account_number: config.ACCOUNT_NUMBER,
+        sort_code: config.SORT_CODE
       }
     };
   }

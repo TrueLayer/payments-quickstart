@@ -58,14 +58,16 @@ $ yarn start
 There are some more parameters that can be customised. The following list contains all the available settings:
 
 ```bash
-  SORT_CODE='123456' # a default sort code
-  ACCOUNT_NUMBER='12345678' # a default account number
-  BENEFICIARY_NAME='beneficiary' # a default beneficiary
+  SORT_CODE='123456' # a sort code
+  ACCOUNT_NUMBER='12345678' # a account number
+  BENEFICIARY_NAME='beneficiary' # a beneficiary
+  BENEFICIARY_IBAN='GB29BARC20039593936986' # a iban beneficiary
   TRUELAYER_CLIENT_ID="YOUR_CLIENT_ID" 
   TRUELAYER_CLIENT_SECRET="YOUR_CLIENT_SECRET"
-  HTTP_CLIENT_TIMEOUT=10000 # a default http timeout
+  HTTP_CLIENT_TIMEOUT=10000 # a http timeout
   AUTH_URI='https://auth.truelayer-sandbox.com' # the auth uri to retrieve the auth token
   PAYMENTS_V3_URI='https://api.truelayer-sandbox.com' # the endpoint for the payments API
+  HPP_URI='https://payment.truelayer-sandbox.com' # the hpp uri
   PORT=3000 # the port that must be used by the server to run
 ```
 

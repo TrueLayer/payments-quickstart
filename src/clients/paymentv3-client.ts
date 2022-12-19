@@ -48,6 +48,14 @@ export default class PaymentClient {
     const idempotencyKey = uuid();
     const idempotencyHeader = { 'Idempotency-Key': idempotencyKey };
 
+    if (!config.KID) {
+      throw new Error('Missing KID');
+    }
+
+    if (!config.PRIVATE_KEY) {
+      throw new Error('Missing PRIVATE_KEY');
+    }
+
     const signature = sign({
       kid: config.KID,
       privateKeyPem: config.PRIVATE_KEY,
@@ -69,7 +77,7 @@ export default class PaymentClient {
     } catch (error: unknown) {
       console.error(error);
 
-      throw HttpException.fromAxiosError(error as AxiosError<any>, 'error_description');
+      throw HttpException.fromAxiosError(error as AxiosError, 'error_description');
     }
   };
 
