@@ -9,6 +9,13 @@ process.env.PRIVATE_KEY =
   '-----END EC PRIVATE KEY-----\n';
 process.env.KID = '45fc75cf-5649-4134-84b3-192c2c78e990';
 
+process.env.BENEFICIARY_NAME = 'beneficiary';
+process.env.SORT_CODE = '123456';
+process.env.ACCOUNT_NUMBER = '12345678';
+process.env.BENEFICIARY_IBAN = 'GB29BARC20039593936986';
+process.env.PROVIDER_ID_PRESELECTED = 'mock-payments-gb-redirect';
+process.env.TRUELAYER_CLIENT_ID = 'sandbox-test-12345';
+
 module.exports = {
   roots: ['<rootDir>/src'],
   testMatch: ['**/?(*.)+(spec|test).+(ts|tsx|js)'],
