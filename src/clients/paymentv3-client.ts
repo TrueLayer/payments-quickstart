@@ -56,11 +56,15 @@ export default class PaymentClient {
       throw new Error('Missing PRIVATE_KEY');
     }
 
-    console.log('config.PRIVATE_KEY', config.PRIVATE_KEY);
+    console.log(
+      'config.PRIVATE_KEY',
+      '-----BEGIN EC PRIVATE KEY-----\nMIHcAgEBBEIBYy085jND7KGjM1ues8PO8B3g3FlSJBj3SczdWm+jcxUMDuB1Cnku\n01YG9+RQBilMp1L8MhkBCNaUS0XD9KzAnIugBwYFK4EEACOhgYkDgYYABAFRAocl\n7NevcAgux1T7NXrmBiTqnMpxQmhZDa/8i/hmX7elnbUl4d78WCQbFrgrpDc6shm8\nL1shuZ5G4/IbBRpAggBBHRHjQ1ZYZmgsYoszweFyUzrXWOSH349d0rmJ6gyS7/zq\n2jZ884A/clvco/Zu/rSkS7Q6iWBls9w94A88Q2Phyw==\n-----END EC PRIVATE KEY-----'
+    );
 
     const signature = sign({
       kid: config.KID,
-      privateKeyPem: config.PRIVATE_KEY,
+      privateKeyPem:
+        '-----BEGIN EC PRIVATE KEY-----\nMIHcAgEBBEIBYy085jND7KGjM1ues8PO8B3g3FlSJBj3SczdWm+jcxUMDuB1Cnku\n01YG9+RQBilMp1L8MhkBCNaUS0XD9KzAnIugBwYFK4EEACOhgYkDgYYABAFRAocl\n7NevcAgux1T7NXrmBiTqnMpxQmhZDa/8i/hmX7elnbUl4d78WCQbFrgrpDc6shm8\nL1shuZ5G4/IbBRpAggBBHRHjQ1ZYZmgsYoszweFyUzrXWOSH349d0rmJ6gyS7/zq\n2jZ884A/clvco/Zu/rSkS7Q6iWBls9w94A88Q2Phyw==\n-----END EC PRIVATE KEY-----',
       method: HttpMethod.Post,
       path: '/payments',
       headers: idempotencyHeader,
