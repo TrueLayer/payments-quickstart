@@ -56,6 +56,8 @@ export default class PaymentClient {
       throw new Error('Missing PRIVATE_KEY');
     }
 
+    console.log('config.PRIVATE_KEY', config.PRIVATE_KEY);
+
     const signature = sign({
       kid: config.KID,
       privateKeyPem: config.PRIVATE_KEY,
