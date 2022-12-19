@@ -17,7 +17,7 @@
   "dependencies": {
     "axios": "^0.21.2",
     "cors": "^2.8.5",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "express-winston": "^4.0.5",
     "node-cache": "^5.1.2",
     "qs": "^6.9.7",
