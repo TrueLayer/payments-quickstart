@@ -78,10 +78,6 @@ export default class MandatesV3Controller {
   }
 
   private getBeneficiary(): CreateMandateRequest['mandate']['beneficiary'] {
-    if (!config.BENEFICIARY_NAME) {
-      throw new Error('Missing BENEFICIARY_NAME');
-    }
-
     if (!config.ACCOUNT_NUMBER) {
       throw new Error('Missing ACCOUNT_NUMBER');
     }

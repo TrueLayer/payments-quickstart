@@ -1,5 +1,25 @@
 import { decodeBase64 } from 'utils';
 
+if (!process.env.TRUELAYER_CLIENT_ID) {
+  throw new Error('Missing TRUELAYER_CLIENT_ID');
+}
+
+if (!process.env.TRUELAYER_CLIENT_SECRET) {
+  throw new Error('Missing TRUELAYER_CLIENT_SECRET');
+}
+
+if (!process.env.KID) {
+  throw new Error('Missing KID');
+}
+
+if (!process.env.PRIVATE_KEY) {
+  throw new Error('Missing PRIVATE_KEY');
+}
+
+if (!process.env.BENEFICIARY_NAME) {
+  throw new Error('Missing BENEFICIARY_NAME');
+}
+
 export default {
   SORT_CODE: process.env.SORT_CODE,
   ACCOUNT_NUMBER: process.env.ACCOUNT_NUMBER,

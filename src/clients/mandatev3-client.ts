@@ -48,14 +48,6 @@ export default class MandateClient {
     const idempotencyKey = uuid();
     const idempotencyHeader = { 'Idempotency-Key': idempotencyKey };
 
-    if (!config.KID) {
-      throw new Error('Missing KID');
-    }
-
-    if (!config.PRIVATE_KEY) {
-      throw new Error('Missing PRIVATE_KEY');
-    }
-
     const signature = sign({
       kid: config.KID,
       privateKeyPem: config.PRIVATE_KEY,

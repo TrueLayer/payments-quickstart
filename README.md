@@ -35,10 +35,10 @@ $ yarn
 ### Run
 In order to properly run the backend, you need to provide some configurations. Please, `export` or create a `.env` (can be copied from `.env.example`) file within the root of the project and set the variables below based on your setup.
 
-Private Key Format:
+Private Key Format (the key is fake):
 
 ```bash 
-"-----BEGIN EC PRIVATE KEY-----\nMIHcAgEBBEIBgW93aGZ0/KlD3DT/1G0/McMo92WdsJUB/nNb5/ZPlXEw+0R0uAUg\nzJcZ6qgAP5AFoXA3E1Z9zfxPehUfjeNpTWegBwYFK4EEACOhgYkDgYYABAFf+jXs\nT2VL2mM6OmpNKq98E1mQm3ugXL88iSw8yppDeOQWav9L+QDgmX6+1RK22lImln+v\nuj3hSNwSfAVxODGtCgBlASM+4n2hmduNcgiP0gm2k/6f1mwIrtVxnvuuGKm/DGoa\npjUMXCyZT/g2bR7vldQHoNN2qFJB8LTlqq2833t3tg==\n-----END EC PRIVATE KEY-----"
+"-----BEGIN EC PRIVATE KEY-----\nNWHcAgEBBEIBgW93aGZ0/KlD3DT/1G0/McMo92WdsJUB/nNb5/ZPlXEw+0R0uAUg\nzJcZ6qgAP5AFoXA3E1Z9zfxPehUfjeNpTWegBwYFK4EEACOhgYkDgYYABAFf+jXs\nT2VL2mM6OmpNKq98E1mQm3ugXL88iSw8yppDeOQWav9L+QDgmX6+1RK22lImln+v\nuj3hSNwSfAVxODGtCgBlASM+4n2hmduNcgiP0gm2k/6f1mwIrtVxnvuuGKm/DGoa\npjUMXCyZT/g2bR7vldQHoNN2qFJB8LTlqq2833t3tg==\n-----END EC PRIVATE KEY-----"
 ```
 
 NOTE:
@@ -58,17 +58,17 @@ $ yarn start
 There are some more parameters that can be customised. The following list contains all the available settings:
 
 ```bash
-  SORT_CODE='123456' # a sort code
-  ACCOUNT_NUMBER='12345678' # a account number
-  BENEFICIARY_NAME='beneficiary' # a beneficiary
-  BENEFICIARY_IBAN='GB29BARC20039593936986' # a iban beneficiary
+  SORT_CODE='123456' # The bank sort code to use for GBP payments
+  ACCOUNT_NUMBER='12345678' # The bank account number to use for GBP payments or mandates
+  BENEFICIARY_NAME='beneficiary' # The beneficiary name to use for EUR payments
+  BENEFICIARY_IBAN='GB29BARC20039593936986' # The beneficiary IBAN to use for EUR payments
   TRUELAYER_CLIENT_ID="YOUR_CLIENT_ID" 
   TRUELAYER_CLIENT_SECRET="YOUR_CLIENT_SECRET"
-  HTTP_CLIENT_TIMEOUT=10000 # a http timeout
-  AUTH_URI='https://auth.truelayer-sandbox.com' # the auth uri to retrieve the auth token
-  PAYMENTS_V3_URI='https://api.truelayer-sandbox.com' # the endpoint for the payments API
-  HPP_URI='https://payment.truelayer-sandbox.com' # the hpp uri
-  PORT=3000 # the port that must be used by the server to run
+  HTTP_CLIENT_TIMEOUT=10000 # The HTTP timeout in milliseconds
+  AUTH_URI='https://auth.truelayer-sandbox.com' # The TrueLayer authentication server used to obtain an access token
+  PAYMENTS_V3_URI='https://api.truelayer-sandbox.com' # The TrueLayer Payments API server used to create a payment or mandate
+  HPP_URI='https://payment.truelayer-sandbox.com' # The TrueLayer Hosted Payments Page
+  PORT=3000 # The server port to bind locally
 ```
 
 It is possible also to preselect a specific kind of provider setting a provider_id in the environment

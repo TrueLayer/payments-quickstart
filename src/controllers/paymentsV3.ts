@@ -203,10 +203,6 @@ export default class PaymentsV3Controller {
   }
 
   private getBeneficiary(currency?: 'EUR'): CreatePaymentRequest['payment_method']['beneficiary'] {
-    if (!config.BENEFICIARY_NAME) {
-      throw new Error('Missing BENEFICIARY_NAME');
-    }
-
     if (currency === 'EUR') {
       if (!config.BENEFICIARY_IBAN) {
         throw new Error('Missing BENEFICIARY_IBAN');
