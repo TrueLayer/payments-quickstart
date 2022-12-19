@@ -12,8 +12,8 @@ if (!process.env.KID) {
   throw new Error('Missing KID');
 }
 
-if (!process.env.PRIVATE_KEY) {
-  throw new Error('Missing PRIVATE_KEY');
+if (!process.env.PRIVATE_KEY || !process.env.BASE64_PRIVATE_KEY) {
+  throw new Error('Missing KEY, check PRIVATE_KEY or BASE64_PRIVATE_KEY');
 }
 
 if (!process.env.BENEFICIARY_NAME) {
