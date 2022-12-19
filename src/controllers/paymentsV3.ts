@@ -185,10 +185,6 @@ export default class PaymentsV3Controller {
   // mock-payments-gb-redirect
   // ob-monzo does not work with preselected
   private buildPaymentRequestWithProvider(): CreatePaymentRequest {
-    if (!config.PROVIDER_ID_PRESELECTED) {
-      throw new Error('Requiring payment with provider pre-selected but missing PROVIDER_ID_PRESELECTED');
-    }
-
     const beneficiary = this.getBeneficiary();
 
     return {
@@ -198,7 +194,7 @@ export default class PaymentsV3Controller {
         type: 'bank_transfer',
         provider_selection: {
           type: 'preselected',
-          provider_id: config.PROVIDER_ID_PRESELECTED,
+          provider_id: config.PROVIDER_ID_PRESELECTED!,
           scheme_id: 'faster_payments_service'
         },
         beneficiary
