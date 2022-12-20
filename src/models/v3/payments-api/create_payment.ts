@@ -1,102 +1,67 @@
-/* eslint-disable camelcase */
+import z from 'zod';
+import { currencyCodeSchema, paymentAccountIdentifierSchema, providerFilterSchema } from './common';
 
-// Payment Method Details
+export type ProviderFilter = z.infer<typeof providerFilterSchema>;
 
-/**
- * The supported payment methods.
- */
-export type PaymentMethodType = 'bank_transfer';
+const beneficiarySchema = z.object({
+  type: z.literal('external_account'),
+  account_identifier: paymentAccountIdentifierSchema,
+  account_holder_name: z.string(),
+  reference: z.string()
+});
 
-export interface ProviderFilterExcludes {
-  provider_ids: string[] | null;
-}
+const providerSelectionUserSelectedSchema = z.object({
+  type: z.literal('user_selected'),
+  filter: providerFilterSchema
+});
 
-export interface ProviderFilter {
-  countries: string[] | null;
-  release_channel: string | null;
-  customer_segments: string[] | null;
-  provider_ids: string[] | null;
-  excludes: ProviderFilterExcludes | null;
-}
+const providerSelectionPreSelectedSchema = z.object({
+  type: z.literal('preselected'),
+  provider_id: z.string(),
+  scheme_id: z.string()
+});
 
-// Beneficiary Details
+const providerSelectionSchema = z.discriminatedUnion('type', [
+  providerSelectionPreSelectedSchema,
+  providerSelectionUserSelectedSchema
+]);
 
-/**
- * The supported beneficiary types.
- */
-export type BeneficiaryType = 'external_account';
+const paymentMethodSchema = z.object({
+  type: z.literal('bank_transfer'),
+  provider_selection: providerSelectionSchema,
+  beneficiary: beneficiarySchema
+});
 
-/**
- * The supported Account identifiers.
- */
-
-export enum AccountIdentifierType {
-  SortCodeAccountNumber = 'sort_code_account_number',
-  Iban = 'iban'
-}
-
-export interface Beneficiary {
-  type: BeneficiaryType;
-  account_identifier:
-    | {
-        type: AccountIdentifierType.SortCodeAccountNumber;
-        sort_code: string;
-        account_number: string;
-      }
-    | {
-        type: AccountIdentifierType.Iban;
-        iban: string;
-      };
-  account_holder_name: string;
-  reference: string;
-}
-
-export type ProviderSelectionType = 'user_selected' | 'preselected';
-
-export type ProviderSelection = { type: ProviderSelectionType } & (
-  | {
-      type: 'user_selected';
-      filter: ProviderFilter | null;
-    }
-  | {
-      type: 'preselected';
-      provider_id: string;
-      scheme_id: string;
-    }
-);
-
-export interface PaymentMethod {
-  type: PaymentMethodType;
-  provider_selection: ProviderSelection;
-  beneficiary: Beneficiary;
-}
-
-export interface User {
-  id?: string;
-  name: string;
-  email: string;
-  phone: string;
-}
+const userSchema = z.object({
+  id: z.string().optional(),
+  name: z.string(),
+  email: z.string(),
+  phone: z.string()
+});
 
 /**
  * It defines a request to create a payment.
  */
-export interface CreatePaymentRequest {
-  amount_in_minor: number;
-  currency: string;
-  payment_method: PaymentMethod;
-  user: User;
-}
+const createPaymentRequestSchema = z.object({
+  amount_in_minor: z.number(),
+  currency: z.string(),
+  payment_method: paymentMethodSchema,
+  user: userSchema
+});
+
+export type CreatePaymentRequest = z.infer<typeof createPaymentRequestSchema>;
 
 /**
  * It defines the response of a create payment request
  */
-export interface CreatePaymentRequestResponse {
-  id: string;
-  amount_in_minor: number;
-  currency: string;
-  payment_method: PaymentMethod;
-  beneficiary: Beneficiary;
-  status: string;
-  resource_token: string;
-}
+const createPaymentRequestResponseSchema = z.object({
+  id: z.string(),
+  amount_in_minor: z.number(),
+  currency: currencyCodeSchema,
+  payment_method: paymentMethodSchema,
+  beneficiary: beneficiarySchema,
+  status: z.string(),
+  resource_token: z.string()
+});
+
+export type CreatePaymentRequestResponse = z.infer<typeof createPaymentRequestResponseSchema>;

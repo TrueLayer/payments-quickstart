@@ -28,10 +28,6 @@ export default class AuthenticationClient {
       throw new Error('Failed parsing authentication request.');
     }
 
-    if (!config.CLIENT_ID) {
-      throw new Error('Missing CLIENT_ID');
-    }
-
     this.cache.set(config.CLIENT_ID, token, data.expires_in);
     return this.toBearerToken(token);
   };
@@ -46,10 +42,6 @@ export default class AuthenticationClient {
    * returns: an auth token following what specified [here](https://docs.truelayer.com/#payments-api)
    */
   authenticate = async (scope: string = 'payments') => {
-    if (!config.CLIENT_ID) {
-      throw new Error('Missing CLIENT_ID');
-    }
-
     const token = this.cache.get<string>(config.CLIENT_ID);
     if (token) return this.toBearerToken(token);
 

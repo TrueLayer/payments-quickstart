@@ -4,8 +4,12 @@ import { HttpException } from 'middleware/errors';
 import AuthenticationClient from 'clients/authentication-client';
 import MandatesClient from 'clients/mandatev3-client';
 import { CreateMandateRequest, createMandateRequestSchema } from 'models/v3/payments-api/create_mandates';
-import { CurrencyCode, PeriodAlignment } from '../models/v3/payments-api/mandate_common';
+import { CurrencyCode, PeriodAlignment } from '../models/v3/payments-api/common';
 
+/**
+ * Controller for the PaymentsV3 API - Mandates.
+ * It responds to two endpoints, one to create a mandate and one to retrieve a mandate.
+ */
 export default class MandatesV3Controller {
   private mandatesClient = new MandatesClient(new AuthenticationClient());
 
@@ -25,8 +29,8 @@ export default class MandatesV3Controller {
         hpp_url: `${config.HPP_URI}/mandates#mandate_id=${response.id}&resource_token=${response.resource_token}&return_uri=${config.REDIRECT_URI}`,
         ...response
       });
-    } catch (e) {
-      next(e instanceof HttpException ? e : new HttpException(500, 'Failed to initiate mandate.'));
+    } catch (error) {
+      next(error instanceof HttpException ? error : new HttpException(500, 'Failed to initiate mandate.'));
     }
   };
 
@@ -39,8 +43,8 @@ export default class MandatesV3Controller {
     try {
       const response = await this.mandatesClient.getMandate(id);
       res.status(200).send(response);
-    } catch (e) {
-      next(e instanceof HttpException ? e : new HttpException(500, `Failed to retrieve mandate: ${id}.`));
+    } catch (error) {
+      next(error instanceof HttpException ? error : new HttpException(500, `Failed to retrieve mandate: ${id}.`));
     }
   };
 

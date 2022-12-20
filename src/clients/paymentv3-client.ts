@@ -5,7 +5,6 @@ import { HttpException } from 'middleware/errors';
 import RetryClientFactory from './retry-client-factory';
 import config from 'config';
 import { CreatePaymentRequest, CreatePaymentRequestResponse } from 'models/v3/payments-api/create_payment';
-import { PaymentStatus } from 'models/v3/payments-api/payment_status';
 import initRetryPolicy from './retry-policy';
 import { sign, HttpMethod } from 'truelayer-signing';
 import { v4 as uuid } from 'uuid';
@@ -74,21 +73,21 @@ export default class PaymentClient {
   };
 
   /**
-   * It returns the status of a payment.
+   * It returns a payment.
    *
    * - parameters:
    *   - paymentId: the identifier of a payment.
    *   - authorizationHeader: the authorization header that need to be sent to the Payments V3 Backend.
-   * - returns: a payment status.
+   * - returns: a payment.
    */
-  getStatus = async (paymentId: string) => {
+  getPayment = async (paymentId: string) => {
     const headers = await this.getHeaders();
 
     try {
-      const { data } = await this.client.get<PaymentStatus>(`/payments/${paymentId}`, { headers });
+      const { data } = await this.client.get<CreatePaymentRequestResponse>(`/payments/${paymentId}`, { headers });
       return data;
     } catch (error) {
-      console.log('error in initiate payment');
+      console.log('error in getting the status of a payment');
       console.log(error);
 
       throw HttpException.fromAxiosError(error as any, 'error_description');

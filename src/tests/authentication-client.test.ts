@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-
 import nock, { Interceptor } from 'nock';
 import AuthenticationClient from '../clients/authentication-client';
 import { HttpException } from '../middleware/errors';

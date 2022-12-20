@@ -18,14 +18,6 @@ export enum CurrencyCode {
 
 export const currencyCodeSchema = z.nativeEnum(CurrencyCode);
 
-enum ReleaseChannel {
-  GeneralAvailability = 'general_availability',
-  PublicBeta = 'public_beta',
-  PrivateBeta = 'private_beta'
-}
-
-export const releaseChannelSchema = z.nativeEnum(ReleaseChannel);
-
 enum CustomerSegment {
   Retail = 'retail',
   Business = 'business',
@@ -34,17 +26,22 @@ enum CustomerSegment {
 
 const customerSegmentSchema = z.nativeEnum(CustomerSegment);
 
-export const providerFilterSchema = z.object({
-  countries: z.array(z.string()).optional(),
-  release_channel: releaseChannelSchema.optional(),
-  customer_segments: z.array(customerSegmentSchema).optional(),
-  provider_ids: z.array(z.string()).optional(),
-  excludes: z
-    .object({
-      provider_ids: z.array(z.string()).optional()
+export const providerFilterSchema = z
+  .object({
+    countries: z.array(z.string()),
+    release_channel: z.union([
+      z.literal('general_availability'),
+      z.literal('public_beta'),
+      z.literal('private_beta'),
+      z.literal('alpha')
+    ]),
+    customer_segments: z.array(customerSegmentSchema),
+    provider_ids: z.array(z.string()),
+    excludes: z.object({
+      provider_ids: z.array(z.string())
     })
-    .optional()
-});
+  })
+  .deepPartial();
 
 export const accountIdentifierScanSchema = z.object({
   type: z.literal('sort_code_account_number'),
@@ -89,14 +86,16 @@ export const mandateConstraintsSchema = z.object({
   valid_from: z.string().optional(),
   valid_to: z.string().optional(),
   maximum_individual_amount: z.number(),
-  periodic_limits: z.object({
-    day: mandatePeriodicLimitSchema.optional(),
-    week: mandatePeriodicLimitSchema.optional(),
-    fortnight: mandatePeriodicLimitSchema.optional(),
-    month: mandatePeriodicLimitSchema.optional(),
-    half_year: mandatePeriodicLimitSchema.optional(),
-    year: mandatePeriodicLimitSchema.optional()
-  })
+  periodic_limits: z
+    .object({
+      day: mandatePeriodicLimitSchema,
+      week: mandatePeriodicLimitSchema,
+      fortnight: mandatePeriodicLimitSchema,
+      month: mandatePeriodicLimitSchema,
+      half_year: mandatePeriodicLimitSchema,
+      year: mandatePeriodicLimitSchema
+    })
+    .deepPartial()
 });
 
 export const mandateDestinationExternalAccountSchema = z.object({
