@@ -1,0 +1,8 @@
+.idea
+.DS_Store
+.vscode
+.env
+
+/dist
+/coverage
+/node_modules
