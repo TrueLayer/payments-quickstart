@@ -1,14 +1,9 @@
-/* eslint-disable camelcase */
+import z from 'zod';
 
-export interface AuthenticationRequest {
-  grant_type: string;
-  client_id: string;
-  client_secret: string;
-  scope: string;
-}
+const AuthenticationResponseSchema = z.object({
+  access_token: z.string(),
+  token_type: z.string(),
+  expires_in: z.number()
+});
 
-export interface AuthenticationResponse {
-  access_token: string;
-  expires_in: number;
-  token_type: string;
-}
+export type AuthenticationResponse = z.infer<typeof AuthenticationResponseSchema>;

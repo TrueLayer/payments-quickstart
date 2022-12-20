@@ -7,19 +7,21 @@ import {
   remitterSchema,
   mandateConstraintsSchema,
   mandatePaymentDestinationSchema
-} from './mandate_common';
+} from './common';
 
 const mandateProviderSelectionUserSelectedSchema = z.object({
   type: z.literal('user_selected'),
   filter: providerFilterSchema.optional()
 });
 
-const paymentUserCreateSchema = z.object({
-  id: z.string().optional(),
-  name: z.string().optional(),
-  email: z.string().optional(),
-  phone: z.string().optional()
-});
+const paymentUserCreateSchema = z
+  .object({
+    id: z.string(),
+    name: z.string(),
+    email: z.string(),
+    phone: z.string()
+  })
+  .deepPartial();
 
 const mandateProviderSelectionPreselectedSchema = z.object({
   type: z.literal('preselected'),

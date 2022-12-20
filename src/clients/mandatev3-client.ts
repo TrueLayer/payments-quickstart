@@ -8,7 +8,7 @@ import initRetryPolicy from './retry-policy';
 import { sign, HttpMethod } from 'truelayer-signing';
 import { v4 as uuid } from 'uuid';
 import { CreateMandateRequest, CreateMandateResponse } from 'models/v3/payments-api/create_mandates';
-import { MandateResponse } from 'models/v3/payments-api/mandate_reponse';
+import { MandateResponse } from 'models/v3/payments-api/mandate_response';
 
 /**
  * It interacts with the Payments V3 API.

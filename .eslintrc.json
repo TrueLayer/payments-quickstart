@@ -20,6 +20,7 @@
     "rules": {
         "@typescript-eslint/no-unused-vars": "error",
         "quote-props": ["error", "consistent"],
-        "prettier/prettier": "error"
+        "prettier/prettier": "error",
+        "camelcase": "off"
     }
 }
