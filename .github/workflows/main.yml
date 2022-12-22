@@ -14,13 +14,13 @@ jobs:
       - run: yarn
       - run: yarn build
       - run: yarn run ci:test
-      env:
-        TRUELAYER_CLIENT_ID: ${{ secrets.TRUELAYER_CLIENT_ID }}
-        TRUELAYER_CLIENT_SECRET: ${{ secrets.TRUELAYER_CLIENT_SECRET }}
-        KID: ${{ secrets.KID }}
-        BASE64_PRIVATE_KEY: ${{ secrets.BASE64_PRIVATE_KEY }}
-        SORT_CODE: ${{ secrets.SORT_CODE }}
-        ACCOUNT_NUMBER: ${{ secrets.ACCOUNT_NUMBER }}
-        BENEFICIARY_NAME: ${{ secrets.BENEFICIARY_NAME }}
-        BENEFICIARY_IBAN: ${{ secrets.BENEFICIARY_IBAN }}
-        PROVIDER_ID_PRESELECTED: ${{ secrets.PROVIDER_ID_PRESELECTED }}
+        env:
+          TRUELAYER_CLIENT_ID: ${{ secrets.TRUELAYER_CLIENT_ID }}
+          TRUELAYER_CLIENT_SECRET: ${{ secrets.TRUELAYER_CLIENT_SECRET }}
+          KID: ${{ secrets.KID }}
+          BASE64_PRIVATE_KEY: ${{ secrets.BASE64_PRIVATE_KEY }}
+          SORT_CODE: ${{ secrets.SORT_CODE }}
+          ACCOUNT_NUMBER: ${{ secrets.ACCOUNT_NUMBER }}
+          BENEFICIARY_NAME: ${{ secrets.BENEFICIARY_NAME }}
+          BENEFICIARY_IBAN: ${{ secrets.BENEFICIARY_IBAN }}
+          PROVIDER_ID_PRESELECTED: ${{ secrets.PROVIDER_ID_PRESELECTED }}
