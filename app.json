@@ -1,0 +1,37 @@
+{
+    "name": "TrueLayer Payments Quickstart",
+    "description": "Setup test backend server for TrueLayer Payments v3 API",
+    "repository": "https://github.com/TrueLayer/payments-quickstart",
+    "keywords": [ "web", "android", "ios", "truelayer"],
+    "env": {
+        "CLIENT_ID": {
+            "description": "Your sandbox `client_id` i.e. `sandbox-****` found 👉 https://console.truelayer.com/settings/",
+            "required": true
+        },
+        "CLIENT_SECRET": {
+            "description": "Your sandbox `client_secret` found 👉 https://console.truelayer.com/settings/",
+            "required": true
+        },
+        "BENEFICIARY_NAME": {
+            "description": "Your sandbox bank `beneficiary_name` or a default will be used.",
+            "required": false
+        },
+        "SORT_CODE": {
+            "description": "Your sandbox bank `sort_code` or a default will be used.",
+            "required": false
+        },
+        "ACCOUNT_NUMBER": {
+            "description": "Your sandbox bank `account_number` or a default will be used.",
+            "required": false
+        },
+        "WEBHOOK_URI": {
+            "description": "Register a webhook to listen to payment events. Uri must be registered to `Allowed redirect URIs` found 👉 https://console.truelayer.com/settings/.",
+            "required": false
+        },
+        "REDIRECT_URI": {
+            "description": "URI that is used to return the user to after authorising the payment. Uri must be registered to `Allowed redirect URIs` found 👉 https://console.truelayer.com/settings/.",
+            "required": false
+        }
+    },
+    "stack": "heroku-18"
+}
