@@ -11,6 +11,9 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 14
+      - run: yarn
+      - run: yarn build
+      - run: yarn run ci:test
       env:
         TRUELAYER_CLIENT_ID: ${{ secrets.TRUELAYER_CLIENT_ID }}
         TRUELAYER_CLIENT_SECRET: ${{ secrets.TRUELAYER_CLIENT_SECRET }}
@@ -21,6 +24,3 @@ jobs:
         BENEFICIARY_NAME: ${{ secrets.BENEFICIARY_NAME }}
         BENEFICIARY_IBAN: ${{ secrets.BENEFICIARY_IBAN }}
         PROVIDER_ID_PRESELECTED: ${{ secrets.PROVIDER_ID_PRESELECTED }}
-      - run: yarn
-      - run: yarn build
-      - run: yarn run ci:test
