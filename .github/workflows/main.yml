@@ -1,5 +1,5 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-name: Build and Test Repo
+name: build_and_test
 
 on: [push]
 
@@ -9,6 +9,8 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
+        with:
+          node-version: 14
       - run: yarn
       - run: yarn build
-      - run: yarn ci:test
+      - run: yarn run ci:test
