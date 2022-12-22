@@ -1,4 +1,4 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# This workflow will do a clean installation of node dependencies, build the source code and run tests
 name: build_and_test
 
 on: [push]
@@ -11,6 +11,16 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 14
+      env:
+        TRUELAYER_CLIENT_ID: ${{ secrets.TRUELAYER_CLIENT_ID }}
+        TRUELAYER_CLIENT_SECRET: ${{ secrets.TRUELAYER_CLIENT_SECRET }}
+        KID: ${{ secrets.KID }}
+        BASE64_PRIVATE_KEY: ${{ secrets.BASE64_PRIVATE_KEY }}
+        SORT_CODE: ${{ secrets.SORT_CODE }}
+        ACCOUNT_NUMBER: ${{ secrets.ACCOUNT_NUMBER }}
+        BENEFICIARY_NAME: ${{ secrets.BENEFICIARY_NAME }}
+        BENEFICIARY_IBAN: ${{ secrets.BENEFICIARY_IBAN }}
+        PROVIDER_ID_PRESELECTED: ${{ secrets.PROVIDER_ID_PRESELECTED }}
       - run: yarn
       - run: yarn build
       - run: yarn run ci:test
