@@ -1,4 +1,0 @@
-_auth="$NPM_PASSWORD"
-always-auth=true
-email=truelayer@truelayer.com
-registry=https://truelayer.jfrog.io/artifactory/api/npm/npm
