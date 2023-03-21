@@ -1,7 +1,7 @@
 .idea
 .DS_Store
 .vscode
-.env
+.env*
 
 /dist
 /coverage

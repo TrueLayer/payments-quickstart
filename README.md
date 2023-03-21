@@ -42,7 +42,8 @@ Private Key Format (the key is fake):
 ```
 
 NOTE:
-Now you can optionally use BASE64_PRIVATE_KEY instead of PRIVATE_KEY to prevent issues if the format. To do so you can simply use the command bellow:
+- You can pass a custom environment file using the `dotenv_config_path` option.
+- Now you can optionally use BASE64_PRIVATE_KEY instead of PRIVATE_KEY to prevent issues if the format. To do so you can simply use the command bellow:
 
 ```bash 
   base64 your-private-key.pem | pbcopy
