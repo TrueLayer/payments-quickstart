@@ -106,6 +106,13 @@ To create a payment, you can try and run this command.
 $ curl -X POST 'http://localhost:3000/v3/payment/provider' 
 ```
 
+### [POST] `/v3/payment/scheme_selection` - Create Payment with User Selected Provider and Scheme
+To create a payment, you can try and run this command.
+
+```bash
+
+$ curl -X POST 'http://localhost:3000/v3/payment/scheme_selection' 
+```
 
 ### [GET] `/v3/payment/{paymentId}` - Get Payment status
 Once the payment has been created, you can retrieve its status by using this command.
