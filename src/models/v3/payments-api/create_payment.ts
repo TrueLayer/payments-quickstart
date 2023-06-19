@@ -10,15 +10,43 @@ const beneficiarySchema = z.object({
   reference: z.string()
 });
 
+const schemeSelectionIntantOnlySchema = z.object({
+  type: z.literal('instant_only'),
+  allow_remitter_fee: z.boolean().optional()
+});
+
+const schemeSelectionIntantPreferredSchema = z.object({
+  type: z.literal('instant_preferred'),
+  allow_remitter_fee: z.boolean().optional()
+});
+
+const schemeSelectionUserSelectedSchema = z.object({
+  type: z.literal('user_selected')
+});
+
 const providerSelectionUserSelectedSchema = z.object({
   type: z.literal('user_selected'),
-  filter: providerFilterSchema
+  filter: providerFilterSchema,
+  scheme_selection: z
+    .discriminatedUnion('type', [
+      schemeSelectionIntantOnlySchema,
+      schemeSelectionIntantPreferredSchema,
+      schemeSelectionUserSelectedSchema
+    ])
+    .optional()
 });
 
 const providerSelectionPreSelectedSchema = z.object({
   type: z.literal('preselected'),
   provider_id: z.string(),
-  scheme_id: z.string()
+  scheme_id: z.string(),
+  scheme_selection: z
+    .discriminatedUnion('type', [
+      schemeSelectionIntantOnlySchema,
+      schemeSelectionIntantPreferredSchema,
+      schemeSelectionUserSelectedSchema
+    ])
+    .optional()
 });
 
 const providerSelectionSchema = z.discriminatedUnion('type', [

@@ -69,6 +69,20 @@ export default class PaymentsV3Controller {
   };
 
   /**
+   * It creates a new payment with a user selected scheme and provider.
+   *
+   * Method: POST
+   * Path: /v3/payment/scheme_selection
+   * Header: Authorization: Bearer {auth_token}
+   * Body: buildPaymentRequestWithUserSelectedScheme()
+   *
+   * */
+  createPaymentWithUserSelectedScheme = () => {
+    const request = this.buildPaymentRequestWithUserSelectedScheme();
+    return this.doPayment(request);
+  };
+
+  /**
    * It returns the status of a payment, given its id.
    *
    * Method: GET
@@ -130,6 +144,32 @@ export default class PaymentsV3Controller {
             beneficiary
           }
         };
+  }
+
+  // ob-lloyds works
+  // mock-payments-gb-redirect
+  // ob-monzo does not work with preselected
+  private buildPaymentRequestWithUserSelectedScheme(): CreatePaymentRequest {
+    const beneficiary = this.getBeneficiary();
+    const filter: ProviderFilter = {
+      release_channel: 'alpha'
+    };
+
+    return {
+      ...this.basePayment,
+      currency: 'GBP',
+      payment_method: {
+        type: 'bank_transfer',
+        provider_selection: {
+          type: 'user_selected',
+          filter,
+          scheme_selection: {
+            type: 'user_selected'
+          }
+        },
+        beneficiary
+      }
+    };
   }
 
   // ob-lloyds works
