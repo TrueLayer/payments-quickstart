@@ -111,7 +111,7 @@ $ curl -X POST 'http://localhost:3000/v3/payment/provider'
 This endpoint has a default payment request body, so it behaves like `/v3/payment` if not request body is passed. 
 The core difference is that you can override the default body request to customise the payment creation.
 The request below is used to create a payment in `EURs` with a `Preselected` provider and a `UserSelected` scheme.
-Note that the propery `type` of every block is required so the service knows what defaults to use.
+Note that the property `type` of every block is required so the service knows what defaults to use.
 
 ```json
   {
