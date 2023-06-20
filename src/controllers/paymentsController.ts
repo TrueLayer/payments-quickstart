@@ -12,7 +12,7 @@ import config from 'config';
 import { HttpException } from 'middleware/errors';
 import { PaymentAccountIdentifier } from 'models/v3/payments-api/common';
 
-export class PaymentsV3NeoController {
+export class PaymentsController {
   private paymentClient = new PaymentsClient(new AuthenticationClient());
 
   createPayment = async (req: Request<Partial<CreatePaymentRequest>>, res: Response, next: NextFunction) => {
