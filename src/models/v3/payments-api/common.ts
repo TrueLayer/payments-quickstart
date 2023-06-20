@@ -59,6 +59,8 @@ export const paymentAccountIdentifierSchema = z.discriminatedUnion('type', [
   accountIdentifierIbanSchema
 ]);
 
+export type PaymentAccountIdentifier = z.infer<typeof paymentAccountIdentifierSchema>;
+
 export const remitterSchema = z.object({
   account_holder_name: z.string(),
   account_identifier: paymentAccountIdentifierSchema

@@ -10,15 +10,41 @@ const beneficiarySchema = z.object({
   reference: z.string()
 });
 
+export type Beneficiary = z.infer<typeof beneficiarySchema>;
+
+const schemeSelectionIntantOnlySchema = z.object({
+  type: z.literal('instant_only'),
+  allow_remitter_fee: z.boolean().optional()
+});
+
+const schemeSelectionIntantPreferredSchema = z.object({
+  type: z.literal('instant_preferred'),
+  allow_remitter_fee: z.boolean().optional()
+});
+
+const schemeSelectionUserSelectedSchema = z.object({
+  type: z.literal('user_selected')
+});
+
+const schemeSelectionSchema = z.discriminatedUnion('type', [
+  schemeSelectionIntantOnlySchema,
+  schemeSelectionIntantPreferredSchema,
+  schemeSelectionUserSelectedSchema
+]);
+
+export type SchemaSelection = z.infer<typeof schemeSelectionSchema>;
+
 const providerSelectionUserSelectedSchema = z.object({
   type: z.literal('user_selected'),
-  filter: providerFilterSchema
+  filter: providerFilterSchema,
+  scheme_selection: schemeSelectionSchema.optional()
 });
 
 const providerSelectionPreSelectedSchema = z.object({
   type: z.literal('preselected'),
   provider_id: z.string(),
-  scheme_id: z.string()
+  scheme_id: z.string().optional(),
+  scheme_selection: schemeSelectionSchema.optional()
 });
 
 const providerSelectionSchema = z.discriminatedUnion('type', [
@@ -31,6 +57,8 @@ const paymentMethodSchema = z.object({
   provider_selection: providerSelectionSchema,
   beneficiary: beneficiarySchema
 });
+
+export type ProviderSelection = z.infer<typeof providerSelectionSchema>;
 
 const userSchema = z.object({
   id: z.string().optional(),

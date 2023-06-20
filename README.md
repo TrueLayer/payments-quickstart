@@ -107,6 +107,34 @@ $ curl -X POST 'http://localhost:3000/v3/payment/provider'
 ```
 
 
+### [POST] `/v3/payment/create` - Create Custom Payment
+This endpoint has a default payment request body, so it behaves like `/v3/payment` if not request body is passed. 
+The core difference is that you can override the default body request to customise the payment creation.
+The request below is used to create a payment in `EURs` with a `Preselected` provider and a `UserSelected` scheme.
+Note that the propery `type` of every block is required so the service knows what defaults to use.
+
+```json
+  {
+      "currency": "EUR",
+      "payment_method": {
+          "type": "bank_transfer",
+          "provider_selection": {
+              "type": "preselected",
+              "provider_id": "xs2a-sparkasse",
+              "scheme_selection": {
+                  "type": "user_selected"
+              }
+          },
+          "beneficiary": {
+              "type": "external_account",
+              "account_identifier": {
+                  "type": "iban"
+              }
+          }
+      }
+  }
+```
+
 ### [GET] `/v3/payment/{paymentId}` - Get Payment status
 Once the payment has been created, you can retrieve its status by using this command.
 
