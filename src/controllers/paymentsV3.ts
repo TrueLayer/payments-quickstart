@@ -155,7 +155,7 @@ export default class PaymentsV3Controller {
   // mock-payments-gb-redirect
   // ob-monzo does not work with preselected
   private buildPaymentRequestWithUserSelectedScheme(): CreatePaymentRequest {
-    const beneficiary = this.getBeneficiary();
+    const beneficiary = this.getBeneficiary('EUR');
     const filter: ProviderFilter = {
       release_channel: 'alpha'
     };
