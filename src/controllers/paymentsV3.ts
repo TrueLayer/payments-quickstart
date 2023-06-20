@@ -4,7 +4,12 @@ import AuthenticationClient from 'clients/authentication-client';
 import PaymentsClient from 'clients/paymentv3-client';
 import { HttpException } from 'middleware/errors';
 import config from 'config';
-import { CreatePaymentRequest, ProviderFilter } from 'models/v3/payments-api/create_payment';
+import {
+  CreatePaymentRequest,
+  ProviderFilter,
+  ProviderSelection,
+  SchemeSelection
+} from 'models/v3/payments-api/create_payment';
 
 /**
  * Controller for the PaymentsV3 API - Payments.
@@ -155,18 +160,32 @@ export default class PaymentsV3Controller {
       release_channel: 'alpha'
     };
 
+    let providerSelection: ProviderSelection;
+
+    const schemeSelection: SchemeSelection = {
+      type: 'user_selected'
+    };
+
+    if (config.PROVIDER_ID_PRESELECTED) {
+      providerSelection = {
+        type: 'preselected',
+        provider_id: config.PROVIDER_ID_PRESELECTED,
+        scheme_selection: schemeSelection
+      };
+    } else {
+      providerSelection = {
+        type: 'user_selected',
+        filter,
+        scheme_selection: schemeSelection
+      };
+    }
+
     return {
       ...this.basePayment,
-      currency: 'GBP',
+      currency: 'EUR',
       payment_method: {
         type: 'bank_transfer',
-        provider_selection: {
-          type: 'user_selected',
-          filter,
-          scheme_selection: {
-            type: 'user_selected'
-          }
-        },
+        provider_selection: providerSelection,
         beneficiary
       }
     };

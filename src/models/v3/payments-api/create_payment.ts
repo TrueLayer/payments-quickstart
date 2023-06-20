@@ -24,35 +24,33 @@ const schemeSelectionUserSelectedSchema = z.object({
   type: z.literal('user_selected')
 });
 
+const schemeSelectionSchema = z.discriminatedUnion('type', [
+  schemeSelectionIntantOnlySchema,
+  schemeSelectionIntantPreferredSchema,
+  schemeSelectionUserSelectedSchema
+]);
+
+export type SchemeSelection = z.infer<typeof schemeSelectionSchema>;
+
 const providerSelectionUserSelectedSchema = z.object({
   type: z.literal('user_selected'),
   filter: providerFilterSchema,
-  scheme_selection: z
-    .discriminatedUnion('type', [
-      schemeSelectionIntantOnlySchema,
-      schemeSelectionIntantPreferredSchema,
-      schemeSelectionUserSelectedSchema
-    ])
-    .optional()
+  scheme_selection: schemeSelectionSchema.optional()
 });
 
 const providerSelectionPreSelectedSchema = z.object({
   type: z.literal('preselected'),
   provider_id: z.string(),
-  scheme_id: z.string(),
-  scheme_selection: z
-    .discriminatedUnion('type', [
-      schemeSelectionIntantOnlySchema,
-      schemeSelectionIntantPreferredSchema,
-      schemeSelectionUserSelectedSchema
-    ])
-    .optional()
+  scheme_id: z.string().optional(),
+  scheme_selection: schemeSelectionSchema.optional()
 });
 
 const providerSelectionSchema = z.discriminatedUnion('type', [
   providerSelectionPreSelectedSchema,
   providerSelectionUserSelectedSchema
 ]);
+
+export type ProviderSelection = z.infer<typeof providerSelectionSchema>;
 
 const paymentMethodSchema = z.object({
   type: z.literal('bank_transfer'),
