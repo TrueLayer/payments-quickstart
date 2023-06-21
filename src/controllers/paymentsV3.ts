@@ -4,7 +4,12 @@ import AuthenticationClient from 'clients/authentication-client';
 import PaymentsClient from 'clients/paymentv3-client';
 import { HttpException } from 'middleware/errors';
 import config from 'config';
-import { CreatePaymentRequest, ProviderFilter } from 'models/v3/payments-api/create_payment';
+import {
+  CreatePaymentRequest,
+  ProviderFilter,
+  ProviderSelection,
+  SchemeSelection
+} from 'models/v3/payments-api/create_payment';
 
 /**
  * Controller for the PaymentsV3 API - Payments.
@@ -65,6 +70,20 @@ export default class PaymentsV3Controller {
    * */
   createPaymentWithProvider = () => {
     const request = this.buildPaymentRequestWithProvider();
+    return this.doPayment(request);
+  };
+
+  /**
+   * It creates a new payment with a user selected scheme and provider.
+   *
+   * Method: POST
+   * Path: /v3/payment/scheme_selection
+   * Header: Authorization: Bearer {auth_token}
+   * Body: buildPaymentRequestWithUserSelectedScheme()
+   *
+   * */
+  createPaymentWithUserSelectedScheme = () => {
+    const request = this.buildPaymentRequestWithUserSelectedScheme();
     return this.doPayment(request);
   };
 
@@ -130,6 +149,46 @@ export default class PaymentsV3Controller {
             beneficiary
           }
         };
+  }
+
+  // ob-lloyds works
+  // mock-payments-gb-redirect
+  // ob-monzo does not work with preselected
+  private buildPaymentRequestWithUserSelectedScheme(): CreatePaymentRequest {
+    const beneficiary = this.getBeneficiary('EUR');
+    const filter: ProviderFilter = {
+      release_channel: 'alpha'
+    };
+
+    let providerSelection: ProviderSelection;
+
+    const schemeSelection: SchemeSelection = {
+      type: 'user_selected'
+    };
+
+    if (config.PROVIDER_ID_PRESELECTED) {
+      providerSelection = {
+        type: 'preselected',
+        provider_id: config.PROVIDER_ID_PRESELECTED,
+        scheme_selection: schemeSelection
+      };
+    } else {
+      providerSelection = {
+        type: 'user_selected',
+        filter,
+        scheme_selection: schemeSelection
+      };
+    }
+
+    return {
+      ...this.basePayment,
+      currency: 'EUR',
+      payment_method: {
+        type: 'bank_transfer',
+        provider_selection: providerSelection,
+        beneficiary
+      }
+    };
   }
 
   // ob-lloyds works
