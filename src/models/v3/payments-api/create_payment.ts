@@ -50,6 +50,8 @@ const providerSelectionSchema = z.discriminatedUnion('type', [
   providerSelectionUserSelectedSchema
 ]);
 
+export type ProviderSelection = z.infer<typeof providerSelectionSchema>;
+
 const paymentMethodSchema = z.object({
   type: z.literal('bank_transfer'),
   provider_selection: providerSelectionSchema,

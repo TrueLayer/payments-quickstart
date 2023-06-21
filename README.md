@@ -106,6 +106,13 @@ To create a payment, you can try and run this command.
 $ curl -X POST 'http://localhost:3000/v3/payment/provider' 
 ```
 
+### [POST] `/v3/payment/scheme_selection` - Create Payment with User Selected Provider and Scheme
+To create a payment, you can try and run this command.
+
+```bash
+
+$ curl -X POST 'http://localhost:3000/v3/payment/scheme_selection' 
+```
 
 ### [POST] `/v3/payment/create` - Create Custom Payment
 This endpoint has a default payment request body, so it behaves like `/v3/payment` if not request body is passed. 
