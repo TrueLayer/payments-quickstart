@@ -10,7 +10,7 @@ import AuthenticationClient from 'clients/authentication-client';
 import PaymentsClient from 'clients/paymentv3-client';
 import config from 'config';
 import { HttpException } from 'middleware/errors';
-import { PaymentAccountIdentifier } from 'models/v3/payments-api/common';
+import { PaymentAccountIdentifier, ProviderSelectionFilter } from 'models/v3/payments-api/common';
 
 export class PaymentsController {
   private paymentClient = new PaymentsClient(new AuthenticationClient());
@@ -67,10 +67,7 @@ export class PaymentsController {
       if (providerSelection.type === 'user_selected') {
         return {
           type: 'user_selected',
-          filter: {
-            release_channel: 'alpha',
-            ...providerSelection?.filter
-          },
+          ...this.overrideProviderSelectionFilter(providerSelection?.filter),
           ...this.overrideSchemeSelection(providerSelection?.scheme_selection)
         };
       }
@@ -96,6 +93,27 @@ export class PaymentsController {
         release_channel: 'alpha'
       }
     };
+  };
+
+  private overrideProviderSelectionFilter = (
+    filter?: Partial<ProviderSelectionFilter>
+  ): { filter?: ProviderSelectionFilter } => {
+    // Sending a property as null removes it from the request overriding the default values
+    if (filter === null) {
+      return {};
+    }
+
+    if (filter != undefined) {
+      const { release_channel, ...rest } = filter;
+      return {
+        filter: {
+          release_channel: filter?.release_channel ?? 'alpha',
+          ...rest
+        }
+      };
+    }
+
+    return { filter: { release_channel: 'alpha' } };
   };
 
   private overrideSchemeSelection = (

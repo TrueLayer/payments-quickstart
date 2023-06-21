@@ -1,8 +1,6 @@
 import z from 'zod';
 import { currencyCodeSchema, paymentAccountIdentifierSchema, providerFilterSchema } from './common';
 
-export type ProviderFilter = z.infer<typeof providerFilterSchema>;
-
 const beneficiarySchema = z.object({
   type: z.literal('external_account'),
   account_identifier: paymentAccountIdentifierSchema,
