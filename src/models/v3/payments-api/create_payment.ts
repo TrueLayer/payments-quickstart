@@ -30,7 +30,7 @@ const schemeSelectionSchema = z.discriminatedUnion('type', [
   schemeSelectionUserSelectedSchema
 ]);
 
-export type SchemaSelection = z.infer<typeof schemeSelectionSchema>;
+export type SchemeSelection = z.infer<typeof schemeSelectionSchema>;
 
 const providerSelectionUserSelectedSchema = z.object({
   type: z.literal('user_selected'),
@@ -57,8 +57,6 @@ const paymentMethodSchema = z.object({
   provider_selection: providerSelectionSchema,
   beneficiary: beneficiarySchema
 });
-
-export type ProviderSelection = z.infer<typeof providerSelectionSchema>;
 
 const userSchema = z.object({
   id: z.string().optional(),

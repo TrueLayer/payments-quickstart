@@ -4,7 +4,7 @@ import {
   CreatePaymentRequest,
   CreatePaymentRequestResponse,
   ProviderSelection,
-  SchemaSelection
+  SchemeSelection
 } from 'models/v3/payments-api/create_payment';
 import AuthenticationClient from 'clients/authentication-client';
 import PaymentsClient from 'clients/paymentv3-client';
@@ -116,8 +116,8 @@ export class PaymentsController {
   };
 
   private overrideSchemeSelection = (
-    schemeSelection?: Partial<SchemaSelection>
-  ): { scheme_selection?: SchemaSelection } => {
+    schemeSelection?: Partial<SchemeSelection>
+  ): { scheme_selection?: SchemeSelection } => {
     if (schemeSelection?.type == 'instant_only') {
       return {
         scheme_selection: {
