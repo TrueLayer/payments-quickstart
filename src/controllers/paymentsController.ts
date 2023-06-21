@@ -104,11 +104,10 @@ export class PaymentsController {
     }
 
     if (filter != undefined) {
-      const { release_channel, ...rest } = filter;
       return {
         filter: {
-          release_channel: filter?.release_channel ?? 'alpha',
-          ...rest
+          ...filter,
+          release_channel: filter?.release_channel ?? 'alpha'
         }
       };
     }

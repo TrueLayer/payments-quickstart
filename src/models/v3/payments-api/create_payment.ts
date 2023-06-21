@@ -34,7 +34,7 @@ export type SchemaSelection = z.infer<typeof schemeSelectionSchema>;
 
 const providerSelectionUserSelectedSchema = z.object({
   type: z.literal('user_selected'),
-  filter: providerFilterSchema,
+  filter: providerFilterSchema.optional(),
   scheme_selection: schemeSelectionSchema.optional()
 });
 
