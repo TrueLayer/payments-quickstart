@@ -1,14 +1,14 @@
 import z from 'zod';
 import { currencyCodeSchema, paymentAccountIdentifierSchema, providerFilterSchema } from './common';
 
-export type ProviderFilter = z.infer<typeof providerFilterSchema>;
-
 const beneficiarySchema = z.object({
   type: z.literal('external_account'),
   account_identifier: paymentAccountIdentifierSchema,
   account_holder_name: z.string(),
   reference: z.string()
 });
+
+export type Beneficiary = z.infer<typeof beneficiarySchema>;
 
 const schemeSelectionIntantOnlySchema = z.object({
   type: z.literal('instant_only'),
@@ -34,7 +34,7 @@ export type SchemeSelection = z.infer<typeof schemeSelectionSchema>;
 
 const providerSelectionUserSelectedSchema = z.object({
   type: z.literal('user_selected'),
-  filter: providerFilterSchema,
+  filter: providerFilterSchema.optional(),
   scheme_selection: schemeSelectionSchema.optional()
 });
 

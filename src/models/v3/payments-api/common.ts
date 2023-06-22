@@ -43,6 +43,8 @@ export const providerFilterSchema = z
   })
   .deepPartial();
 
+export type ProviderSelectionFilter = z.infer<typeof providerFilterSchema>;
+
 export const accountIdentifierScanSchema = z.object({
   type: z.literal('sort_code_account_number'),
   sort_code: z.string(),
@@ -58,6 +60,8 @@ export const paymentAccountIdentifierSchema = z.discriminatedUnion('type', [
   accountIdentifierScanSchema,
   accountIdentifierIbanSchema
 ]);
+
+export type PaymentAccountIdentifier = z.infer<typeof paymentAccountIdentifierSchema>;
 
 export const remitterSchema = z.object({
   account_holder_name: z.string(),

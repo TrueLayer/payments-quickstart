@@ -4,12 +4,8 @@ import AuthenticationClient from 'clients/authentication-client';
 import PaymentsClient from 'clients/paymentv3-client';
 import { HttpException } from 'middleware/errors';
 import config from 'config';
-import {
-  CreatePaymentRequest,
-  ProviderFilter,
-  ProviderSelection,
-  SchemeSelection
-} from 'models/v3/payments-api/create_payment';
+import { ProviderSelectionFilter } from 'models/v3/payments-api/common';
+import { CreatePaymentRequest, ProviderSelection, SchemeSelection } from 'models/v3/payments-api/create_payment';
 
 /**
  * Controller for the PaymentsV3 API - Payments.
@@ -112,7 +108,7 @@ export default class PaymentsV3Controller {
   private buildPaymentRequest(currency?: 'EUR'): CreatePaymentRequest {
     // Include all providers by default,
     // this is particulary useful when testing against embedded flow mock banks on Mobile (xs2a-volksbanken-de-sandbox)
-    const filter: ProviderFilter = {
+    const filter: ProviderSelectionFilter = {
       release_channel: 'alpha'
     };
 
@@ -156,7 +152,7 @@ export default class PaymentsV3Controller {
   // ob-monzo does not work with preselected
   private buildPaymentRequestWithUserSelectedScheme(): CreatePaymentRequest {
     const beneficiary = this.getBeneficiary('EUR');
-    const filter: ProviderFilter = {
+    const filter: ProviderSelectionFilter = {
       release_channel: 'alpha'
     };
 
